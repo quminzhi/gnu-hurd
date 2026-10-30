@@ -1,0 +1,429 @@
+{
+  "checked_on": "2026-10-08",
+  "source": "Crossref REST API",
+  "items": [
+    {
+      "title": [
+        "A critique of the GNU hurd multi-server operating system"
+      ],
+      "author": [
+        {
+          "given": "Neal H.",
+          "family": "Walfield",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Marcus",
+          "family": "Brinkmann",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "DOI": "10.1145/1278901.1278907",
+      "container-title": [
+        "ACM SIGOPS Operating Systems Review"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2007,
+            7
+          ]
+        ]
+      },
+      "page": "30-39",
+      "volume": "41",
+      "issue": "4"
+    },
+    {
+      "title": [
+        "On micro-kernel construction"
+      ],
+      "author": [
+        {
+          "given": "J.",
+          "family": "Liedtke",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "DOI": "10.1145/224056.224075",
+      "container-title": [
+        "Proceedings of the fifteenth ACM symposium on Operating systems principles  - SOSP '95"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            1995
+          ]
+        ]
+      },
+      "page": "237-250",
+      "volume": null,
+      "issue": null
+    },
+    {
+      "title": [
+        "From L3 to seL4 what have we learnt in 20 years of L4 microkernels?"
+      ],
+      "author": [
+        {
+          "given": "Kevin",
+          "family": "Elphinstone",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "NICTA and UNSW, Sydney"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Gernot",
+          "family": "Heiser",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA and UNSW, Sydney"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "DOI": "10.1145/2517349.2522720",
+      "container-title": [
+        "Proceedings of the Twenty-Fourth ACM Symposium on Operating Systems Principles"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2013,
+            11,
+            3
+          ]
+        ]
+      },
+      "page": "133-150",
+      "volume": null,
+      "issue": null
+    },
+    {
+      "title": [
+        "seL4"
+      ],
+      "author": [
+        {
+          "given": "Gerwin",
+          "family": "Klein",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Kevin",
+          "family": "Elphinstone",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Gernot",
+          "family": "Heiser",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA, UNSW &amp; Open Kernel Labs, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "June",
+          "family": "Andronick",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "David",
+          "family": "Cock",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Philip",
+          "family": "Derrin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Dhammika",
+          "family": "Elkaduwe",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Kai",
+          "family": "Engelhardt",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "UNSW &amp; NICTA, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Rafal",
+          "family": "Kolanski",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Michael",
+          "family": "Norrish",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; ANU, Canberra, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Thomas",
+          "family": "Sewell",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Harvey",
+          "family": "Tuch",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Simon",
+          "family": "Winwood",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA &amp; UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "DOI": "10.1145/1629575.1629596",
+      "container-title": [
+        "Proceedings of the ACM SIGOPS 22nd symposium on Operating systems principles"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2009,
+            10,
+            11
+          ]
+        ]
+      },
+      "page": "207-220",
+      "volume": null,
+      "issue": null
+    },
+    {
+      "title": [
+        "L4 Microkernels"
+      ],
+      "subtitle": [
+        "The Lessons from 20 Years of Research and Deployment"
+      ],
+      "author": [
+        {
+          "given": "Gernot",
+          "family": "Heiser",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "NICTA and UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Kevin",
+          "family": "Elphinstone",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "NICTA and UNSW, Sydney, Australia"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "DOI": "10.1145/2893177",
+      "container-title": [
+        "ACM Transactions on Computer Systems"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2016,
+            4,
+            6
+          ]
+        ]
+      },
+      "page": "1-29",
+      "volume": "34",
+      "issue": "1"
+    }
+  ]
+}

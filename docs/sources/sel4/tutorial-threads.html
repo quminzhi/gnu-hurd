@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<!-- Page last generated 2026-10-08 03:33:30 +0000 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Threads | seL4 docs</title>
+
+    <link rel="canonical" href="https://docs.sel4.systems/Tutorials/threads.html">
+    <link href="/assets/css/sel4.css?v=1791430410" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+
+    <script defer src="/assets/js/menu.js"></script>
+    <script defer src="/assets/js/sidebar.js"></script><script defer data-domain="docs.sel4.systems"
+            src="https://analytics.sel4.systems/js/script.js"></script></head>
+  <body class="flex flex-row h-screen std-bg text-dark">
+    <div id="sidebar" class="hidden lg:flex flex-none w-(--sidebar-width) flex-row bg-f_neutral-50 dark:bg-gray-900">
+      <div class="flex-1 overflow-y-auto min-h-full">
+        <a href="/">
+  <svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="84.224365mm" height="32.530689mm" viewBox="0 0 84.224367 32.530689" version="1.1" id="svg5" inkscape:version="1.3.2 (091e20e, 2023-11-25)" sodipodi:docname="sel4-docs.svg" inkscape:export-filename="C:\Users\Birgit Brecknell\Documents\seL4 Foundation\seL4 Summit 2022\sel4_summit_v02.png" inkscape:export-xdpi="96" inkscape:export-ydpi="96" class="px-4 w-50 h-20 mx-auto mt-4 mb-10">
+  <sodipodi:namedview id="namedview7" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:document-units="mm" showgrid="false" inkscape:zoom="1.8116734" inkscape:cx="193.19155" inkscape:cy="87.764163" inkscape:window-width="1392" inkscape:window-height="1099" inkscape:window-x="0" inkscape:window-y="25" inkscape:window-maximized="0" inkscape:current-layer="g18" fit-margin-top="0" fit-margin-left="0" fit-margin-right="0" fit-margin-bottom="0" showguides="true" inkscape:guide-bbox="true" inkscape:showpageshadow="2" inkscape:deskcolor="#d1d1d1"/>
+  <defs id="defs2">
+    <rect x="680.69342" y="102.26014" width="15.612235" height="115.53054" id="rect9649"/>
+    <style id="style824">.cls-1,.cls-2,.cls-3{fill:#96ca4f;}.cls-2,.cls-3{stroke:#96ca4f;stroke-miterlimit:8;}.cls-3{stroke-width:0.25px;}</style>
+    <clipPath clipPathUnits="userSpaceOnUse" id="clipPath15">
+      <g inkscape:label="Clip" id="use15">
+        <path d="m 39.66384,47.73588 h 1.324364 q 0.447983,0 0.68299,0.06854 0.315791,0.09302 0.541007,0.330479 0.225215,0.237455 0.342719,0.582623 0.117503,0.342719 0.117503,0.847005 0,0.443087 -0.110159,0.763774 -0.13464,0.391679 -0.384335,0.63403 -0.188496,0.1836 -0.509183,0.286416 -0.239903,0.07589 -0.641374,0.07589 H 39.66384 Z m 0.724606,0.607103 v 2.377001 h 0.541006 q 0.303551,0 0.438191,-0.03427 0.176255,-0.04406 0.291311,-0.149327 0.117504,-0.105264 0.190944,-0.345168 0.07344,-0.242351 0.07344,-0.65851 0,-0.416159 -0.07344,-0.638926 -0.07344,-0.222767 -0.205632,-0.347615 -0.132192,-0.124848 -0.335375,-0.168912 -0.151776,-0.03427 -0.594862,-0.03427 z m 2.751544,1.209308 q 0,-0.54835 0.164016,-0.920445 0.122399,-0.274175 0.332927,-0.492047 0.212975,-0.217871 0.465118,-0.323135 0.335375,-0.141984 0.773566,-0.141984 0.79315,0 1.268061,0.492047 0.477358,0.492047 0.477358,1.368428 0,0.869038 -0.472462,1.361085 -0.472463,0.489598 -1.263165,0.489598 -0.800494,0 -1.272956,-0.48715 -0.472463,-0.489599 -0.472463,-1.346397 z m 0.746638,-0.02448 q 0,0.609551 0.281519,0.925342 0.281519,0.313343 0.714814,0.313343 0.433295,0 0.709918,-0.310895 0.279072,-0.313343 0.279072,-0.937582 0,-0.616894 -0.271728,-0.920445 -0.269279,-0.303551 -0.717262,-0.303551 -0.447983,0 -0.722158,0.308447 -0.274175,0.305999 -0.274175,0.925341 z m 5.596112,0.477359 0.702574,0.222767 q -0.161567,0.587519 -0.538558,0.873934 -0.374543,0.283967 -0.95227,0.283967 -0.714814,0 -1.175036,-0.48715 -0.460223,-0.489599 -0.460223,-1.336605 0,-0.895965 0.462671,-1.39046 0.46267,-0.496943 1.216652,-0.496943 0.658511,0 1.069773,0.389231 0.2448,0.230112 0.367199,0.660959 l -0.717262,0.171359 q -0.06365,-0.279071 -0.266831,-0.440639 -0.200735,-0.161567 -0.489599,-0.161567 -0.399022,0 -0.648718,0.286415 -0.247247,0.286415 -0.247247,0.927789 0,0.680542 0.244799,0.969406 0.2448,0.288863 0.636478,0.288863 0.288864,0 0.496943,-0.1836 0.20808,-0.183599 0.298655,-0.577726 z m 1.140766,0.151776 0.705022,-0.06854 q 0.06365,0.354959 0.257039,0.521422 0.19584,0.166464 0.526319,0.166464 0.350063,0 0.526318,-0.14688 0.178704,-0.149327 0.178704,-0.347615 0,-0.127295 -0.07589,-0.215423 -0.07344,-0.09058 -0.259487,-0.156672 -0.127296,-0.04406 -0.580175,-0.156671 -0.582622,-0.144432 -0.81763,-0.354959 -0.330479,-0.296208 -0.330479,-0.722158 0,-0.274176 0.154224,-0.511631 0.156671,-0.239903 0.447983,-0.364751 0.293759,-0.124848 0.70747,-0.124848 0.675646,0 1.015917,0.296208 0.342719,0.296207 0.359855,0.790701 l -0.724606,0.03182 q -0.04651,-0.276623 -0.200735,-0.396575 -0.151776,-0.122399 -0.457775,-0.122399 -0.315791,0 -0.494495,0.129743 -0.115056,0.08323 -0.115056,0.222768 0,0.127295 0.107712,0.217871 0.137088,0.115056 0.665854,0.239904 0.528767,0.124847 0.78091,0.259487 0.254591,0.132191 0.396575,0.364751 0.144432,0.230111 0.144432,0.570382 0,0.308447 -0.17136,0.577727 -0.171359,0.269279 -0.484703,0.401471 -0.313343,0.129743 -0.780909,0.129743 -0.680542,0 -1.045293,-0.313343 -0.364751,-0.315791 -0.435743,-0.917997 z" id="path16" style="font-weight:bold;font-stretch:condensed;font-size:5.01349px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';fill:#96ca4f;stroke-width:0.264583" transform="scale(1.0680757,0.9362632)" aria-label="DOCS"/>
+      </g>
+    </clipPath>
+  </defs>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(-11.065137,-18.670029)">
+    <g id="g18">
+      <text xml:space="preserve" transform="scale(0.26458333)" id="text9647" style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect9649);display:inline;fill:#000000;fill-opacity:1;stroke:none"/>
+      <g id="Layer_2" data-name="Layer 2" transform="matrix(0.5563179,0,0,0.5563179,-0.00218815,0)">
+        <path class="cls-1" d="M 169.29,64.52 V 41.46 h -11.1 l -19.38,23.1 h -5.43 v -28.5 h -10.85 v 28.5 h -5.6 c 0,-0.53 0.08,-1.14 0.08,-1.88 V 62 h -6.77 v 1.94 a 6.32,6.32 0 0 1 -0.37,2.63 1.68,1.68 0 0 1 -1.66,0.88 1.5,1.5 0 0 1 -1.42,-0.71 5,5 0 0 1 -0.32,-2.33 V 58.73 H 117 V 56 a 13,13 0 0 0 -0.85,-5.23 6.31,6.31 0 0 0 -2.92,-2.88 11.68,11.68 0 0 0 -5.43,-1.11 11.49,11.49 0 0 0 -4.76,0.93 5.75,5.75 0 0 0 -2.88,2.57 10.54,10.54 0 0 0 -0.89,4.76 v 7 a 20,20 0 0 0 0.13,2.5 h -3 c 0,-0.28 0,-0.56 0,-0.87 a 5.84,5.84 0 0 0 -1,-3.71 12.59,12.59 0 0 0 -4.47,-2.8 22,22 0 0 1 -3.6,-1.84 3,3 0 0 1 -1.22,-1.32 6,6 0 0 1 -0.19,-1.77 2.32,2.32 0 0 1 0.45,-1.52 1.7,1.7 0 0 1 1.39,-0.58 1.5,1.5 0 0 1 1.49,0.71 5.86,5.86 0 0 1 0.25,2.32 v 1.3 h 6.27 V 53 a 11.15,11.15 0 0 0 -0.2,-2.55 3.72,3.72 0 0 0 -1.08,-1.63 6.68,6.68 0 0 0 -2.67,-1.49 14.3,14.3 0 0 0 -4.38,-0.58 13.32,13.32 0 0 0 -4.54,0.71 5,5 0 0 0 -2.63,1.92 7.84,7.84 0 0 0 -0.78,4 6.85,6.85 0 0 0 0.73,3.28 c 0.47,0.89 1.88,1.93 4.17,3.09 3.84,1.92 4.6,2.43 4.85,2.66 a 3.55,3.55 0 0 1 0.59,2.49 3,3 0 0 1 -0.46,2 A 2,2 0 0 1 87.8,67.45 1.5,1.5 0 0 1 86.3,66.6 6.54,6.54 0 0 1 86,63.87 v -2 h -6.29 v 1.62 c 0,0.38 0,0.72 0,1.05 h -6 a 25.58,25.58 0 1 0 0,8.83 H 158 v 8.42 h 11.33 v -8.4 h 5 V 64.52 Z M 38.89,75.1 A 6.1,6.1 0 1 1 45,69 6.1,6.1 0 0 1 38.89,75.1 Z m 67.54,-20.86 a 7.57,7.57 0 0 1 0.24,-2.68 c 0.15,-0.34 0.53,-0.75 1.48,-0.75 a 1.36,1.36 0 0 1 1.35,0.84 7.39,7.39 0 0 1 0.25,2.59 v 2.23 h -3.32 z M 158,64.52 h -9.62 L 158,52.22 Z" transform="translate(-3.04,-2.5)" id="path858"/>
+      </g>
+      <text xml:space="preserve" style="font-weight:bold;font-stretch:condensed;font-size:8.61839px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.505292;stroke-opacity:1" x="48.089367" y="45.416836" id="text16" transform="scale(0.93916555,1.064775)"><tspan sodipodi:role="line" id="tspan16" style="fill:#96ca4f;fill-opacity:1;stroke:none;stroke-width:0.505292" x="48.089367" y="45.416836">D</tspan></text>
+      <text xml:space="preserve" style="font-weight:bold;font-stretch:condensed;font-size:8.87389px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.505292;stroke-opacity:1" x="54.558205" y="48.250385" id="text16-9"><tspan sodipodi:role="line" id="tspan16-1" style="fill:#96ca4f;fill-opacity:1;stroke:none;stroke-width:0.505292" x="54.558205" y="48.250385">O</tspan></text>
+      <g id="g1" transform="matrix(1.1426343,0,0,1.1426343,24.136464,-10.044912)" style="stroke-width:1.67137">
+        <text xml:space="preserve" style="font-weight:bold;font-stretch:condensed;font-size:7.7611px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.442217;stroke-opacity:1" x="44.508698" y="51.014606" id="text16-5"><tspan sodipodi:role="line" id="tspan16-8" style="fill:#96ca4f;fill-opacity:1;stroke:none;stroke-width:0.442217" x="44.508698" y="51.014606">S</tspan></text>
+      </g>
+      <text xml:space="preserve" style="font-weight:bold;font-stretch:condensed;font-size:8.87389px;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';fill:#96ca4f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.505292;stroke-opacity:1" x="65.022789" y="48.250385" id="text17"><tspan sodipodi:role="line" id="tspan17" style="stroke-width:0.505292" x="65.022789" y="48.250385">C</tspan></text>
+    </g>
+  </g>
+</svg>
+</a>
+
+<ul class="px-4 my-10 ext-links">
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">Getting Started</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/getting-started.html">Overview</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/Tutorials/">Tutorials</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/dockerfiles/">Setting up with Docker</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/buildsystem/repo-cheatsheet.html">Repo manifest cheat sheet</a>
+        </li>
+    </ul>
+  </li>
+  <li class="mt-1">
+    <div class="font-bold mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer ">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">The seL4 Kernel</span>
+    </div>
+    <ul class="menu-content ml-6 on">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/">Overview</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/buildsystem/host-dependencies.html">Setting up</a>
+        </li>
+      <li class="pl-3 pb-1 border-l-1 bordercol">
+        <div class="text-sm font-bold menu-title text-light hover:text-hi">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron h-4 w-4 mb-0.5 -ml-2 -mr-0.5 inline cursor-pointer ">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+          <span class="cursor-pointer">Tutorial</span>
+        </div>
+        <ul class="menu-content ml-3 on">
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/setting-up.html">Setting up</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/get-the-tutorials.html">Getting the tutorials</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/hello-world.html">Hello world</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/capabilities.html">Capabilities</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/untyped.html">Untyped</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/mapping.html">Mapping</a>
+            </li>
+            <li class="text-hi border-f_green-500 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/threads.html">Threads</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/ipc.html">IPC</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/notifications.html">Notifications</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/interrupts.html">Interrupts</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/fault-handlers.html">Fault handling</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/mcs.html">MCS</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/seL4-end.html">End</a>
+            </li>
+        </ul>
+      </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/Tutorials/how-to-seL4.html">How-to</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/api-doc.html">API docs</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/manual.html">Manual</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/Hardware/">Supported platforms</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/verified-configurations.html">Verified configurations</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/configurations.html">Configurations</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/buildsystem/standalone.html">Standalone seL4 builds</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/bfgen.html">Bitfield generator</a>
+        </li>
+      <li class="pl-3 pb-1 border-l-1 bordercol">
+        <div class="text-sm  menu-title text-light hover:text-hi">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron h-4 w-4 mb-0.5 -ml-2 -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+          <span class="cursor-pointer">Testing &amp; benchmarking</span>
+        </div>
+        <ul class="menu-content ml-3 ">
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/sel4test/">seL4test</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/sel4-tutorials/debugging-guide.html">Debugging guide</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/sel4-tutorials/debugging-userspace.html">Debugging user space</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/sel4bench/">sel4bench</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/sel4-tutorials/benchmarking-guide.html">Benchmarking guide</a>
+            </li>
+        </ul>
+      </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/kernel-contribution.html">Contributing</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4/porting.html">Porting to a new platform</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/releases/seL4.html">Releases</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="https://github.com/seL4/seL4">Sources</a>
+        </li>
+    </ul>
+  </li>
+<li class="-mt-2">&nbsp;</li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">Microkit</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/microkit/">Overview</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/microkit/setting-up.html">Setting up your machine</a>
+        </li>
+      <li class="pl-3 pb-1 border-l-1 bordercol">
+        <div class="text-sm  menu-title text-light hover:text-hi">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron h-4 w-4 mb-0.5 -ml-2 -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+          <span class="cursor-pointer">Tutorial</span>
+        </div>
+        <ul class="menu-content ml-3 ">
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/welcome.html">Welcome</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/part0.html">Part 0 - Setting up</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/part1.html">Part 1 - Serial server</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/part2.html">Part 2 - Client</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/part3.html">Part 3 - Wordle server</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/part4.html">Part 4 - Virtual machines</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/microkit/tutorial/end.html">End</a>
+            </li>
+        </ul>
+      </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/microkit/manual/latest/">Manual</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/microkit/roadmap.html">Roadmap</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/microkit/platforms.html">Supported platforms</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/releases/microkit.html">Releases</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="https://github.com/seL4/microkit">Sources</a>
+        </li>
+    </ul>
+  </li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">CAmkES</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/camkes/">Overview</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/camkes/setting-up.html">Setting up your machine</a>
+        </li>
+      <li class="pl-3 pb-1 border-l-1 bordercol">
+        <div class="text-sm  menu-title text-light hover:text-hi">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron h-4 w-4 mb-0.5 -ml-2 -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+          <span class="cursor-pointer">Tutorials</span>
+        </div>
+        <ul class="menu-content ml-3 ">
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/hello-camkes-0.html">Hello CAmkES</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/hello-camkes-1.html">Introduction</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/hello-camkes-2.html">Events</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/hello-camkes-timer.html">Timer</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/camkes-vm-linux.html">Virtual Machines</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/camkes-vm-crossvm.html">Cross-VM connectors</a>
+            </li>
+        </ul>
+      </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/Tutorials/how-to-CAmkES.html">How-to</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/camkes/manual.html">Manual</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/camkes/hardware.html">Supported platforms</a>
+        </li>
+      <li class="pl-3 pb-1 border-l-1 bordercol">
+        <div class="text-sm  menu-title text-light hover:text-hi">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron h-4 w-4 mb-0.5 -ml-2 -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+          <span class="cursor-pointer">Virtualisation</span>
+        </div>
+        <ul class="menu-content ml-3 ">
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/camkes-vm/">CAmkES VM</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/virtualization/docs/libsel4vm.html">VM library</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/projects/virtualization/docs/libsel4vmm.html">VMM library</a>
+            </li>
+        </ul>
+      </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/releases/camkes.html">Releases</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="https://github.com/seL4/camkes-tool/">Sources</a>
+        </li>
+    </ul>
+  </li>
+<li class="-mt-2">&nbsp;</li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">C support</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/sel4runtime/">C runtime</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/user_libs/">User-level libraries</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/buildsystem/">Build System</a>
+        </li>
+      <li class="pl-3 pb-1 border-l-1 bordercol">
+        <div class="text-sm  menu-title text-light hover:text-hi">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron h-4 w-4 mb-0.5 -ml-2 -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+          <span class="cursor-pointer">Tutorials</span>
+        </div>
+        <ul class="menu-content ml-3 ">
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/libraries-1.html">Init & Threads</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/libraries-2.html">IPC</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/libraries-3.html">ELF loading & Processes</a>
+            </li>
+            <li class="text-light bordercol pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+              <a href="/Tutorials/libraries-4.html">Timer</a>
+            </li>
+        </ul>
+      </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/Tutorials/how-to-libs.html">How-to</a>
+        </li>
+    </ul>
+  </li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">Rust support</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/rust/">Overview</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/rust/how-to-use.html">How to use</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/rust/tutorial/introduction.html">Tutorial</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="https://sel4.github.io/rust-sel4/">API</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/rust/supported-configurations.html">Supported configurations</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/rust/releases.html">Releases</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="https://github.com/seL4/rust-sel4">Sources</a>
+        </li>
+    </ul>
+  </li>
+<li class="-mt-2">&nbsp;</li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">ELF loader</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/elfloader/">ELF loader for C</a>
+        </li>
+    </ul>
+  </li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">capDL</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/capdl/">Overview</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/capdl/lang-spec.html">Language Spec</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/projects/capdl/c-loader-app.html">capDL loader (C)</a>
+        </li>
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/releases/capDL.html">Releases</a>
+        </li>
+    </ul>
+  </li>
+<li class="-mt-2">&nbsp;</li>
+  <li class="mt-1">
+    <div class=" mb-1 menu-title hover:text-hi leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" class="menu-chevron p-0 h-4 w-4 mb-px -mr-0.5 inline cursor-pointer rotate-270">
+  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+      <span class="cursor-pointer text-sm">Examples &amp; demos</span>
+    </div>
+    <ul class="menu-content ml-6 ">
+        <li class="text-light bordercol pb-1 pl-3 border-l-1 text-sm leading-5 hover:text-hi">
+          <a href="/examples.html">Overview</a>
+        </li>
+    </ul>
+  </li>
+</ul>
+
+      </div>
+      <div id="sidebar-handle"
+           class="flex-none relative cursor-col-resize min-h-full
+                  bg-gray-200 dark:bg-gray-700 w-px">
+      </div>
+    </div>
+    <div class="flex-1">
+      
+<div class="w-full pb-px bg-gray-200 dark:bg-gray-700">
+  <header class="h-[2rem] sm:h-[2.5rem] lg:h-[3.5rem] w-full flex flex-row items-center gap-2 md:gap-4 md:py-2 std-bg">
+    <div id="burger">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="text-dark ml-3 mr-0 sm:mr-3 lg:mx-4 w-4 h-4 lg:w-6 lg:h-6 cursor-pointer">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+</svg>
+    </div>
+    <div class="flex-1"></div>
+    <a href="/releases.html"
+      class="text-lighter hover:text-light hover:underline text-tiny sm:text-xs lg:text-sm font-semibold">
+      Releases
+    </a>
+    <a href="https://sel4.systems/Contribute/"
+      class="text-lighter hover:text-light hover:underline text-tiny sm:text-xs lg:text-sm font-semibold">
+      Contribute
+    </a>
+    <a href="https://sel4.systems/contact.html"
+      class="text-lighter hover:text-light hover:underline text-tiny sm:text-xs lg:text-sm font-semibold">
+      Contact
+    </a>
+    <a href="https://sel4.systems/support.html"
+      class="text-lighter hover:text-light hover:underline text-tiny sm:text-xs lg:text-sm font-semibold">
+      Support
+    </a>
+    <!-- main site button -->
+    <a href="https://sel4.systems"
+      class="flex-none button-outline ml-0 text-tiny px-2 py-0.5 sm:px-3 sm:py-1 h-4 sm:h-6 md:py-2 md:h-8 lg:h-9 md:text-xs lg:text-sm mr-0 md:mr-4">Main Site
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24" stroke="currentColor" data-slot="icon" class="hidden sm:inline-icon">
+<path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+</svg>
+    </a>
+    <!-- github button -->
+    <a href="https://github.com/seL4"
+      class="mr-2 lg:mr-6 px-0 sm:px-3 pt-2 sm:pt-1 pb-2 block text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-300">
+      <span class="sr-only">seL4 on GitHub</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon" class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6">
+<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+</svg>
+    </a>
+  </header>
+</div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-[4rem_auto_4rem] h-[calc(100%-3rem)]">
+        <div class="hidden xl:flex relative hover:bg-gray-100 dark:hover:bg-gray-800 items-center justify-center">
+          <a href="mapping.html" class="mx-auto my-auto text-lighter">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-7 w-7 stroke-3">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+</svg>
+            <span class="absolute inset-0"></span>
+          </a>
+          </div>
+        <div class="flex flex-col max-w-full overflow-y-auto">
+          <div id="main-div" class="flex-1 max-w-full">
+            <main class="mx-6 md:mx-10 xl:mx-12 my-12
+                        overflow-x-auto" id="page-top">
+
+              <div class="theprose mx-auto ext-links">
+  
+<!--
+  Copyright 2017, Data61, CSIRO (ABN 41 687 119 230)
+
+  SPDX-License-Identifier: BSD-2-Clause
+-->
+
+<h1 id="threads">Threads</h1>
+
+<p>This is a tutorial for using threads on seL4.</p>
+
+<p>In this tutorial, you will:</p>
+
+<ol>
+  <li>Learn the jargon TCB.</li>
+  <li>Learn how to start a thread in the same address space.</li>
+  <li>Learn how to read and update TCB register state.</li>
+  <li>Learn how to suspend and resume a thread.</li>
+  <li>Understand thread priorities and their interaction with the seL4 scheduler.</li>
+  <li>Gain a basic understanding of exceptions and debug fault handlers.</li>
+</ol>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ol>
+  <li><a href="/Tutorials/setting-up.html">Set up your machine</a></li>
+  <li><a href="/Tutorials/capabilities.html">Capabilities tutorial</a></li>
+  <li><a href="/Tutorials/mapping.html">Mapping tutorial</a></li>
+</ol>
+
+<h2 id="initialising">Initialising</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For instructions about obtaining the tutorial sources see /Tutorials/get-the-tutorials</span>
+<span class="c">#</span>
+<span class="c"># Follow these instructions to initialise the tutorial</span>
+<span class="c"># initialising the build directory with a tutorial exercise</span>
+./init <span class="nt">--tut</span> threads
+<span class="c"># building the tutorial exercise</span>
+<span class="nb">cd </span>threads_build
+ninja
+</code></pre></div></div>
+
+<details>
+  <summary><em>Hint:</em> tutorial solutions</summary>
+
+  <p>All tutorials come with complete solutions. To get solutions run:</p>
+
+  <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For instructions about obtaining the tutorial sources see /Tutorials/get-the-tutorials</span>
+<span class="c">#</span>
+<span class="c"># Follow these instructions to initialise the tutorial</span>
+<span class="c"># initialising the build directory with a tutorial exercise</span>
+./init <span class="nt">--solution</span> <span class="nt">--tut</span> threads
+<span class="c"># building the tutorial exercise</span>
+<span class="nb">cd </span>threads_build
+ninja
+</code></pre></div>  </div>
+
+  <p>Answers are also available in drop down menus under each section.</p>
+</details>
+
+<h2 id="background">Background</h2>
+
+<h3 id="thread-control-blocks">Thread Control Blocks</h3>
+
+<p>seL4 provides threads to represent an execution context and manage processor time. Threads in
+seL4 are realised by <em>thread control block</em> objects (TCBs), one for each kernel thread.</p>
+
+<p>TCBs contain the following information:</p>
+
+<ul>
+  <li>a priority and maximum control priority,</li>
+  <li>register state and floating-point context,</li>
+  <li>CSpace capability,</li>
+  <li>VSpace capability,</li>
+  <li>endpoint capability to send fault messages to,</li>
+  <li>and the reply capability slot.</li>
+</ul>
+
+<h3 id="scheduling-model">Scheduling model</h3>
+
+<p>The seL4 scheduler chooses the next thread to run on a specific
+processing core, and is a priority-based round-robin scheduler. The scheduler picks
+threads that are runnable: that is, resumed, and not blocked on any IPC operation.</p>
+
+<h4 id="priorities">Priorities</h4>
+
+<p>The scheduler picks the highest-priority, runnable thread. seL4 provides a priority range of 0-255, where
+255 is the maximum priority (encoded in <code class="language-plaintext highlighter-rouge">libsel4</code> as <code class="language-plaintext highlighter-rouge">seL4_MinPrio</code> and <code class="language-plaintext highlighter-rouge">seL4_MaxPrio</code>).</p>
+
+<p>TCBs also have a <em>maximum control priority</em> (MCP), which acts as an informal capability over priorities.
+When setting the priority of a TCB, an explicit TCB capability must be provided to derive the
+authority from to set the priority. The priority being set is checked against the authority TCB’s
+MCP and the target priority is greater, the operation fails. The root task starts with both priority and
+MCP set to <code class="language-plaintext highlighter-rouge">seL4_MaxPrio</code>.</p>
+
+<h4 id="round-robin">Round robin</h4>
+
+<p>When multiple TCBs are runnable and have the same priority, they are scheduled in a
+first-in, first-out round-robin fashion. In more detail, kernel time
+is accounted for in fixed-time quanta referred to as ticks, and each TCB has
+a timeslice field which represents the number of ticks that TCB is eligible to execute
+until preempted. The kernel timer driver is configured to fire a periodic interrupt which
+marks each tick, and when the timeslice is exhausted round robin scheduling is applied.
+Threads can surrender their current timeslice using the <code class="language-plaintext highlighter-rouge">seL4_Yield</code> system call.</p>
+
+<h4 id="domain-scheduling">Domain scheduling</h4>
+
+<p>For systems with strict confidentiality requirements, seL4 provides an optional
+top-level hierarchical scheduler with provides static, cyclical scheduling of
+scheduling partitions known as domains. Domains and domain schedules can be
+configured using the <code class="language-plaintext highlighter-rouge">seL4_DomainSet</code> capability, and are non-preemptible
+resulting in completely deterministic scheduling of domains. By default, only
+domain 0 runs and threads start in the domain they were retyped in.</p>
+
+<p>Threads can also be manually assigned to domains. Threads are only scheduled
+when their domain is active. Cross-domain IPC is delayed until a domain switch, and
+<code class="language-plaintext highlighter-rouge">seL4_Yield</code> between domains has no effect. When there are no threads to run while a
+domain is scheduled, a domain-specific idle thread will run until a switch occurs.</p>
+
+<p>Assigning a thread to a domain requires access to the <code class="language-plaintext highlighter-rouge">seL4_DomainSet</code>
+capability. This allows a thread to be added to any domain.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Set thread's domain */</span>
+<span class="n">seL4_Error</span> <span class="nf">seL4_DomainSet_Set</span><span class="p">(</span><span class="n">seL4_DomainSet</span> <span class="n">_service</span><span class="p">,</span> <span class="n">seL4_Uint8</span> <span class="n">domain</span><span class="p">,</span> <span class="n">seL4_TCB</span> <span class="kr">thread</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>See the <a href="https://sel4.systems/Info/Docs/seL4-manual-latest.pdf">seL4 manual</a> for information
+on how to set up domain schedules.</p>
+
+<h3 id="thread-attributes">Thread Attributes</h3>
+
+<p>seL4 threads are configured by <a href="/projects/sel4/api-doc.html#sel4_tcb">invocations on the TCB object</a>.</p>
+
+<h2 id="exercises">Exercises</h2>
+
+<p>This tutorial will guide you through using TCB invocations to create a new thread in the same
+address space and pass arguments to the new thread.
+Additionally, you will learn about how to debug a virtual memory
+fault.</p>
+
+<p>By the end of this tutorial you want to spawn a new thread to call the function in the code example
+ below.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kt">int</span> <span class="nf">new_thread</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg1</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg2</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg3</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Hello2: arg1 %p, arg2 %p, arg3 %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">int</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg1</span><span class="p">;</span>
+    <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="n">arg2</span><span class="p">);</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="capdl-loader">capDL Loader</h3>
+
+<p>Previous tutorials have taken place in the root task where the starting CSpace layout is set by the
+seL4 boot protocol. This tutorial uses a the <em>capDL loader</em>, a root task which allocates statically
+ configured objects and capabilities.</p>
+
+<p>The capDL loader parses
+a static description of the system and the relevant ELF binaries.
+It is primarily used in <a href="/projects/camkes/">CAmkES</a> projects
+but we also use it in the tutorials to reduce redundant code.
+The program that you construct will end up with its own CSpace and VSpace, which are separate
+from the root task, meaning CSlots like <code class="language-plaintext highlighter-rouge">seL4_CapInitThreadVSpace</code> have no meaning
+in applications loaded by the capDL loader.</p>
+
+<p>More information about capDL can be found on the <a href="/projects/capdl/">seL4 docsite</a>.</p>
+
+<h3 id="configure-a-tcb">Configure a TCB</h3>
+
+<p>When you first build and run the tutorial, you should see something like the following:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello, World!
+Dumping all tcbs!
+Name                                        State           IP                       Prio    Core
+--------------------------------------------------------------------------------------
+tcb_threads                                running          0x4012ef    254                 0
+idle_thread                                 idle            0           0                   0
+rootserver                                  inactive        0x4024c2    255                 0
+&lt;&lt;seL4(CPU 0) [decodeInvocation/530 T0xffffff8008140c00 "tcb_threads" @4012ef]: Attempted to invoke a &gt;
+main@threads.c:42 [Cond failed: result]
+Failed to retype thread: 2
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Dumping all tcbs!</code> and the following table is generated by a debug syscall called <code class="language-plaintext highlighter-rouge">seL4_DebugDumpScheduler()</code>.
+seL4 has a series of debug syscalls that are available in debug kernel builds. The available debug syscalls
+can be found in <a href="/projects/sel4/api-doc.html#debugging-system-calls">libsel4</a>. <code class="language-plaintext highlighter-rouge">seL4_DebugDumpScheduler()</code>
+is used to dump the current state of the scheduler and can be useful to debug situations where a
+system seems to have hung.</p>
+
+<p>After the TCB table, you can see the <code class="language-plaintext highlighter-rouge">seL4_Untyped_Retype</code> invocation is failing due to invalid arguments.
+The loader has been configured to set up the following capabilities and symbols:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// the root CNode of the current thread</span>
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">root_cnode</span><span class="p">;</span>
+<span class="c1">// VSpace of the current thread</span>
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">root_vspace</span><span class="p">;</span>
+<span class="c1">// TCB of the current thread</span>
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">root_tcb</span><span class="p">;</span>
+<span class="c1">// Untyped object large enough to create a new TCB object</span>
+
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">tcb_untyped</span><span class="p">;</span>
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">buf2_frame_cap</span><span class="p">;</span>
+<span class="k">extern</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">buf2_frame</span><span class="p">[</span><span class="mi">4096</span><span class="p">];</span>
+
+<span class="c1">// Empty slot for the new TCB object</span>
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">tcb_cap_slot</span><span class="p">;</span>
+<span class="c1">// Symbol for the IPC buffer mapping in the VSpace, and capability to the mapping</span>
+<span class="k">extern</span> <span class="n">seL4_CPtr</span> <span class="n">tcb_ipc_frame</span><span class="p">;</span>
+<span class="k">extern</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">thread_ipc_buff_sym</span><span class="p">[</span><span class="mi">4096</span><span class="p">];</span>
+<span class="c1">// Symbol for the top of a 16 * 4KiB stack mapping, and capability to the mapping</span>
+<span class="k">extern</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">tcb_stack_base</span><span class="p">[</span><span class="mi">65536</span><span class="p">];</span>
+<span class="k">static</span> <span class="k">const</span> <span class="kt">uintptr_t</span> <span class="n">tcb_stack_top</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="kt">uintptr_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">tcb_stack_base</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">tcb_stack_base</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Exercise</strong> Fix the <code class="language-plaintext highlighter-rouge">seL4_Untyped_Retype</code> call (shown below) using the capabilities provided above, such
+that a new TCB object is created in <code class="language-plaintext highlighter-rouge">tcb_cap_slot</code>.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arbv</span><span class="p">[])</span> <span class="p">{</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Hello, World!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+    <span class="c1">// TODO fix the parameters in this invocation</span>
+    <span class="n">seL4_Error</span> <span class="n">result</span> <span class="o">=</span> <span class="n">seL4_Untyped_Retype</span><span class="p">(</span><span class="n">seL4_CapNull</span><span class="p">,</span> <span class="n">seL4_TCBObject</span><span class="p">,</span> <span class="n">seL4_TCBBits</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IF</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">"Failed to retype thread: %d"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div></div>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">seL4_Error</span> <span class="n">result</span> <span class="o">=</span> <span class="n">seL4_Untyped_Retype</span><span class="p">(</span><span class="n">tcb_untyped</span><span class="p">,</span> <span class="n">seL4_TCBObject</span><span class="p">,</span> <span class="n">seL4_TCBBits</span><span class="p">,</span> <span class="n">root_cnode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IF</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">"Failed to retype thread: %d"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div>  </div>
+</details>
+
+<p>Once the TCB has been created it will show up in the <code class="language-plaintext highlighter-rouge">seL4_DebugDumpScheduler()</code> output as
+<code class="language-plaintext highlighter-rouge">child of: 'tcb_threads'</code>. Throughout the tutorial you can use this syscall to debug some of the TCB attributes
+that you set.</p>
+
+<p>After the scheduler table, you should see a another error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;&lt;seL4(CPU 0) [decodeInvocation/530 T0xffffff800813fc00 "tcb_threads" @4004bf]: Attempted to invoke a null cap #0.&gt;&gt;
+main@threads.c:46 [Cond failed: result]
+	Failed to configure thread: 2
+</code></pre></div></div>
+
+<p><strong>Exercise</strong> Now that you have a TCB object, configure it to have the same CSpace and VSpace
+as the current thread. Use the IPC buffer we have provided, but don’t set a fault handler,
+ as the kernel will print any fault we receive with a debug build.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//TODO fix the parameters in this invocation</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">seL4_TCB_Configure</span><span class="p">(</span><span class="n">seL4_CapNull</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">seL4_Word</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IF</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">"Failed to configure thread: %d"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+</code></pre></div></div>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">result</span> <span class="o">=</span> <span class="n">seL4_TCB_Configure</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">,</span> <span class="n">root_cnode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">root_vspace</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">seL4_Word</span><span class="p">)</span> <span class="n">thread_ipc_buff_sym</span><span class="p">,</span> <span class="n">tcb_ipc_frame</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IF</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">"Failed to configure thread: %d"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+</code></pre></div>  </div>
+
+</details>
+
+<p>You should now be getting the following error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;&lt;seL4(CPU 0) [decodeSetPriority/1035 T0xffffff8008140c00 "tcb_threads" @4012ef]: Set priority: author&gt;
+main@threads.c:51 [Cond failed: result]
+Failed to set the priority for the new TCB object.
+</code></pre></div></div>
+
+<h3 id="change-priority-via-sel4_tcb_setpriority">Change priority via <code class="language-plaintext highlighter-rouge">seL4_TCB_SetPriority</code></h3>
+
+<p>A newly created thread will have a priority of 0, while the thread created by the loader is at
+a priority of 254.  You need to change the priority of your new thread such that it will be
+ scheduled round-robin with the current thread.</p>
+
+<p><strong>Exercise</strong> use <code class="language-plaintext highlighter-rouge">seL4_TCB_SetPriority</code> to set the priority. Remember that to set a thread’s priority,
+the calling thread must have the authority to do so. In this case, the main thread can use its own
+TCB capability, which has an MCP of 254.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// TODO fix the call to set priority using the authority of the current thread</span>
+    <span class="c1">// and change the priority to 254</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">seL4_TCB_SetPriority</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="n">seL4_CapNull</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IF</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">"Failed to set the priority for the new TCB object.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div></div>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">result</span> <span class="o">=</span> <span class="n">seL4_TCB_SetPriority</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="n">root_tcb</span><span class="p">,</span> <span class="mi">254</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IF</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">"Failed to set the priority for the new TCB object.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div>  </div>
+</details>
+
+<p>Fixing up the <code class="language-plaintext highlighter-rouge">seL4_TCB_SetPriority</code> call should allow you to see that the thread’s priority is now
+set to the same as the main thread in the next <code class="language-plaintext highlighter-rouge">seL4_DebugDumpScheduler()</code> call.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name                                        State           IP                       Prio    Core
+--------------------------------------------------------------------------------------
+child of: 'tcb_threads'                    inactive        0           254                 0
+tcb_threads                                running         0x4012ef    254                 0
+idle_thread                                 idle           0           0                   0
+rootserver                                  inactive       0x4024c2    255                 0
+&lt;&lt;seL4(CPU 0) [decodeInvocation/530 T0xffffff8008140c00 "tcb_threads" @4012ef]: Attempted to invoke a &gt;
+main@threads.c:57 [Err seL4_InvalidCapability]:
+Failed to write the new thread's register set.
+</code></pre></div></div>
+
+<h3 id="set-initial-register-state">Set initial register state</h3>
+
+<p>The TCB is nearly ready to run, except for its initial registers. You need to set the
+program counter and stack pointer to valid values, otherwise your thread will crash immediately.</p>
+
+<p><code class="language-plaintext highlighter-rouge">libsel4utils</code> contains functions for setting the program counter (instruction
+pointer) and stack pointer without mentioning their platform-specific register
+names. We will use these below.</p>
+
+<p>We may assume that the stack grows downwards on all platforms, but there is
+still a difference between the calling conventions on Arm and x86-64: On x86-64,
+the compiler expects that a return address has been pushed to the stack when a
+function is called. On Arm, the link register is used instead of the stack for
+this purpose. There is no address to return to for the initial function of a
+thread, and we do not intend to return from the function <code class="language-plaintext highlighter-rouge">new_thread</code>. The
+compiler does not know this, so we simulate a pushed return address by moving
+the stack pointer by one word on x86-64.</p>
+
+<p><strong>Exercise</strong> Set up the new thread to call the function <code class="language-plaintext highlighter-rouge">new_thread</code>. You can
+use the debug syscall to verify that you have at least set the instruction
+pointer (IP) correctly.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">seL4_UserContext</span> <span class="n">regs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_ReadRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to read the new thread's register set.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="kt">uintptr_t</span> <span class="n">thread_stack</span> <span class="o">=</span> <span class="n">tcb_stack_top</span><span class="p">;</span>
+    <span class="cm">/* The x86-64 ABI assumes there is a return address pushed on the stack. Arm uses the link register instead. */</span>
+    <span class="cp">#ifdef __x86_64__
+</span>    <span class="cm">/* Since we never return from new_thread, the value of the return address does not matter and
+       we only move the stack pointer. */</span>
+    <span class="n">thread_stack</span> <span class="o">-=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">);</span>
+    <span class="cp">#endif
+</span>
+    <span class="c1">// TODO use valid instruction pointer</span>
+    <span class="n">sel4utils_set_instruction_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">regs</span><span class="p">,</span> <span class="p">(</span><span class="n">seL4_Word</span><span class="p">)</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="c1">// TODO use valid stack pointer</span>
+    <span class="n">sel4utils_set_stack_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">regs</span><span class="p">,</span> <span class="p">(</span><span class="n">seL4_Word</span><span class="p">)</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="c1">// TODO fix parameters to this invocation</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_WriteRegisters</span><span class="p">(</span><span class="n">seL4_CapNull</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div></div>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">seL4_UserContext</span> <span class="n">regs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_ReadRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to read the new thread's register set.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="kt">uintptr_t</span> <span class="n">new_thread_stack</span> <span class="o">=</span> <span class="n">tcb_stack_top</span><span class="p">;</span>
+    <span class="cm">/* The x86-64 ABI assumes there is a return address pushed on the stack. Arm uses the link register instead. */</span>
+    <span class="cp">#ifdef __x86_64__
+</span>    <span class="cm">/* Since we never return from new_thread, the value of the return address does not matter and
+       we only move the stack pointer. */</span>
+    <span class="n">new_thread_stack</span> <span class="o">-=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">);</span>
+    <span class="cp">#endif
+</span>
+    <span class="n">sel4utils_set_instruction_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">regs</span><span class="p">,</span> <span class="p">(</span><span class="n">seL4_Word</span><span class="p">)</span><span class="n">new_thread</span><span class="p">);</span>
+    <span class="n">sel4utils_set_stack_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">regs</span><span class="p">,</span> <span class="n">new_thread_stack</span><span class="p">);</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_WriteRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div>  </div>
+</details>
+
+<p>On success, you will see the following output:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;&lt;seL4(CPU 0) [decodeInvocation/530 T0xffffff800813fc00 "tcb_threads" @4004bf]: Attempted to invoke a null cap #0.&gt;&gt;
+main@threads.c:63 [Err seL4_InvalidCapability]:
+	Failed to start new thread.
+</code></pre></div></div>
+
+<h3 id="start-the-thread">Start the thread</h3>
+
+<p>Finally you are ready to start the thread, which makes the TCB runnable and eligible to be picked by
+ the seL4 scheduler. This can be done by changing the second argument of
+<code class="language-plaintext highlighter-rouge">seL4_TCB_WriteRegisters</code> to 1 and removing the <code class="language-plaintext highlighter-rouge">seL4_TCB_Resume</code> call, or by fixing the resume call below.</p>
+
+<p><strong>Exercise</strong> resume the new thread.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// TODO resume the new thread</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_Resume</span><span class="p">(</span><span class="n">seL4_CapNull</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to start new thread.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// resume the new thread</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_Resume</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to start new thread.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+</code></pre></div>  </div>
+</details>
+
+<p>If everything has been configured correctly, resuming the thread should result in the string
+<code class="language-plaintext highlighter-rouge">Hello2: arg1 0, arg2 0, arg3 0</code> followed by a fault.</p>
+
+<h3 id="passing-arguments">Passing arguments</h3>
+
+<p>You will notice that all of the arguments to the new thread are 0. You can set the arguments by
+using the helper function <code class="language-plaintext highlighter-rouge">sel4utils_arch_init_local_context</code> or by directly manipulating the registers
+for your target architecture. The helper function also takes care of the difference in stack pointers
+between Arm and x86-64, so we can use <code class="language-plaintext highlighter-rouge">tcb_stack_top</code> directly in both cases if we use it.</p>
+
+<p><strong>Exercise</strong> pass the values 1, 2, 3 as arg1, arg2, and arg3 respectively.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">seL4_UserContext</span> <span class="n">regs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_ReadRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to read the new thread's register set.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="c1">// TODO: find and use sel4utils_arch_init_local_context instead of the following two functions to set up new_thread</span>
+    <span class="n">sel4utils_set_instruction_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">regs</span><span class="p">,</span> <span class="p">(</span><span class="n">seL4_Word</span><span class="p">)</span> <span class="n">new_thread</span><span class="p">);</span>
+    <span class="n">sel4utils_set_stack_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">regs</span><span class="p">,</span> <span class="n">tcb_stack_top</span><span class="p">);</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_WriteRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">seL4_DebugDumpScheduler</span><span class="p">();</span>
+</code></pre></div></div>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="n">seL4_UserContext</span> <span class="n">regs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_ReadRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="n">sel4utils_arch_init_local_context</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">new_thread</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">3</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">tcb_stack_top</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_WriteRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+</code></pre></div>  </div>
+
+</details>
+
+<h3 id="resolving-a-fault">Resolving a fault</h3>
+
+<p>At this point, you have created and configured a new thread, and given it initial arguments.
+The last part of this tutorial is what to do when your thread faults. We provide further detail
+ on fault handling in a future tutorial, but for now you can rely on the
+kernel printing a fault message, as the thread you have created does not have a fault handler.</p>
+
+<p>In the output below you can see a cap fault has occurred. The first part of the error is that
+the kernel was unable to send a fault to a fault handler as it is set to <code class="language-plaintext highlighter-rouge">0</code>. The kernel
+then prints out the fault it was trying to send. In this case, the fault is a virtual memory fault.
+The new thread has tried to access data at address <code class="language-plaintext highlighter-rouge">0x2</code> which is an invalid and unmapped address.
+The output shows that the program counter of the thread when it faulted was <code class="language-plaintext highlighter-rouge">0x401e66</code>.</p>
+
+<p>The fault status register is also output, which can be decoded by
+using the relevant architecture manual.
+Additionally, the kernel prints a raw stack dump from the current stack pointer.
+The size of the stack dump is configurable, using the
+ <code class="language-plaintext highlighter-rouge">KernelUserStackTraceLength</code> cmake variable.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caught cap fault in send phase at address 0
+while trying to handle:
+vm fault on data at address 0x2 with status 0x4
+in thread 0xffffff8008140400 "child of: 'tcb_threads'" at address 0x401e66
+With stack:
+0x439fc0: 0x0
+0x439fc8: 0x3
+0x439fd0: 0x2
+0x439fd8: 0x1
+0x439fe0: 0x0
+0x439fe8: 0x1
+0x439ff0: 0x0
+0x439ff8: 0x0
+0x43a000: 0x404fb3
+0x43a008: 0x0
+0x43a010: 0x0
+0x43a018: 0x0
+0x43a020: 0x0
+0x43a028: 0x0
+0x43a030: 0x0
+0x43a038: 0x0
+</code></pre></div></div>
+
+<p>To investigate the fault, you can use a tool such as <code class="language-plaintext highlighter-rouge">objdump</code> on the ELF file that was loaded to
+inspect the instruction that caused the fault.
+ In this case, the ELF file is located at <code class="language-plaintext highlighter-rouge">./&lt;BUILD_DIR&gt;/&lt;TUTORIAL_BUILD_DIR&gt;/threads</code>.</p>
+
+<p>You should be able to see that <code class="language-plaintext highlighter-rouge">arg2</code> is being dereferenced, but does not point to valid memory.</p>
+
+<p><strong>Exercise</strong> pass a valid arg2, by passing the address of a global variable.</p>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+  <p>Create a new variable</p>
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">int</span> <span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</code></pre></div>  </div>
+
+  <p>And fix <code class="language-plaintext highlighter-rouge">sel4utils_arch_init_local_context</code></p>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">sel4utils_arch_init_local_context</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">new_thread</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">3</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">tcb_stack_top</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+</code></pre></div>  </div>
+</details>
+
+<p>Next, another fault will occur as the new thread expects <code class="language-plaintext highlighter-rouge">arg1</code> to be a pointer to a function.</p>
+
+<p><strong>Exercise</strong> Pass the address of a function which outputs the argument which is passed to it, as <code class="language-plaintext highlighter-rouge">arg2</code>.</p>
+
+<details>
+  <summary><em>Quick solution</em></summary>
+  <p>Create a new function</p>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">call_once</span><span class="p">(</span><span class="kt">int</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Hello 3 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">arg</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>  </div>
+
+  <p>and fix <code class="language-plaintext highlighter-rouge">sel4utils_arch_init_local_context</code></p>
+
+  <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">UNUSED</span> <span class="n">seL4_UserContext</span> <span class="n">regs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_ReadRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+
+    <span class="n">sel4utils_arch_init_local_context</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">new_thread</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">call_once</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">3</span><span class="p">,</span>
+
+                                  <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">tcb_stack_top</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">seL4_TCB_WriteRegisters</span><span class="p">(</span><span class="n">tcb_cap_slot</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">regs</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">seL4_Word</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">regs</span><span class="p">);</span>
+    <span class="n">ZF_LOGF_IFERR</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">"Failed to write the new thread's register set.</span><span class="se">\n</span><span class="s">"</span>
+                  <span class="s">"</span><span class="se">\t</span><span class="s">Did you write the correct number of registers? See arg4.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+</code></pre></div>  </div>
+</details>
+
+<p>Now you should have a new thread, which immediately calls the function passed in <code class="language-plaintext highlighter-rouge">arg2</code>.</p>
+
+<h3 id="further-exercises">Further exercises</h3>
+
+<p>That’s all for the detailed content of this tutorial. Below we list other ideas for exercises you can try,
+to become more familiar with TCBs and threading in seL4.</p>
+
+<ul>
+  <li>Using different TCB invocations to change the new thread’s attributes or objects</li>
+  <li>Investigate how setting different priorities affects when the threads are scheduled to run</li>
+  <li>Implementing synchronisation primitives using global memory.</li>
+  <li>Trying to repeat this tutorial in the root task where there are more resources available to
+create more thread objects.</li>
+</ul>
+
+
+</div>
+
+<script src="/assets/js/toggle-markdown.js"></script>
+
+            </main>
+          </div>
+          <nav class="flex xl:hidden flex-row justify-between items-center mb-12 text-lighter">
+            <a href="mapping.html" class="flex-none bg-gray-100 dark:bg-gray-800 rounded py-3 px-5 ml-12">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-5 w-5 stroke-2 md:h-7 md:w-7 md:stroke-3">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+</svg>
+            </a>
+            <div class="flex-1"></div>
+            <a href="ipc.html" class="flex-none bg-gray-100 dark:bg-gray-800 rounded py-3 px-5 mr-12">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-5 w-5 stroke-2 md:h-7 md:w-7 md:stroke-3">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+</svg>
+            </a>
+            </nav>
+<footer class="flex-none flex flex-row py-6 pl-8 pr-10 border-t-1 bordercol
+               text-xs lg:text-sm font-semibold text-lighter">
+  <a href="/sitemap.html"
+     class="flex-none hover:text-light hover:underline">Sitemap</a>
+  <a href="/processes/test-status.html"
+     class="mx-1 px-1 lg:mx-2 lg:px-2 bordercol border-l-2 flex-none hover:text-light hover:underline">Test status</a>
+  <div class="flex-1"></div>
+<a href="https://github.com/seL4/docs/edit/master/Tutorials/threads.md" class="flex-none  hover:text-light hover:underline">Edit
+    page on GitHub</a>
+</footer>
+
+        </div>
+        <div class="hidden xl:flex relative hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center">
+          <a href="ipc.html" class="mx-auto my-auto text-lighter">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-7 w-7 stroke-3">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+</svg>
+            <span class="absolute inset-0"></span>
+          </a>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>

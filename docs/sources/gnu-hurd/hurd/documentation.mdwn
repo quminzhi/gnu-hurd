@@ -1,0 +1,128 @@
+[[!meta copyright="Copyright © 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
+2009, 2011, 2012, 2015, 2019, Free Software Foundation, Inc."]]
+
+[[!meta license="""[[!toggle id="license" text="GFDL 1.2+"]][[!toggleable
+id="license" text="Permission is granted to copy, distribute and/or modify this
+document under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no Invariant
+Sections, no Front-Cover Texts, and no Back-Cover Texts.  A copy of the license
+is included in the section entitled
+[[GNU Free Documentation License|/fdl]]."]]"""]]
+
+[[!meta title="Hurd Documentation"]]
+
+# Introductory Material
+  * [[What_Is_the_GNU_Hurd?|What_Is_the_GNU_Hurd]]
+  * [[Advantages of the Hurd|Advantages]]
+  * [[The Hurd FAQ|FAQ]]
+  * [[Hurd Presentations|/documentation#index3h1]]
+  * [[*The_Hurd_and_Linux*|/hurd-and-linux]], a comment by Richard Stallman.
+
+<!-- This comment "pushes" RMS's comment back into the list. Markdown is just great. -->
+
+  * [[*Towards_a_New_Strategy_of_OS_Design*|/hurd-paper]], an architectural
+    overview by Thomas Bushnell, BSG, notably:
+    * [[The design|/hurd-paper#design]]
+    * [[Introduction to Translators|/hurd-paper#translator]] and
+      [[Existing Translators|hurd/translator]]
+    * [[Subhurds|hurd/subhurd]]
+    * [[The auth translator|/hurd-paper#auth]]
+    * [[The proc translator|/hurd-paper#proc]]
+    * [[The exec translator|/hurd-paper#exec]]
+    * [[The ftpfs translator|/hurd-paper#ftpfs]]
+
+<!-- Push! -->
+
+  * [[*The_Hurd*|/hurd-talk]], a presentation by Marcus Brinkmann, notably:
+    * [[How to get a port?|/hurd-talk#how]]
+    * [[Pathname resolution example|/hurd-talk#pat]]
+    * [[Mapping the POSIX Interface|/hurd-talk#map]]
+    * [[Active vs Passive|/hurd-talk#act]]
+    * [[Authentication|/hurd-talk#aut]]
+    * [[Password Server|/hurd-talk#pas]]
+    * [[Process Server|/hurd-talk#pro]]
+
+<!-- Force push! -->
+
+  * [[*The Translator Primer*|Translator_Primer]].
+  * [[*A Document About Translators*|translators]] by Marcus Brinkmann.
+  * [[*A_Critique_of_the_GNU_Hurd_Multi-server_Operating_System*|critique]], an
+    analysis of the GNU Hurd on GNU Mach system, written by Neal Walfield and
+    Marcus Brinkmann.
+
+## External
+
+  * [*Examining the Legendary HURD
+    Kernel*](https://web.archive.org/web/20130126084218/http://www.informit.com/articles/printerfriendly.aspx?p=1180992),
+    an article by David Chisnall.
+
+    Also covers a bit of GNU's and the Hurd's history, fundamental techniques
+    applied, comparisions to other systems.
+
+
+# Developer References
+
+* [[Coding_Style]]
+* [[Rules]]
+* [[Trackers]]
+* [[Building]]
+* [[Toolchain]]
+    * [[glibc]]
+* Device Drivers
+	* [[rump|hurd/rump]] NetBSD drivers
+	 * [[hurd/rump/rumpdisk]]
+	 * [[hurd/rump/rumpnet]]
+	 * [[hurd/rump/rumpusbdisk]]
+	* [[DDE|hurd/dde]] Outdated Linux Drivers (unmaintained)
+* RPC [[Interface]]s
+* Libraries
+  * [[libpager]]
+  * [[libports]]
+  * [[libstore]]
+  * [[libchannel]]
+  * [[libtrivfs]]
+  * [[libmachdev]]
+  * [[libnetfs]] -- short introductory material
+  * [[libdiskfs]]
+  * [[libihash]]
+  * [[libirqhelp]]
+  * [[libpthread]]
+  * [[libfshelp]]
+  * [[libps]]
+* In-development Libraries
+  * [[libfuse]]
+* [[IO_Path]]
+* [[Porting]]
+* [[Debugging]]
+* [[Networking]]
+* [[Console]]
+* [[System bootstrap|hurd/bootstrap]]
+* Additional references
+  * [[RPC]]: our usage of *Remote Procedure Call*s.
+  * The [[System Bootstrap|hurd/bootstrap]] explains how the early
+    boot of the Hurd works.  There is an alternative [[RFC bootstrap
+    proposal|open_issues/serverbootv2]].
+  * You should read the Hurd's [[IO path|hurd/io_path]] to learn how
+    glibc's `read ()` works on the Hurd.
+  * *[[The_GNU_Hurd_Reference_Manual|reference_manual]]*.
+  * [[*The Hurd Hacking Guide|Hurd_Hacking_Guide]]*, an introduction to GNU&nbsp;Hurd and Mach
+    programming by Wolfgang Jährling.
+  * [*Manually Bootstrapping a
+    Translator*](http://walfield.org/pub/people/neal/papers/hurd-misc/manual-bootstrap.txt),
+    a text by Neal Walfield about how to *manually connect the translator to
+    the filesystem*.
+  * [[*The_Authentication_Server*|auth]], the transcript of a talk about the
+    details of the authentication mechanisms in the Hurd by Wolfgang Jährling.
+  * [*The Mach Paging Interface as Used by the
+    Hurd*](http://lists.gnu.org/archive/html/l4-hurd/2002-06/msg00001.html), a
+    text by Neal Walfield.
+  * In the
+    [[Position_paper_*Improving_Usability_via_Access_Decomposition_and_Policy*|ng/position_paper]]
+    Neal Walfield and Marcus Brinkmann give an overview about how a future,
+    subsequent system may be architected.
+  * [*Generalizing mobility for the Hurd*](https://pdfs.semanticscholar.org/4cce/9abb177cc58c199e13b82d498f37010c2bfc.pdf),
+    a thesis written by Carl Fredrik Hammar,
+    investigates the mobility aspect of stores
+    and how it can be generalized and used for other applications.
+    The background chapter may be of interest to new developers.
+  * [[Ada4Hurd]]: some tools to write translators with Ada

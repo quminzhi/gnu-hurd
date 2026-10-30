@@ -1,0 +1,40 @@
+[[!meta title="Debian GNU/Hurd"]]
+
+Debian GNU/Hurd is an effort to port the Debian distribution to the Hurd. Around 75% of Debian packages can already be run under Debian GNU/Hurd, which makes it very usable. See the [[Status]] of the Debian port for more information.
+
+<!-- I don't know what it means that /etc/mtab -> /proc/mounts, but this is what I could interpret.
+     It was simply a line (h1, for some reason, on this page and it looked out of place. Correct or even delete this if it makes no sense -->
+
+One notable difference in this port, is that `/etc/mtab` -> `/proc/mounts`
+
+---
+# QEMU Image
+[[!inline pages=hurd/running/debian/qemu_image raw=yes feeds=no]]
+
+---
+# Installing
+The Debian installer runs natively on the Hurd and it is possible to install a Debian GNU/Hurd system booting it from an IDE or SATA CD-ROM drive or from a USB stick. See 
+[installation instructions](http://www.debian.org/ports/hurd/hurd-install) for details and post-installation configuration.
+
+As of late 2025 installation may require larger amount of RAM (&ge; 2 GB) due to [[hurd/rump/rumpdisk]] memory requirements. It is possible to install 32 bit Hurd (`hurd-i386`) on lower RAM conditions (~ 500 MB) using the [CrossInstall](#crossinstall) method.
+
+---
+# <a id="crossinstall">CrossInstall</a>
+It is possible to install a Debian GNU/Hurd system on a spare partition from an existing Debian GNU/Linux installation. We call this [[CrossInstall]].
+
+---
+# Flash qemu image to disk
+You can install the Hurd to bare metal via flashing a working [[qemu image|hurd/running/flash_qemu_img]].
+
+---
+# Contributing
+- [[Porting]] — Helping with porting packages
+  * [[Patch_submission]] — How to submit patches for build failures
+- [[Creating_image_tarball]]
+
+---
+# Other links
+* Official page about the Debian GNU/Hurd port: [Debian GNU/Hurd](http://www.debian.org/ports/hurd/)
+* Debian [[FAQ]] — Frequently Asked Questions
+* [Archive Qualification](http://wiki.debian.org/ArchiveQualification/hurd-i386)
+* [[!wikipedia Debian_GNU/Hurd]] on Wikipedia

@@ -1,0 +1,2704 @@
+%!PS-Adobe-2.0
+%%Title: paper.mss
+%%DocumentFonts: (atend)
+%%Creator: Alessandro Forin and Scribe 7(1700)
+%%CreationDate: 17 April 1990 11:31
+%%Pages: (atend)
+%%EndComments
+% PostScript Prelude for Scribe.
+/BS {/SV save def 0.0 792.0 translate .01 -.01 scale} bind def
+/ES {showpage SV restore} bind def
+/SC {setrgbcolor} bind def
+/FMTX matrix def
+/RDF {WFT SLT 0.0 eq 
+  {SSZ 0.0 0.0 SSZ neg 0.0 0.0 FMTX astore}
+  {SSZ 0.0 SLT neg sin SLT cos div SSZ mul SSZ neg 0.0 0.0 FMTX astore}
+  ifelse makefont setfont} bind def
+/SLT 0.0 def
+/SI { /SLT exch cvr def RDF} bind def
+/WFT /Courier findfont def
+/SF { /WFT exch findfont def RDF} bind def
+/SSZ 1000.0 def
+/SS { /SSZ exch 100.0 mul def RDF} bind def
+/AF { /WFT exch findfont def /SSZ exch 100.0 mul def RDF} bind def
+/MT /moveto load def
+/XM {currentpoint exch pop moveto} bind def
+/UL {gsave newpath moveto dup 2.0 div 0.0 exch rmoveto
+   setlinewidth 0.0 rlineto stroke grestore} bind def
+/LH {gsave newpath moveto setlinewidth
+   0.0 rlineto
+   gsave stroke grestore} bind def
+/LV {gsave newpath moveto setlinewidth
+   0.0 exch rlineto
+   gsave stroke grestore} bind def
+/BX {gsave newpath moveto setlinewidth
+   exch
+   dup 0.0 rlineto
+   exch 0.0 exch neg rlineto
+   neg 0.0 rlineto
+   closepath
+   gsave stroke grestore} bind def
+/BX1 {grestore} bind def
+/BX2 {setlinewidth 1 setgray stroke grestore} bind def
+/PB {/PV save def newpath translate
+    100.0 -100.0 scale pop /showpage {} def} bind def
+/PE {PV restore} bind def
+/GB {/PV save def newpath translate rotate
+    div dup scale 100.0 -100.0 scale /showpage {} def} bind def
+/GE {PV restore} bind def
+/FB {dict dup /FontMapDict exch def begin} bind def
+/FM {cvn exch cvn exch def} bind def
+/FE {end /original-findfont /findfont load def  /findfont
+   {dup FontMapDict exch known{FontMapDict exch get} if
+   original-findfont} def} bind def
+/BC {gsave moveto dup 0 exch rlineto exch 0 rlineto neg 0 exch rlineto closepath clip} bind def
+/EC /grestore load def
+/SH /show load def
+/MX {exch show 0.0 rmoveto} bind def
+/W {0 32 4 -1 roll widthshow} bind def
+/WX {0 32 5 -1 roll widthshow 0.0 rmoveto} bind def
+/RC {100.0 -100.0 scale
+612.0 0.0 translate
+-90.0 rotate
+.01 -.01 scale} bind def
+/URC {100.0 -100.0 scale
+90.0 rotate
+-612.0 0.0 translate
+.01 -.01 scale} bind def
+/RCC {100.0 -100.0 scale
+0.0 -792.0 translate 90.0 rotate
+.01 -.01 scale} bind def
+/URCC {100.0 -100.0 scale
+-90.0 rotate 0.0 792.0 translate
+.01 -.01 scale} bind def
+%%EndProlog
+%%Page: 0 1
+BS
+0 SI
+13 /Helvetica-Bold AF
+20776 8148 MT
+(Unix as an Application Program)SH
+10 /Helvetica AF
+16789 11095 MT
+(David Golub, Randall Dean, Alessandro Forin, Richard Rashid)SH
+/Helvetica-Oblique SF
+24264 13381 MT
+(School of Computer Science)SH
+24626 14524 MT
+(Carnegie Mellon University)SH
+23568 15667 MT
+(Pittsburgh, Pennsylvania 15213)SH
+12 /Helvetica-Bold AF
+7200 19422 MT
+(1. Abstract)SH
+10 /Helvetica AF
+8312 20848 MT
+(Since March of 1989 we have had running at CMU a computing environment in which the functions of a)SH
+7200 22274 MT
+(traditional Unix system are cleanly divided into two parts: facilities which manage)
+24 W( the hardware resources)25 W
+7200 23700 MT
+(of a computer system \050such as CPU, I/O and memory\051 and support for higher-level resource abstractions)30 W
+7200 25126 MT
+(used in the building of application programs, e.g.  files and)
+347 W( sockets.  This paper describes the)348 W
+7200 26552 MT
+(implementation of Unix as a multithreaded application program running on the Mach kernel.)
+294 W( The)865 W
+7200 27978 MT
+(rationale, design, implementation history and performance of the system is presented.)SH
+12 /Helvetica-Bold AF
+7200 31733 MT
+(2. Introduction)SH
+8 /Helvetica AF
+28765 32808 MT
+(1)SH
+10 SS 
+8312 33159 MT
+(It is)
+36 W( both possible and rational to think of Unix)37 W
+29210 XM
+(not as an operating system kernel but as an application)37 W
+7200 34585 MT
+(program -- a server or set of servers that can provide client programs with specific)
+297 W( programming)296 W
+7200 36011 MT
+(abstractions. For)
+310 W( the last twelve months we have)
+16 W( had running at CMU a computing environment in which)17 W
+7200 37437 MT
+(the functions of a traditional Unix system are)
+98 W( cleanly divided into two parts: facilities which manage the)97 W
+7200 38863 MT
+(hardware resources of a computer system \050such as CPU, I/O and memory\051 and)
+78 W( support for higher-level)79 W
+7200 40289 MT
+(resource abstractions used in the building)
+32 W( of application programs, e.g.  files and sockets.  The hardware)31 W
+7200 41715 MT
+(management duties of Unix -- virtual)
+70 W( memory, scheduling and device management -- are provided in an)71 W
+7200 43141 MT
+(operating system environment independent way by the Mach kernel)
+197 W( [1].)
+SH( The)
+672 W( key, recognizable Unix)196 W
+7200 44567 MT
+(facilities -- such as Berkeley files, sockets and ttys -- are literally provided by an)
+167 W( application program)168 W
+7200 45993 MT
+(running on top of Mach.  Even)
+112 W( to the sophisticated Unix systems programmer the result is a seamless)111 W
+7200 47419 MT
+(environment in which Berkeley 4.3BSD, Ultrix or SunOS 3.x binaries \050depending on the machine)
+147 W( type)148 W
+7200 48845 MT
+(used\051 continue to run.  Performance is comparable in a number of respects to that of)
+216 W( earlier Mach)215 W
+7200 50271 MT
+(releases and commercial Unix implementations.)SH
+8312 52838 MT
+(The notion that Unix can be implemented by an application program)
+101 W( acting as a server is the logical)102 W
+7200 54264 MT
+(culmination of a longstanding trend)
+243 W( in OS design. Over the last decade system programmers have)242 W
+7200 55690 MT
+(increasingly relied upon the client/server implementation model as they have expanded the)
+88 W( functionality)89 W
+7200 57116 MT
+(of computer environments.  Network file services, name services)
+39 W( and database services are just a few of)38 W
+7200 58542 MT
+(the server-provided facilities which have been)
+63 W( added to traditional operating systems.  Fueling this trend)64 W
+7200 59968 MT
+(has been the)
+8 W( recognition of the considerable advantages to be gained by the client/server approach, such)7 W
+7200 61394 MT
+(as modularity and network transparency.)SH
+8312 63961 MT
+(Beyond the obvious advantages common to all client/server systems, treating Unix as an application)107 W
+7200 65387 MT
+(program has a number of interesting implications:)SH
+/Symbol SF
+9242 66859 MT
+(\267)SH
+/Helvetica-Oblique SF
+9980 XM
+(tailorability)SH
+/Helvetica SF
+14981 XM
+(--)SH
+10800 50 7200 70292 UL
+6 SS 
+8090 71687 MT
+(1)SH
+8 SS 
+8424 72000 MT
+(Unix is a trademark of AT&T Bell Laboratories)SH
+ES
+%%Page: 1 2
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(1)SH
+/Helvetica SF
+9980 7929 MT
+(Versions of Unix such as 4.3BSD, Posix and System V.4 can be treated)
+78 W( simply as different)77 W
+9980 9072 MT
+(applications which)
+95 W( can be purchased separately and potentially run simultaneously or even)96 W
+9980 10215 MT
+(side by side with other OS environments.)SH
+/Symbol SF
+9242 12030 MT
+(\267)SH
+/Helvetica-Oblique SF
+9980 XM
+(portability)SH
+/Helvetica SF
+14537 XM
+(--)SH
+9980 13845 MT
+(Nearly all of the)
+104 W( code which constitutes Unix is independent of a machine's instruction set,)103 W
+9980 14988 MT
+(architecture and configuration.)SH
+/Symbol SF
+9242 16803 MT
+(\267)SH
+/Helvetica-Oblique SF
+9980 XM
+(network accessibility)SH
+/Helvetica SF
+19371 XM
+(--)SH
+9980 18618 MT
+(A Unix Server need not reside on the same machine as a Unix client.)SH
+/Symbol SF
+9242 20433 MT
+(\267)SH
+/Helvetica-Oblique SF
+9980 XM
+(extensibility)SH
+/Helvetica SF
+15426 XM
+(--)SH
+9980 22248 MT
+(New versions of Unix can potentially be implemented or tested alongside existing versions.)SH
+/Symbol SF
+9242 24063 MT
+(\267)SH
+/Helvetica-Oblique SF
+9980 XM
+(real-time)SH
+/Helvetica SF
+14147 XM
+(--)SH
+9980 25878 MT
+(Traditional barriers to real-time support in Unix can be)
+175 W( removed both because the kernel)176 W
+9980 27021 MT
+(itself does not have to hold interrupt locks for long periods of time to accommodate Unix)163 W
+9980 28164 MT
+(system services and because the Unix services themselves are preemptable.)SH
+8312 30731 MT
+(Our work does not represent the first time)
+396 W( that Unix or another operating system has been)397 W
+7200 32157 MT
+(implemented as an application program.  Other such implementations have, however, frequently)
+79 W( started)78 W
+7200 33583 MT
+(from a rather)
+251 W( different notion of the relationship between the system kernel and the supported OS)252 W
+7200 35009 MT
+(environment. The)
+574 W( approach we have)
+148 W( taken with Mach was not to implement a virtual machine \050as in)147 W
+7200 36435 MT
+(IBM's CP/67)
+52 W( [4]\051)
+SH( or)
+52 W( to layer the kernel on a simple message engine \050as in AT&T's MERT)
+53 W( [6]\051)
+SH( or to use a)53 W
+7200 37861 MT
+(global shared communication area \050as)
+219 W( in Taos)
+218 W( [8]\051)
+SH( or to load operating system environment specific)218 W
+7200 39287 MT
+(emulation-assist code into the kernel \050as in Chorus)
+13 W( [2]\051.)
+SH( Rather,)
+304 W( we have taken advantage of the fact that)13 W
+7200 40713 MT
+(Mach provides for the manipulation of system)
+176 W( resources through a small set of machine-independent)175 W
+7200 42139 MT
+(abstractions and for the integration of memory management and communication)
+426 W( functions.  All)427 W
+7200 43565 MT
+(functionality pertaining to the implementation of Unix services is performed by a multithreaded Mach task)36 W
+7200 44991 MT
+(which takes advantage)
+181 W( of the Mach IPC, scheduling and virtual memory services.  Unix facilities are)182 W
+7200 46417 MT
+(provided by an application program)
+12 W( running on top of Mach and no Unix-specific functionality exists within)11 W
+7200 47843 MT
+(the kernel.)SH
+8312 50410 MT
+(This paper describes our implementation of 4.3BSD as an application program.  In particular,)
+278 W( it)279 W
+7200 51836 MT
+(examines the Unix)
+60 W( Server, the key features of Mach on which our implementation depends and some of)59 W
+7200 53262 MT
+(the challenges we)
+62 W( encountered in the development of the system.  The functionality and performance of)63 W
+7200 54688 MT
+(the resulting system is also presented.)SH
+12 /Helvetica-Bold AF
+7200 58443 MT
+(3. The Organization of Unix as an application program)SH
+10 /Helvetica AF
+8312 59869 MT
+(The implementation)
+68 W( of Unix binary compatibility on Mach divides cleanly into two parts: a)67 W
+/Helvetica-Oblique SF
+48710 XM
+(Unix Server)67 W
+/Helvetica SF
+7200 61295 MT
+(which provides the system services and resources commonly)
+419 W( associated with a 4.3 BSD Unix)420 W
+7200 62721 MT
+(environment and a)69 W
+/Helvetica-Oblique SF
+15967 XM
+(Transparent System Call Emulation Library)69 W
+/Helvetica SF
+35651 XM
+(which operates)
+69 W( within the address space)68 W
+7200 64147 MT
+(of a Unix application.  The Mach)
+176 W( kernel provides the key support facilities upon which both the Unix)177 W
+7200 65573 MT
+(Server and the Transparent Emulation Library depend.)
+223 W( In)
+723 W( particular Mach provides for interprocess)222 W
+7200 66999 MT
+(communication, memory object creation and data management, scheduling and trap redirection.)SH
+ES
+%%Page: 2 3
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(2)SH
+11 SS 
+7200 8002 MT
+(3.1. Key Mach Features)SH
+10 /Helvetica AF
+8312 9428 MT
+(It is difficult to describe the Unix Server and Emulation Library without briefly describing the)
+204 W( most)205 W
+7200 10854 MT
+(important details of the Mach kernel on which they both)
+122 W( depend. A more detailed description on Mach)121 W
+7200 12280 MT
+(and its abstractions can be found in)
+23 W( [1].)
+SH( The)
+324 W( key features of Mach)
+23 W( used in the emulation of Unix services)24 W
+7200 13706 MT
+(are:)SH
+/Symbol SF
+9242 15178 MT
+(\267)SH
+/Helvetica SF
+9980 XM
+(interprocess communication,)SH
+/Symbol SF
+9242 16993 MT
+(\267)SH
+/Helvetica SF
+9980 XM
+(memory object management,)SH
+/Symbol SF
+9242 18808 MT
+(\267)SH
+/Helvetica SF
+9980 XM
+(scheduling,)SH
+/Symbol SF
+9242 20623 MT
+(\267)SH
+/Helvetica SF
+9980 XM
+(system call redirection,)SH
+/Symbol SF
+9242 22438 MT
+(\267)SH
+/Helvetica SF
+9980 XM
+(device support, and)SH
+/Symbol SF
+9242 24253 MT
+(\267)SH
+/Helvetica SF
+9980 XM
+(multiprocessing support.)SH
+/Helvetica-Bold SF
+7200 27142 MT
+(3.1.1. Interprocess communication)SH
+/Helvetica SF
+8312 28568 MT
+(Mach defines an address space and protection domain to be a)50 W
+/Helvetica-Oblique SF
+36766 XM
+(task)SH
+/Helvetica SF
+38928 XM
+(and a CPU flow of control to)
+50 W( be a)49 W
+/Helvetica-Oblique SF
+7200 29994 MT
+(thread)SH
+/Helvetica SF
+(. Mach)
+652 W( provides interprocess communication between threads through constructs)
+187 W( called)188 W
+/Helvetica-Oblique SF
+51499 XM
+(ports)SH
+/Helvetica SF
+(.)SH
+7200 31420 MT
+(Ports are protected with a capability mechanism)
+112 W( and only Mach tasks with appropriate send or receive)111 W
+7200 32846 MT
+(capabilities can access a)
+55 W( port.  All services, resources and facilities within the Mach kernel and between)56 W
+7200 34272 MT
+(Mach tasks)
+154 W( are represented as ports.  Mach tasks, threads and memory objects are, for example, all)153 W
+7200 35698 MT
+(manipulated by sending messages to)
+32 W( ports which represent them.  As such, the Mach port facility can be)33 W
+7200 37124 MT
+(thought of as an object reference mechanism.)SH
+/Helvetica-Bold SF
+7200 40013 MT
+(3.1.2. Memory object management)SH
+/Helvetica SF
+8312 41439 MT
+(The address space of a)
+27 W( Mach task is represented as a collection of mappings from linear addresses to)26 W
+7200 42865 MT
+(offsets within Mach)56 W
+/Helvetica-Oblique SF
+16149 XM
+(memory objects)56 W
+/Helvetica SF
+(. The)
+390 W( primary role of the kernel in virtual memory management is to)56 W
+7200 44291 MT
+(manage physical memory as a cache of)
+39 W( the contents of memory objects.  The kernel's representation for)38 W
+7200 45717 MT
+(the backing storage of)
+132 W( a memory object is a Mach port to which messages can be sent requesting or)133 W
+7200 47143 MT
+(transmitting memory object data.  Memory object backing)
+104 W( store can thus be implemented by user-state)103 W
+7200 48569 MT
+(programs such as the Unix Server.  The Unix Server makes use)
+7 W( of this facility to act as an "external inode)8 W
+7200 49995 MT
+(pager".)SH
+/Helvetica-Bold SF
+7200 52884 MT
+(3.1.3. Scheduling)SH
+/Helvetica SF
+8312 54310 MT
+(Unix application processes are implemented by the Unix Server as Mach tasks with a)
+56 W( single thread of)55 W
+7200 55736 MT
+(control. These)
+410 W( threads are)
+66 W( scheduled by the Mach kernel using a multi-level feedback queue scheduler)67 W
+7200 57162 MT
+(with 32 priority levels.  Because all Unix application tasks are created by the)
+16 W( Unix Server, the Unix Server)15 W
+7200 58588 MT
+(has direct access to their task)
+160 W( and thread ports.  This allows it to directly manipulate the priority and)161 W
+7200 60014 MT
+(schedulability of these tasks to approximate traditional Unix scheduling and priority management.)SH
+/Helvetica-Bold SF
+7200 62903 MT
+(3.1.4. System call redirection)SH
+/Helvetica SF
+8312 64329 MT
+(The Mach kernel allows a designated set of system calls or traps to be handled by code running in)
+3 W( user)2 W
+7200 65755 MT
+(mode within the)
+202 W( calling task.  The set of emulated system calls needs to be set up only once; it is)203 W
+7200 67181 MT
+(inherited by child tasks on fork operations.)SH
+ES
+%%Page: 3 4
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(3)SH
+7200 7929 MT
+(3.1.5. Device Support)SH
+/Helvetica SF
+8312 9355 MT
+(The Mach kernel provides all low-level device support.  Each device is represented as)
+56 W( a port to which)55 W
+7200 10781 MT
+(messages can be sent)
+64 W( to transfer data or control the device.  Data is transferred through read and write)65 W
+7200 12207 MT
+(operations; the request and reply messages are exported separately, allowing both)
+190 W( synchronous and)189 W
+7200 13633 MT
+(asynchronous styles of I/O.)
+68 W( The)
+416 W( external memory object protocol allows a user to map the frame buffer)69 W
+7200 15059 MT
+(for a graphics device directly into its address space.)SH
+/Helvetica-Bold SF
+7200 17948 MT
+(3.1.6. User Multiprocessing)SH
+/Helvetica SF
+8312 19374 MT
+(A user-level multithreading package, the C Thread library)
+68 W( [3],)
+SH( eases the)
+68 W( use of multiple threads within)67 W
+7200 20800 MT
+(an address space.  It exports mutual exclusion)107 W
+/Helvetica-Oblique SF
+28899 XM
+(mutex)SH
+/Helvetica SF
+32007 XM
+(locks and condition variables for synchronization)108 W
+7200 22226 MT
+(via)SH
+/Helvetica-Oblique SF
+8756 XM
+(condition_wait)SH
+/Helvetica SF
+15370 XM
+(and)SH
+/Helvetica-Oblique SF
+17316 XM
+(condition_signal)SH
+/Helvetica SF
+24764 XM
+(operations.)SH
+11 /Helvetica-Bold AF
+7200 25908 MT
+(3.2. Unix Server)SH
+10 /Helvetica AF
+8312 27334 MT
+(The bulk of Unix services are provided by the Unix Server.)
+144 W( It)
+565 W( is implemented as a Mach task with)143 W
+7200 28760 MT
+(multiple threads of control managed by the Mach)
+202 W( C Threads package.  Internal synchronization and)203 W
+7200 30186 MT
+(process-switching within the Unix Server \050e.g., sleep, wakeup, spl\051 are implemented)
+219 W( by using the C)218 W
+7200 31612 MT
+(Threads package's mutex,)
+65 W( condition_wait and condition_signal functions.  A typical system configuration)66 W
+7200 33038 MT
+(will have dozens of C Threads allocated)
+76 W( within the Unix Server. Most threads belong to a common pool)75 W
+7200 34464 MT
+(which handle incoming requests from user processes.  Several threads are dedicated to routines that, in)
+SH( a)1 W
+7200 35890 MT
+(BSD kernel, would be driven by hardware interrupts \050device IO completion, timeout, network code\051.)
+93 W( All)463 W
+7200 37316 MT
+(communication with hardware devices is done through Mach's IPC \050Interprocess Communication\051 facility.)31 W
+7200 38742 MT
+(Figure 3-1 shows the organization of the Unix Server and its relationship to the Mach kernel.)SH
+5 10 270 45000 68685 GB 
+%%BeginDocument: SingleUnixServer.ps
+%!PS-Adobe-2.0
+%%Title: SingleUnixServer.draw
+%%Creator: Draw
+%%CreationDate: Mon Apr 16 12:21:45 1990
+%%For: rfr
+%%DocumentFonts: (atend)
+%%%Pages: (atend) 1
+%%BoundingBox: (atend)
+%%DocumentPaperSizes: Letter
+%%Orientation: Landscape
+%%EndComments
+
+%%BeginFile: /usr/lib/NextStep//printPackage1.0.ps
+%!PSNext-1.0
+%%Title: Printing Package
+%%Copyright 1988, NeXT, Inc.
+%%CreationDate: 23Feb88
+%%PackageName: printPackage0.8.37
+%%PackageDescription: Routines to support printing
+%%EndComments
+
+%debugging aids
+%/clip {gsave 0.9 setgray 0.5 setlinewidth stroke grestore} def
+
+% simulations of DPS ops
+/__NXbdef {1 index where {pop pop pop} {bind def} ifelse} bind def
+/__NXUserObjectList 10 array __NXbdef
+/defineuserobject {
+    exch
+    dup 1 add
+    dup __NXUserObjectList length gt {
+        array dup 0 __NXUserObjectList putinterval
+        /__NXUserObjectList exch def
+    }
+    { pop }
+    ifelse
+    __NXUserObjectList exch 3 -1 roll put
+} __NXbdef
+/execuserobject {
+    __NXUserObjectList exch get exec
+} __NXbdef
+/__NXDoRectOp {
+    1 index type /arraytype eq {
+        exch aload length
+        dup 2 add -1 roll exch
+        4 idiv
+    }
+    { 1 }
+    ifelse
+    {
+        5 1 roll
+        newpath 4 2 roll moveto 1 index 0 rlineto
+                0 exch rlineto neg 0 rlineto closepath
+        dup cvx exec
+    } repeat pop
+} __NXbdef
+/rectclip {/clip __NXDoRectOp newpath} __NXbdef
+/rectfill {gsave /fill __NXDoRectOp grestore} __NXbdef
+/rectstroke {gsave /stroke __NXDoRectOp grestore} __NXbdef
+/arct {arcto pop pop pop pop} __NXbdef
+/setbbox {pop pop pop pop} __NXbdef
+/ucache {} __NXbdef
+/ucachestatus {mark 0 0 0 0 0} __NXbdef
+/setucacheparams {cleartomark} __NXbdef
+/uappend {systemdict begin cvx exec end} __NXbdef
+/ueofill {gsave newpath uappend eofill grestore} __NXbdef
+/ufill {gsave newpath uappend fill grestore} __NXbdef
+/ustroke {
+    gsave newpath
+    dup length 6 eq {
+        exch uappend concat 
+    } {
+        uappend
+    } ifelse
+    stroke grestore
+} __NXbdef
+/__NXustrokepathMatrix dup where {pop pop} {matrix def} ifelse
+/ustrokepath {
+    newpath
+    dup length 6 eq {
+        exch uappend
+        __NXustrokepathMatrix currentmatrix exch concat
+        strokepath setmatrix
+    } {
+        uappend strokepath
+    } ifelse
+} __NXbdef
+/upath {
+    [
+        exch {/ucache cvx} if
+        pathbbox /setbbox cvx
+        {/moveto cvx} {/lineto cvx} {/curveto cvx} {/closepath cvx} pathforall
+    ] cvx
+} __NXbdef
+/setstrokeadjust {pop} __NXbdef
+/currentstrokeadjust {false} __NXbdef
+/selectfont {
+    exch findfont exch
+    dup type /arraytype eq {
+        makefont
+    } {
+        scalefont
+    } ifelse setfont
+} __NXbdef
+/_NXCombineArrays {
+    counttomark dup 2 add index
+    dup length 3 -1 roll {
+        2 index length sub
+        dup 4 1 roll
+        1 index exch 4 -1 roll
+        putinterval exch
+    } repeat
+    pop pop pop
+} __NXbdef
+
+% simulations of NeXT additions to DPS
+/flushgraphics {} def
+/hidecursor {} def
+/obscurecursor {} def
+/revealcursor {} def
+/setcursor {4 {pop} repeat} bind def
+/showcursor {} def
+
+
+%%EndFile
+
+%%EndProlog
+%%BeginSetup
+%%PaperSize: Letter
+%%Feature: *ManualFeed False
+%%Feature: *Resolution 400
+/oval {
+    translate scale newpath 0.5 0.5 0.5 0 360 arc
+} def /fillandframeoval {
+    oval gsave eofill grestore 0 setgray matrix defaultmatrix setmatrix stroke
+} def /fillandframerectangle {
+    4 copy rectfill 0 setgray rectstroke
+} def /line {
+    moveto rlineto stroke
+} def /setup {
+    setgray setlinewidth setlinecap setlinejoin gsave
+} def /arrow {
+    newpath moveto dup rotate -13 6 rlineto 4 -6 rlineto -4 -6 rlineto closepath gsave 0 setlinejoin stroke grestore fill neg rotate
+} def
+%%EndSetup
+
+%%%Page: 1 1
+%%%PageBoundingBox: 36.000000 36.000000 756.000000 576.000000
+%%%PageFonts: (atend)
+%%BeginPageSetup
+%%PaperSize: Letter
+/__NXsheetsavetoken save def
+-90 rotate
+-792 0 translate
+36 36 translate
+gsave
+0 0 translate
+%%EndPageSetup
+gsave
+0 0 720 540 rectclip
+0 0 720 540 rectclip
+0 0 0 0.511 setup
+90 110 90 190 fillandframerectangle
+grestore
+0 0 3.35 0 setup
+90 330 90 110 rectstroke
+grestore
+0 0 0 0.798 setup
+30 30 660 60 fillandframerectangle
+grestore
+0 0 0 0 setup
+gsave
+/Courier-BoldOblique findfont 16 scalefont [1 0 0 -1 0 0] makefont
+97
+exch
+defineuserobject
+97 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 910] concat
+/Courier-Bold findfont 14 scalefont [1 0 0 -1 0 0] makefont
+46
+exch
+defineuserobject
+46 execuserobject setfont
+0 setgray
+54 458 moveto (Transparent Library) show
+grestore
+grestore
+0 0 0 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 200] concat
+46 execuserobject setfont
+0 setgray
+84 103 moveto (User Binary) show
+grestore
+grestore
+0 0 2.92 0.833 setup
+370 370 300 110 fillandframeoval
+grestore
+0 0 0 0.339 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 999] concat
+97 execuserobject setfont
+0 setgray
+355 503 moveto (Multi-threaded Unix Server) show
+grestore
+grestore
+0 0 0 0.339 setup
+gsave
+97 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 663] concat
+97 execuserobject setfont
+0 setgray
+523 335 moveto (Inode Pager) show
+grestore
+grestore
+0 0 0 0.339 setup
+gsave
+97 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 782] concat
+97 execuserobject setfont
+0 setgray
+348 383 moveto (BSD Service) show
+348 406 moveto (Threads) show
+grestore
+grestore
+0 0 0 0.515 setup
+gsave
+97 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 447] concat
+97 execuserobject setfont
+0 setgray
+403 227 moveto (Device threads) show
+grestore
+grestore
+0 0 0 0.515 setup
+340 300 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+370 300 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+400 300 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+430 300 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+560 270 10 50 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+410 170 10 40 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+440 170 10 40 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+470 170 10 40 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+500 170 10 40 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+460 300 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+360 220 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+330 220 10 60 fillandframerectangle
+grestore
+0 0 0 0.515 setup
+gsave
+97 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 121] concat
+97 execuserobject setfont
+0 setgray
+291 64 moveto (Mach) show
+grestore
+grestore
+0 0 3.05 0 setup
+180 400 moveto 180 400 180 400 330 400 curveto stroke
+0 330 400 arrow
+grestore
+0 0 2.92 0 setup
+180 360 moveto 310 360 310 360 310 360 curveto stroke
+180 180 360 arrow
+grestore
+0 0 3.56 0 setup
+180 160 moveto 210 160 210 160 210 90 curveto stroke
+-90 210 90 arrow
+grestore
+0 0 2.7 0 setup
+180 330 moveto 230 330 230 330 230 90 curveto stroke
+180 180 330 arrow
+grestore
+0 0 0 0 setup
+110 330 moveto 110 330 110 330 110 300 curveto stroke
+-90 110 300 arrow
+grestore
+gsave
+0 0 720 540 rectclip
+[1 0 0 -1 0 540] concat
+grestore
+grestore
+grestore
+showpage
+__NXsheetsavetoken restore
+%PageTrailer
+%%%PageFonts: Courier-BoldOblique
+%+ Courier-Bold
+%%Trailer
+%%DocumentFonts: Courier-BoldOblique
+%+ Courier-Bold
+%%%Pages: 1 1
+%%BoundingBox:36.000000 36.000000 576.000000 756.000000
+
+
+%%EndDocument
+ GE /Helvetica-Bold SF
+21264 68568 MT
+(Figure 3-1:)SH
+/Helvetica SF
+26932 XM
+(Organization of Unix services)SH
+ES
+%%Page: 4 5
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(4)SH
+/Helvetica SF
+8312 7929 MT
+(The primary tool for communication between)
+64 W( the Unix Server and a Unix application program is Mach)63 W
+7200 9355 MT
+(IPC. Most)
+394 W( requests for service arrive in the form of Mach messages requesting that a Unix operation or)59 W
+7200 10781 MT
+(service be performed.  For each incoming)
+10 W( message a C Thread is dispatched from the pool to handle that)9 W
+7200 12207 MT
+(operation. That)
+596 W( thread then determines which Unix process)
+159 W( requires service, what operation is to be)160 W
+7200 13633 MT
+(performed and finally parses the message)
+66 W( to obtain the arguments for that operation.  Many, but not all,)65 W
+7200 15059 MT
+(messages to the Unix Server correspond directly to system calls normally present in 4.3BSD.)SH
+8312 17626 MT
+(The main departure from this style of interaction between the Unix Server and a Unix application can)80 W
+7200 19052 MT
+(be found in the handling of 4.3BSD file access. Access to Unix files can)
+9 W( be provided either through a pure)8 W
+7200 20478 MT
+(message passing interface or through the Mach memory object facility.  The decision of which)
+7 W( interface to)8 W
+7200 21904 MT
+(use can be made either by the Emulation Library)
+106 W( or the Unix Server.  The primary reason to choose a)105 W
+7200 23330 MT
+(pure message passing interface would be performance in a network environment)
+218 W( where a message)219 W
+7200 24756 MT
+(passing interface corresponds more)
+12 W( precisely to the natural implementation technology of a network.  In a)11 W
+7200 26182 MT
+(tightly coupled multiprocessor or)
+170 W( a uniprocessor a memory object interface is a more efficient way to)171 W
+7200 27608 MT
+(transfer large amounts of data.)SH
+5 10 270 45000 57551 GB 
+%%BeginDocument: MachExternalIO.ps
+%!PS-Adobe-2.0
+%%Title: MachExternalIO.draw
+%%Creator: Draw
+%%CreationDate: Mon Apr 16 12:25:12 1990
+%%For: rfr
+%%DocumentFonts: (atend)
+%%%Pages: (atend) 1
+%%BoundingBox: (atend)
+%%DocumentPaperSizes: Letter
+%%Orientation: Landscape
+%%EndComments
+
+%%BeginFile: /usr/lib/NextStep//printPackage1.0.ps
+%!PSNext-1.0
+%%Title: Printing Package
+%%Copyright 1988, NeXT, Inc.
+%%CreationDate: 23Feb88
+%%PackageName: printPackage0.8.37
+%%PackageDescription: Routines to support printing
+%%EndComments
+
+%debugging aids
+%/clip {gsave 0.9 setgray 0.5 setlinewidth stroke grestore} def
+
+% simulations of DPS ops
+/__NXbdef {1 index where {pop pop pop} {bind def} ifelse} bind def
+/__NXUserObjectList 10 array __NXbdef
+/defineuserobject {
+    exch
+    dup 1 add
+    dup __NXUserObjectList length gt {
+        array dup 0 __NXUserObjectList putinterval
+        /__NXUserObjectList exch def
+    }
+    { pop }
+    ifelse
+    __NXUserObjectList exch 3 -1 roll put
+} __NXbdef
+/execuserobject {
+    __NXUserObjectList exch get exec
+} __NXbdef
+/__NXDoRectOp {
+    1 index type /arraytype eq {
+        exch aload length
+        dup 2 add -1 roll exch
+        4 idiv
+    }
+    { 1 }
+    ifelse
+    {
+        5 1 roll
+        newpath 4 2 roll moveto 1 index 0 rlineto
+                0 exch rlineto neg 0 rlineto closepath
+        dup cvx exec
+    } repeat pop
+} __NXbdef
+/rectclip {/clip __NXDoRectOp newpath} __NXbdef
+/rectfill {gsave /fill __NXDoRectOp grestore} __NXbdef
+/rectstroke {gsave /stroke __NXDoRectOp grestore} __NXbdef
+/arct {arcto pop pop pop pop} __NXbdef
+/setbbox {pop pop pop pop} __NXbdef
+/ucache {} __NXbdef
+/ucachestatus {mark 0 0 0 0 0} __NXbdef
+/setucacheparams {cleartomark} __NXbdef
+/uappend {systemdict begin cvx exec end} __NXbdef
+/ueofill {gsave newpath uappend eofill grestore} __NXbdef
+/ufill {gsave newpath uappend fill grestore} __NXbdef
+/ustroke {
+    gsave newpath
+    dup length 6 eq {
+        exch uappend concat 
+    } {
+        uappend
+    } ifelse
+    stroke grestore
+} __NXbdef
+/__NXustrokepathMatrix dup where {pop pop} {matrix def} ifelse
+/ustrokepath {
+    newpath
+    dup length 6 eq {
+        exch uappend
+        __NXustrokepathMatrix currentmatrix exch concat
+        strokepath setmatrix
+    } {
+        uappend strokepath
+    } ifelse
+} __NXbdef
+/upath {
+    [
+        exch {/ucache cvx} if
+        pathbbox /setbbox cvx
+        {/moveto cvx} {/lineto cvx} {/curveto cvx} {/closepath cvx} pathforall
+    ] cvx
+} __NXbdef
+/setstrokeadjust {pop} __NXbdef
+/currentstrokeadjust {false} __NXbdef
+/selectfont {
+    exch findfont exch
+    dup type /arraytype eq {
+        makefont
+    } {
+        scalefont
+    } ifelse setfont
+} __NXbdef
+/_NXCombineArrays {
+    counttomark dup 2 add index
+    dup length 3 -1 roll {
+        2 index length sub
+        dup 4 1 roll
+        1 index exch 4 -1 roll
+        putinterval exch
+    } repeat
+    pop pop pop
+} __NXbdef
+
+% simulations of NeXT additions to DPS
+/flushgraphics {} def
+/hidecursor {} def
+/obscurecursor {} def
+/revealcursor {} def
+/setcursor {4 {pop} repeat} bind def
+/showcursor {} def
+
+
+%%EndFile
+
+%%EndProlog
+%%BeginSetup
+%%PaperSize: Letter
+%%Feature: *ManualFeed False
+%%Feature: *Resolution 400
+/oval {
+    translate scale newpath 0.5 0.5 0.5 0 360 arc
+} def /fillandframeoval {
+    oval gsave eofill grestore 0 setgray matrix defaultmatrix setmatrix stroke
+} def /fillandframerectangle {
+    4 copy rectfill 0 setgray rectstroke
+} def /line {
+    moveto rlineto stroke
+} def /setup {
+    setgray setlinewidth setlinecap setlinejoin gsave
+} def /arrow {
+    newpath moveto dup rotate -13 6 rlineto 4 -6 rlineto -4 -6 rlineto closepath gsave 0 setlinejoin stroke grestore fill neg rotate
+} def
+%%EndSetup
+
+%%%Page: 1 1
+%%%PageBoundingBox: 36.000000 36.000000 756.000000 576.000000
+%%%PageFonts: (atend)
+%%BeginPageSetup
+%%PaperSize: Letter
+/__NXsheetsavetoken save def
+-90 rotate
+-792 0 translate
+36 36 translate
+gsave
+0 0 translate
+%%EndPageSetup
+gsave
+0 0 720 540 rectclip
+0 0 720 540 rectclip
+0 0 3.13 0.511 setup
+90 110 90 190 fillandframerectangle
+grestore
+0 0 3.13 0 setup
+90 330 90 110 rectstroke
+grestore
+0 0 3.13 0 setup
+30 30 660 440 rectstroke
+grestore
+0 0 3.13 0.798 setup
+30 30 660 60 fillandframerectangle
+grestore
+0 0 3.13 0.412 setup
+140 370 10 50 fillandframerectangle
+grestore
+0 0 3.13 0.339 setup
+170 170 420 220 fillandframeoval
+grestore
+0 0 3.13 0 setup
+gsave
+/Courier-BoldOblique findfont 36 scalefont [1 0 0 -1 0 0] makefont
+35
+exch
+defineuserobject
+35 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 852] concat
+/Courier-Bold findfont 14 scalefont [1 0 0 -1 0 0] makefont
+46
+exch
+defineuserobject
+46 execuserobject setfont
+0 setgray
+133 429 moveto (file) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 674] concat
+46 execuserobject setfont
+0 setgray
+101 340 moveto (fd) show
+grestore
+grestore
+0 0 3.13 0 setup
+110 360 moveto 110 380 110 380 140 380 curveto stroke
+0 140 380 arrow
+grestore
+0 0 3.13 0 setup
+100 350 20 10 fillandframerectangle
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 416] concat
+46 execuserobject setfont
+0 setgray
+105 211 moveto (read\(\)) show
+grestore
+grestore
+0 0 3.13 0 setup
+180 200 moveto 210 200 210 200 210 70 curveto stroke
+-90 210 70 arrow
+grestore
+0 0 3.13 0 setup
+180 390 moveto 250 390 250 390 250 70 curveto stroke
+180 180 390 arrow
+grestore
+0 0 3.13 0 setup
+50 70 moveto 50 390 50 390 90 390 curveto stroke
+-90 50 70 arrow
+grestore
+0 0 3.13 0 setup
+360 70 moveto 360 240 360 240 450 240 curveto stroke
+0 450 240 arrow
+grestore
+0 0 3.13 0 setup
+380 70 moveto 380 230 380 230 470 230 curveto stroke
+-90 380 70 arrow
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 614] concat
+46 execuserobject setfont
+0 setgray
+456 310 moveto (Unix Server) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 274] concat
+46 execuserobject setfont
+0 setgray
+408 130 moveto (PagerDataRequest/) show
+408 150 moveto (PagerDataProvided) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 118] concat
+46 execuserobject setfont
+0 setgray
+51 62 moveto (Page) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 88] concat
+46 execuserobject setfont
+0 setgray
+53 47 moveto (Fault) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 122] concat
+46 execuserobject setfont
+0 setgray
+195 64 moveto (Syscall) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 88] concat
+46 execuserobject setfont
+0 setgray
+188 47 moveto (Redirect) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 910] concat
+46 execuserobject setfont
+0 setgray
+54 458 moveto (Transparent Library) show
+grestore
+grestore
+0 0 3.13 0 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 200] concat
+46 execuserobject setfont
+0 setgray
+84 103 moveto (User Binary) show
+grestore
+grestore
+0 0 3.13 0.798 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 118] concat
+46 execuserobject setfont
+0 setgray
+297 62 moveto (Page Fault Handler) show
+grestore
+grestore
+0 0 3.13 0.798 setup
+gsave
+46 execuserobject setfont
+0 setgray
+[1 0 0 -1 0 996] concat
+35 execuserobject setfont
+0 setgray
+113 506 moveto (Mach: External Unix I/O) show
+grestore
+grestore
+gsave
+0 0 720 540 rectclip
+[1 0 0 -1 0 540] concat
+grestore
+grestore
+grestore
+showpage
+__NXsheetsavetoken restore
+%PageTrailer
+%%%PageFonts: Courier-BoldOblique
+%+ Courier-Bold
+%%Trailer
+%%DocumentFonts: Courier-BoldOblique
+%+ Courier-Bold
+%%%Pages: 1 1
+%%BoundingBox:36.000000 36.000000 576.000000 756.000000
+
+
+%%EndDocument
+ GE /Helvetica-Bold SF
+17290 57434 MT
+(Figure 3-2:)SH
+/Helvetica SF
+22958 XM
+(Implementation of Unix files as memory objects)SH
+8312 61144 MT
+(In the)
+145 W( case of a memory object implementation of file access, the Unix Server acts as the memory)144 W
+7200 62570 MT
+(object manager \050or "inode pager"\051 for 4.3BSD files.  When a file is opened by a)
+6 W( Unix application its data is)7 W
+7200 63996 MT
+(mapped directly into the portion of)
+215 W( the Unix application address space occupied by the Transparent)214 W
+7200 65422 MT
+(Emulation Library.)
+104 W( That)
+488 W( library then directly provides read, write, lseek, etc.  system call access to the)105 W
+7200 66848 MT
+(file's data.  In order to ensure)
+46 W( Unix file sharing semantics, the Transparent Library must hand-shake with)45 W
+7200 68274 MT
+(the Unix Server through messages whenever conflicts with other applications could arise.  See figure 3-2.)SH
+ES
+%%Page: 5 6
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(5)SH
+11 SS 
+7200 8002 MT
+(3.3. Transparent Emulator Library)SH
+10 /Helvetica AF
+8312 9428 MT
+(The Transparent System Call Emulation Library)
+207 W( is loaded into the address space of the first user)208 W
+7200 10854 MT
+(process \050/etc/init\051.  Mach allows memory to be)
+64 W( inherited either read/write or copy-on-write from parent to)63 W
+7200 12280 MT
+(child task.  The Unix Server takes advantage of this)
+199 W( function to allow the Transparent Library to be)200 W
+7200 13706 MT
+(inherited by each child process from its parent on a fork operation.  Execve and similar operations)
+46 W( which)45 W
+7200 15132 MT
+(reload an address space with)
+55 W( a new application program are careful to preserve the Transparent Library)56 W
+7200 16558 MT
+(portion of the address space. One advantage of this technique is that)
+204 W( it allows multiple Transparent)203 W
+7200 17984 MT
+(Libraries with)
+166 W( perhaps different behavior \050such as the support of somewhat different Unix variants\051 to)167 W
+7200 19410 MT
+(co-exist with the same Unix Server.)SH
+8312 21977 MT
+(The Transparent Emulation Library contains the equivalent of the Unix system call)
+4 W( handler and the glue)3 W
+7200 23403 MT
+(routines necessary to transform system calls into remote)
+48 W( procedure calls to the Unix Server. It intercepts)49 W
+7200 24829 MT
+(system calls using the Mach system call redirection facility and)
+112 W( transforms them into remote procedure)111 W
+7200 26255 MT
+(calls to the server process.  Most of the machine dependencies in the)
+154 W( BSD code are handled by the)155 W
+7200 27681 MT
+(Library. These)
+278 W( include manipulating the application's stack for signal handling and forking a new process.)SH
+8312 30248 MT
+(In some cases Unix requests can be handled exclusively by the)
+70 W( Transparent Library.  For example, a)69 W
+7200 31674 MT
+(Unix file which has been mapped into the Transparent Library memory region as part of an open call)
+34 W( can)35 W
+7200 33100 MT
+(be directly read by the Transparent Library without requiring the)
+18 W( intervention of the Unix Server.  Likewise)17 W
+7200 34526 MT
+(some Unix)
+4 W( signal management \050e.g., sigvec\051, memory management \050e.g., obreak\051 and state management)5 W
+7200 35952 MT
+(\050e.g., getpid\051 can be performed solely by the Emulation Library.)SH
+8312 38519 MT
+(It is important to note that Transparent Emulation Library code is always executed with its own)
+94 W( stack)93 W
+7200 39945 MT
+(and does not use the stack of the application making the system call.  This allows the Emulation Library)
+SH( to)1 W
+7200 41371 MT
+(be compatible even with applications which may be doing their own stack management or providing)
+41 W( their)40 W
+7200 42797 MT
+(own lightweight process mechanisms.)SH
+8312 45364 MT
+(It is also worth noting that the Transparent Emulation Library is vulnerable to)
+300 W( tampering by an)301 W
+7200 46790 MT
+(application program.  It resides in a portion)
+118 W( of the user application's address space and it is within the)117 W
+7200 48216 MT
+(capabilities of a user program to either)
+20 W( read/write or remove that region of memory.  As a result, care has)21 W
+7200 49642 MT
+(been taken to ensure that the correct functioning of the Unix Server cannot)
+95 W( be affected by malicious or)94 W
+7200 51068 MT
+(unintentional tampering with the Emulation Library.  It is)
+70 W( also important that information managed by the)71 W
+7200 52494 MT
+(Transparent Library not be more security)
+112 W( sensitive than information otherwise available to the user.  In)111 W
+7200 53920 MT
+(this regard the Transparent Library must operate under restrictions similar)
+211 W( to that of the standard C)212 W
+7200 55346 MT
+(runtime library.)SH
+12 /Helvetica-Bold AF
+7200 59101 MT
+(4. Implementation History)SH
+10 /Helvetica AF
+8312 60527 MT
+(We started the implementation of)
+67 W( the Unix Server in January of 1989.  The single-server Unix system)66 W
+7200 61953 MT
+(ran multi-user by March.  Much of the)
+2 W( speed with which this was done can be attributed to the fact that we)3 W
+7200 63379 MT
+(took as much advantage as possible of earlier Mach)
+34 W( implementations.  Although earlier versions of Mach)33 W
+7200 64805 MT
+(-- in particular Mach Release)
+78 W( 2.5 -- provided Unix compatibility in kernel state, they did so by redefining)79 W
+7200 66231 MT
+(those operations in terms of Mach primitives.  As a result, much)
+47 W( of the code providing Unix services was)46 W
+7200 67657 MT
+(already structured in a way which allowed its use outside of the Mach kernel.)SH
+8312 70224 MT
+(The first versions of the Emulation Library and Unix Server)
+184 W( converted every Unix system call to a)185 W
+7200 71650 MT
+(message. The)
+456 W( Mach memory object facility was)
+89 W( only used to implement the text and data segments of)88 W
+ES
+%%Page: 6 7
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(6)SH
+/Helvetica SF
+7200 7929 MT
+(application address spaces.  The result was a system which performed better than we had anticipated but)7 W
+7200 9355 MT
+(still needed to be tuned considerably.)
+46 W( For)
+369 W( example, a simple compilation test which would normally take)45 W
+7200 10781 MT
+(28.5 seconds to execute under Mach Release 2.5 on an 8MB Sun 3/60 ran, instead, in about 38 seconds.)SH
+8312 13348 MT
+(Some of the problems of the Unix Server were in evidence in specific tests of system call and)265 W
+7200 14774 MT
+(read/write I/O performance.  The cost of a getpid call was about 1.4 milliseconds on a Sun 3/60 and an)76 W
+7200 16200 MT
+(8192 byte read operation was over 5 milliseconds. These compared with 118 microseconds)
+135 W( for getpid)136 W
+7200 17626 MT
+(and 2 milliseconds for a read on Mach 2.5.)SH
+8312 20193 MT
+(We examined in detail the behavior of the system running a variety of benchmarks and determined four)7 W
+7200 21619 MT
+(areas in which substantive improvements would have the greatest effect:)SH
+9424 23020 MT
+(1.)SH
+10536 XM
+(the Mach IPC facility,)SH
+9424 24835 MT
+(2.)SH
+10536 XM
+(the Mach C Thread library,)SH
+9424 26650 MT
+(3.)SH
+10536 XM
+(management of signals and other forms of shared Library/Server state,)SH
+9424 28465 MT
+(4.)SH
+10536 XM
+(management of Unix file data \050read/write/lseek in particular\051.)SH
+11 /Helvetica-Bold AF
+7200 32147 MT
+(4.1. Mach IPC performance enhancements)SH
+10 /Helvetica AF
+8312 33573 MT
+(At the time we began our work,)
+55 W( the performance of the Mach IPC facility was substantially better than)56 W
+7200 34999 MT
+(other Unix communication facilities)
+72 W( [1])
+SH( but was not tuned to the kind of intense use required by the)
+72 W( Unix)71 W
+7200 36425 MT
+(Server. In)
+512 W( March of 1989 the)
+117 W( minimum round trip remote procedure call times \050RPC\051 for Mach on the)118 W
+7200 37851 MT
+(MicroVAX III was measured as 800 microseconds.  On the Sun 3/60 minimum)
+143 W( RPC times were 1100)142 W
+7200 39277 MT
+(microseconds. For)
+577 W( a compilation test requiring approximately 25-30 seconds to compete and utilizing)150 W
+7200 40703 MT
+(2600 system calls, this amounted to approximately 10% of elapsed time.)SH
+8312 43270 MT
+(There were two ways to attack this problem and we chose to do both.  We sped up the IPC facility)
+53 W( by)52 W
+7200 44696 MT
+(approximately 30%)
+138 W( through the use of hand-off scheduling.  By the summer of 1989 our MicroVAX III)139 W
+7200 46122 MT
+(minimum RPC costs were 450 microseconds and our Sun 3/60 costs were 800 microseconds.  In)256 W
+7200 47548 MT
+(addition, we reduced the total number)
+194 W( of messages to somewhat less half of all system calls \050using)195 W
+7200 48974 MT
+(techniques described below\051.  The result of these enhancements was a)
+4 W( considerable reduction in the total)3 W
+7200 50400 MT
+(time devoted to minimum-path IPC costs.)SH
+11 /Helvetica-Bold AF
+7200 54082 MT
+(4.2. C Thread library enhancements)SH
+10 /Helvetica AF
+8312 55508 MT
+(We found two problems with the Unix Server's use of the C)
+22 W( Thread library.  First, the total number of C)23 W
+7200 56934 MT
+(threads needed by)
+50 W( the Unix Server was potentially much larger than the number of kernel threads it was)49 W
+7200 58360 MT
+(reasonable to dedicate to it.  Secondly, the cost of synchronization)
+55 W( using the then existing version of the)56 W
+7200 59786 MT
+(C thread mutex package was too high.)
+16 W( Both)
+309 W( problems were caused by a one-to-one binding of C threads)15 W
+7200 61212 MT
+(to Mach kernel threads in that version of the C thread package.)SH
+8312 63779 MT
+(We addressed these concerns by modifying the C thread)
+81 W( package to detach the implementation of C)82 W
+7200 65205 MT
+(threads from kernel threads.  The package was changed to allow a specified pool of kernel threads)
+121 W( to)120 W
+7200 66631 MT
+(animate a much larger pool of C threads.)
+44 W( Mutex,)
+368 W( condition_wait and condition_signal operations were in)45 W
+7200 68057 MT
+(turn modified to hand)
+10 W( off execution from one C thread to another directly rather than attempt to use kernel)9 W
+7200 69483 MT
+(scheduling facilities.  The number of kernel threads used by the Unix Server)
+114 W( could be set to allow any)115 W
+7200 70909 MT
+(specified level of kernel managed multiprocessing.  In addition, specific C)
+145 W( threads were allowed to be)144 W
+ES
+%%Page: 7 8
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(7)SH
+/Helvetica SF
+7200 7929 MT
+(bound to kernel threads where necessary, for example to act as device management threads.)SH
+11 /Helvetica-Bold AF
+7200 11611 MT
+(4.3. Management of signals and shared state)SH
+10 /Helvetica AF
+8312 13037 MT
+(Another problem area which became evident immediately upon)
+51 W( instrumentation of the system was the)52 W
+7200 14463 MT
+(frequent calls by Unix applications \050especially the Unix shells\051 which are)
+91 W( intended merely to set or read)90 W
+7200 15889 MT
+(state information shared with the operating system.)
+210 W( These)
+700 W( calls include operations to modify signal)211 W
+7200 17315 MT
+(handling state, verify the identity of the current process and)
+282 W( modify the current address space by)281 W
+7200 18741 MT
+(allocating new memory.)SH
+8312 21308 MT
+(After some experimentation we determined that these)
+63 W( operations could either be cached in a memory)64 W
+7200 22734 MT
+(area accessible to both the Emulation Library and)
+53 W( to the Unix Server or they could be performed directly)52 W
+7200 24160 MT
+(by the Emulation Library using the underlying Mach)
+24 W( kernel mechanisms.  Thus, along with each Unix fork)25 W
+7200 25586 MT
+(operation, the Unix Server allocates two memory objects which it maps into the newly created)
+93 W( process.)92 W
+7200 27012 MT
+(The first of these is a read-only object which)
+65 W( contains information about the process which the Server is)66 W
+7200 28438 MT
+(willing to communicate to it.  The second is a read-write object accessible to both the Library)
+133 W( and the)132 W
+7200 29864 MT
+(Server. This)
+716 W( object is used to allow the Emulation Library to update state information)
+219 W( which is not)220 W
+7200 31290 MT
+(immediately needed by the Server.)SH
+8312 33857 MT
+(Although attractive on a tightly coupled multiprocessor or)
+11 W( a uniprocessor, this use of shared state is not)10 W
+7200 35283 MT
+(necessary appropriate to other architectures.)
+41 W( We)
+362 W( therefore made it optional with the version of the client)42 W
+7200 36709 MT
+(Emulation Library.  A full message passing interface to the server was preserved.)SH
+11 /Helvetica-Bold AF
+7200 40391 MT
+(4.4. Management of Unix file data)SH
+10 /Helvetica AF
+8312 41817 MT
+(One of the major costs in any Unix system is the cost)
+255 W( of data movement to and from the disk)254 W
+7200 43243 MT
+(subsystem. For)
+330 W( example, we found that over 75% of all operations in)
+26 W( a measured compilation suite were)27 W
+7200 44669 MT
+(either open, close, read, lseek or write. Within this class, read, write and lseek dominated all file)
+69 W( system)68 W
+7200 46095 MT
+(operations.)SH
+8312 48662 MT
+(The costs of data movement in turn dominate read and write system call times.  On a Sun)
+114 W( 3/60 the)115 W
+7200 50088 MT
+(basic cost of an 8192 byte data copy is 1.2 milliseconds.)
+158 W( Because)
+593 W( Unix read and write system calls)157 W
+7200 51514 MT
+(specify their target byte addresses it is not possible, in general,)
+31 W( to use virtual memory page management)32 W
+7200 52940 MT
+(to move data directly)
+101 W( into a client address space.  The simplest way to move 8K of data from the Unix)100 W
+7200 54366 MT
+(Server to)
+145 W( a client application is by Mach messages which actually contain 8192 bytes of copied data.)146 W
+7200 55792 MT
+(Unfortunately this approach can result in as many as four data copies per call and minimum read or write)28 W
+7200 57218 MT
+(times of greater than 5 milliseconds.)SH
+8312 59785 MT
+(We experimented with a variety of techniques for reducing these data copy costs.  Ultimately)
+59 W( the best)60 W
+7200 61211 MT
+(strategy was to effectively eliminate the cost of data copy)
+70 W( altogether.  This was accomplished by having)69 W
+7200 62637 MT
+(the Unix Server map files directly into the address space managed by the Transparent)
+26 W( Emulation Library.)27 W
+7200 64063 MT
+(This allowed read, write and lseek operations to be performed completely by the Library rather than the)80 W
+7200 65489 MT
+(Server. State)
+690 W( information pertaining to the Library's access to a file is shared with)
+206 W( the Unix Server)207 W
+7200 66915 MT
+(through a shared memory object page \050see the previous section\051.)SH
+8312 69482 MT
+(The role of the Unix Server in this approach is that of a memory object manager for inodes and a)158 W
+7200 70908 MT
+(synchronization manager for files which are shared by multiple simultaneously)
+28 W( executing Unix processes.)29 W
+ES
+%%Page: 8 9
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(8)SH
+/Helvetica SF
+7200 7929 MT
+(This eliminates the costs of message passing for many operations as well as the cost of extra data)193 W
+7200 9355 MT
+(copies. Only)
+558 W( one copy is ever made on a)
+140 W( read or write call: the necessary copy from the application)141 W
+7200 10781 MT
+(specified byte address to the actual page of the file)
+93 W( in memory.  Another advantage of this approach is)92 W
+7200 12207 MT
+(greater potential)
+51 W( parallelism.  Because the operation is confined to the client application there is typically)52 W
+7200 13633 MT
+(no lock contention or serialization.)SH
+8312 16200 MT
+(The major drawback of this approach is increased costs)
+30 W( for open and close operations on files.  These)29 W
+7200 17626 MT
+(operations can require memory mapping)
+296 W( and deallocation costs which, in practice, are reasonably)297 W
+7200 19052 MT
+(expensive. Our)
+858 W( investigations have shown that open/close costs are important, but)
+290 W( not nearly as)289 W
+7200 20478 MT
+(important as the cost of read/write/lseek operations.)SH
+8312 23045 MT
+(The results)
+205 W( of our modifications to the file system have been gratifying.  Instead of taking over 5)206 W
+7200 24471 MT
+(milliseconds for an 8192 byte lseek/read)
+66 W( the costs for an lseek/read loop on the Sun 3/60 were reduced)65 W
+7200 25897 MT
+(to less than 1.4)
+48 W( milliseconds. This compares favorably to the 2.12 milliseconds for the same test running)49 W
+7200 27323 MT
+(under Mach Release 2.5.)SH
+12 /Helvetica-Bold AF
+7200 31078 MT
+(5. Performance)SH
+10 /Helvetica AF
+8312 32504 MT
+(We examined)
+9 W( the performance of our multithreaded Unix Server and Emulation Library through the use)8 W
+7200 33930 MT
+(of two system oriented benchmarks, one a simple file compilation)
+211 W( benchmark and the other a more)212 W
+7200 35356 MT
+(comprehensive file system)
+105 W( test.  We also timed specific system calls both individually and in frequently)104 W
+7200 36782 MT
+(used combinations. In the following sections all tests were made running either Mach Release)
+52 W( 2.5 or the)53 W
+7200 38208 MT
+(Mach kernel with the Unix Server described in this paper.  All tests were made on)
+11 W( a Sun 3/60 with 8MB of)10 W
+7200 39634 MT
+(memory and a Priam 300MB disk drive.  The same disk with the)
+SH( same binaries and user environment was)1 W
+7200 41060 MT
+(used in all tests.)SH
+11 /Helvetica-Bold AF
+7200 44742 MT
+(5.1. A compilation test suite)SH
+10 /Helvetica AF
+8312 46168 MT
+(We devised a relatively simple compilation test suite and used it to measure the performance of both)80 W
+7200 47594 MT
+(systems. This)
+382 W( compilation test consisted)
+52 W( of a shell command file which ran nine compilations of small C)53 W
+7200 49020 MT
+(source files. These files contained relatively few header file inclusions. Each compilation was separately)73 W
+7200 50446 MT
+(timed using the "time" command.)SH
+8312 53013 MT
+(The resulting test stressed)
+41 W( process creation/termination, program load and startup, file open/close and)42 W
+7200 54439 MT
+(read/write costs for small files.  During the roughly 30 seconds required to)
+43 W( complete the test it performed)42 W
+7200 55865 MT
+(approximately 2600 Unix system calls, forked)
+92 W( 57 processes, attempted to open 240 files and close 350)93 W
+7200 57291 MT
+(file descriptors,)
+253 W( unlinked 100 files and called execve 160 times.  Read, write and lseek operations)252 W
+7200 58717 MT
+(accounted for a large fraction of all system calls.)
+52 W( Roughly)
+383 W( 750 lseek operations, 450 read and 230 write)53 W
+7200 60143 MT
+(operations were performed.  The table below shows the results)
+209 W( of the benchmark.  The runtime for)208 W
+7200 61569 MT
+(SunOS 4.0 on the same machine is shown for purposes of comparison.)SH
+ES
+%%Page: 9 10
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(9)SH
+24459 11368 MT
+(Compile Test Peformance)SH
+16655 50 22272 11987 LH BX1
+/Helvetica-Oblique SF
+23142 13115 MT
+(Operating System)SH
+32415 XM
+(Elapsed Time)SH
+16655 50 22272 13728 LH BX1
+-1741 50 32016 13728 LV BX1
+/Helvetica SF
+22671 14856 MT
+(SunOS 4.0)SH
+32415 XM
+(49 seconds)SH
+16655 50 22272 15469 LH BX1
+22671 16597 MT
+(Mach Release 2.5)SH
+32415 XM
+(28.5 seconds)SH
+16655 50 22272 17210 LH BX1
+22671 18338 MT
+(Mach w/Unix Server)SH
+32415 XM
+(28.4 seconds)SH
+16655 8711 50 22272 18951 BX BX1
+-5223 50 32016 18951 LV BX1
+11 /Helvetica-Bold AF
+7200 22633 MT
+(5.2. File system benchmarks)SH
+10 /Helvetica AF
+8312 24059 MT
+(In order to get a more complete evaluation of the system's)
+24 W( file system performance we took advantage)25 W
+7200 25485 MT
+(of a benchmark originally developed by M. Satyanarayanan for his)
+48 W( peformance evaluation of the Andrew)47 W
+7200 26911 MT
+(File System)
+456 W( [5].)
+SH( Specifically)
+1190 W( we used a version of the Andrew Benchmark modified by John)457 W
+7200 28337 MT
+(Ousterhout [7].)
+SH( This)
+536 W( benchmark)
+129 W( stresses directory and file creation, file copy, file search \050using "find"\051)128 W
+7200 29763 MT
+(and compilation activity.  A complete examination of this benchmark can be found in the cited papers.)SH
+/Helvetica-Bold SF
+23710 34145 MT
+(Modified Andrew Benchmark)SH
+33426 50 13887 34764 LH BX1
+/Helvetica-Oblique SF
+15202 35892 MT
+(Operating)SH
+21307 XM
+(Directory)SH
+26772 XM
+(File)SH
+29849 XM
+(Recursive)SH
+15730 37035 MT
+(System)SH
+21417 XM
+(Creation)SH
+26411 XM
+(Copy)SH
+30237 XM
+(file stats)SH
+35592 XM
+(Find)SH
+38836 XM
+(Compile)SH
+43301 XM
+(Elapsed)SH
+33426 50 13887 37648 LH BX1
+-2884 50 20908 37648 LV BX1
+-2884 50 25706 37648 LV BX1
+-2884 50 29450 37648 LV BX1
+-2884 50 34693 37648 LV BX1
+-2884 50 38437 37648 LV BX1
+-2884 50 42902 37648 LV BX1
+/Helvetica SF
+14286 38776 MT
+(Mach)SH
+14286 39919 MT
+(Release 2.5)SH
+21307 XM
+(4 sec)SH
+26105 XM
+(20 sec)SH
+29849 XM
+(13 sec)SH
+35092 XM
+(26 sec)SH
+38836 XM
+(336 sec)SH
+43301 XM
+(399 sec)SH
+33426 50 13887 40532 LH BX1
+14286 41660 MT
+(Mach)SH
+14286 42803 MT
+(w/Unix Server)SH
+21307 XM
+(1 sec)SH
+26105 XM
+(20 sec)SH
+29849 XM
+(24 sec)SH
+35092 XM
+(34 sec)SH
+38836 XM
+(332 sec)SH
+43301 XM
+(411 sec)SH
+33426 10399 50 13887 43416 BX BX1
+-5768 50 20908 43416 LV BX1
+-5768 50 25706 43416 LV BX1
+-5768 50 29450 43416 LV BX1
+-5768 50 34693 43416 LV BX1
+-5768 50 38437 43416 LV BX1
+-5768 50 42902 43416 LV BX1
+8312 45983 MT
+(Probably the greatest differences revealed by this test were in the the costs of directory scanning and)59 W
+7200 47409 MT
+(the "stat" operation.  Neither have been examined or tuned in the current Unix server.  The overall)210 W
+7200 48835 MT
+(difference in performance was about three percent.)SH
+11 /Helvetica-Bold AF
+7200 52517 MT
+(5.3. Basic File System Costs)SH
+10 /Helvetica AF
+8312 53943 MT
+(In addition to our examination of various application benchmarks we looked at)
+185 W( the cost of specific)186 W
+7200 55369 MT
+(operations. In)
+438 W( particular, we examined the cost of creating, writing and deleting files of various)
+80 W( lengths,)79 W
+7200 56795 MT
+(the throughput for both cached and uncached file read operations)
+32 W( and for file write operations.  The table)33 W
+7200 58221 MT
+(below summarizes these results.)SH
+ES
+%%Page: 10 11
+BS
+0 SI
+10 /Helvetica-Bold AF
+30044 4329 MT
+(10)SH
+24877 11368 MT
+(File System Throughput)SH
+28350 50 16425 11987 LH BX1
+/Helvetica-Oblique SF
+18657 13115 MT
+(Operation)SH
+26125 XM
+(Mach Release 2.5)SH
+35428 XM
+(Mach w/Unix Server)SH
+28350 50 16425 13728 LH BX1
+-1741 50 25281 13728 LV BX1
+-1741 50 35028 13728 LV BX1
+/Helvetica SF
+16824 14856 MT
+(create)SH
+16824 15999 MT
+(write \0500 bytes\051)SH
+16824 17142 MT
+(Delete)SH
+25680 XM
+(84.4ms)SH
+35427 XM
+(83.4ms)SH
+28350 50 16425 17755 LH BX1
+16824 18883 MT
+(create)SH
+16824 20026 MT
+(write \05010K bytes\051)SH
+16824 21169 MT
+(delete)SH
+25680 XM
+(154.0ms)SH
+35427 XM
+(152.0ms)SH
+28350 50 16425 21782 LH BX1
+16824 22910 MT
+(create)SH
+16824 24053 MT
+(write \050100K bytes\051)SH
+16824 25196 MT
+(delete)SH
+25680 XM
+(634.1ms)SH
+35427 XM
+(596.0ms)SH
+28350 50 16425 25809 LH BX1
+16824 26937 MT
+(write \0501M bytes\051)SH
+25680 XM
+(0.26 megabytes/sec)SH
+35427 XM
+(0.27 megabytes/sec)SH
+28350 50 16425 27550 LH BX1
+16824 28678 MT
+(read \050cached\051)SH
+25680 XM
+(3.98 megabytes/sec)SH
+35427 XM
+(3.93 megabytes/sec)SH
+28350 50 16425 29291 LH BX1
+16824 30419 MT
+(read \050uncached\051)SH
+25680 XM
+(0.41 megabytes/sec)SH
+35427 XM
+(0.34 megabytes/sec)SH
+28350 20792 50 16425 31032 BX BX1
+-17304 50 25281 31032 LV BX1
+-17304 50 35028 31032 LV BX1
+8312 33599 MT
+(Overall, we found the behavior of the Mach w/Unix Server system to be very similar to that of)
+12 W( our Mach)11 W
+7200 35025 MT
+(2.5 Release for)
+314 W( these operations. In particular, the costs of cached read operations and of write)315 W
+7200 36451 MT
+(operations were nearly identical.)SH
+8312 39018 MT
+(Measured separately,)
+108 W( the costs for open, close, lseek and read operations expose the differences in)107 W
+7200 40444 MT
+(implementation techniques and the tradeoffs between an in-kernel)
+126 W( and out-of-kernel Unix environment.)127 W
+7200 41870 MT
+(Repeated read and)
+1 W( write operations of various lengths are considerably faster in our out-of-kernel system.)SH
+7200 43296 MT
+(The cost of an "open" call, however, has increased due to the required message handshakes and)
+56 W( to the)57 W
+7200 44722 MT
+(cost of memory mapping the referenced inode.)SH
+/Helvetica-Bold SF
+23792 49104 MT
+(File System Operation Costs)SH
+30420 50 15390 49723 LH BX1
+/Helvetica-Oblique SF
+19104 50851 MT
+(Operation)SH
+27608 XM
+(Mach Release 2.5)SH
+36465 XM
+(Mach w/Unix Server)SH
+30420 50 15390 51464 LH BX1
+-1741 50 27209 51464 LV BX1
+-1741 50 36066 51464 LV BX1
+/Helvetica SF
+15789 52592 MT
+(lseek)SH
+27608 XM
+(160us)SH
+36465 XM
+(170us)SH
+30420 50 15390 53205 LH BX1
+15789 54333 MT
+(lseek +)SH
+15789 55476 MT
+(read \0501 byte\051)SH
+27608 XM
+(0.44ms)SH
+36465 XM
+(0.35ms)SH
+30420 50 15390 56089 LH BX1
+15789 57217 MT
+(lseek +)SH
+15789 58360 MT
+(read \0508K bytes\051)SH
+27608 XM
+(2.12ms)SH
+36465 XM
+(1.38ms)SH
+30420 50 15390 58973 LH BX1
+15789 60101 MT
+(open "foo" +)SH
+15789 61244 MT
+(read \0508K\051 +)SH
+15789 62387 MT
+(close)SH
+27608 XM
+(3ms)SH
+36465 XM
+(5.5ms)SH
+30420 50 15390 63000 LH BX1
+15789 64128 MT
+(open "/usr/rfr/tests/foo" +)SH
+15789 65271 MT
+(read \0508K\051 +)SH
+15789 66414 MT
+(close)SH
+27608 XM
+(5.2ms)SH
+36465 XM
+(6.68ms)SH
+30420 50 15390 67027 LH BX1
+15789 68155 MT
+(failed open of "xxx")SH
+27608 XM
+(1.66ms)SH
+36465 XM
+(1.42ms)SH
+30420 20792 50 15390 68768 BX BX1
+-17304 50 27209 68768 LV BX1
+-17304 50 36066 68768 LV BX1
+ES
+%%Page: 11 12
+BS
+0 SI
+10 /Helvetica-Bold AF
+30044 4329 MT
+(11)SH
+11 SS 
+7200 8002 MT
+(5.4. Process Management Costs)SH
+10 /Helvetica AF
+8312 9428 MT
+(Our raw measurements of process creation)
+108 W( and termination demonstrate a problem we have not yet)107 W
+7200 10854 MT
+(resolved with the use of the Transparent)
+92 W( Emulation Library.  As can be seen from the table below, fork)93 W
+7200 12280 MT
+(and exec costs)
+80 W( range from 2 to 3 times greater for the Mach w/Unix Server than for Mach Release 2.5.)79 W
+7200 13706 MT
+(The cost of the fork operation itself is the primary culprit.)SH
+/Helvetica-Bold SF
+23931 18088 MT
+(Process Management Costs)SH
+30536 50 15332 18707 LH BX1
+/Helvetica-Oblique SF
+16259 19835 MT
+(Operation)SH
+21976 XM
+(Mach Release 2.5)SH
+30833 XM
+(Mach w/Unix Server)SH
+40577 XM
+(SunOS 4.0)SH
+30536 50 15332 20448 LH BX1
+-1741 50 21577 20448 LV BX1
+-1741 50 30434 20448 LV BX1
+-1741 50 40178 20448 LV BX1
+/Helvetica SF
+15731 21576 MT
+(getpid)SH
+21976 XM
+(118us)SH
+30833 XM
+(102us)SH
+40577 XM
+(75us)SH
+30536 50 15332 22189 LH BX1
+15731 23317 MT
+(fork + exit)SH
+21976 XM
+(16ms)SH
+30833 XM
+(48ms)SH
+40577 XM
+(27.6ms)SH
+30536 50 15332 23930 LH BX1
+15731 25058 MT
+(fork + wait +)SH
+15731 26201 MT
+(exec + exit)SH
+21976 XM
+(32ms)SH
+30833 XM
+(74ms)SH
+40577 XM
+(106ms)SH
+30536 9854 50 15332 26814 BX BX1
+-6366 50 21577 26814 LV BX1
+-6366 50 30434 26814 LV BX1
+-6366 50 40178 26814 LV BX1
+8312 29381 MT
+(The explanation for this increase in)
+64 W( fork cost can be found in a large number of additional page faults)65 W
+7200 30807 MT
+(which result from the use the)
+41 W( Transparent Library.  At fork, a copy-on-write copy of the parent is created.)40 W
+7200 32233 MT
+(In a normal in-kernel Unix implementation, the parent modifies a single stack page)
+SH( \050resulting in a copy-on-)1 W
+7200 33659 MT
+(write fault\051 and then does a Unix "wait" for the)
+4 W( child to exit.  In our out-of-kernel Unix environment both the)3 W
+7200 35085 MT
+(parent and child processes modify the top-of-stack page of their Transparent)
+38 W( Library as well as their own)39 W
+7200 36511 MT
+(process top-of-stack page.  In addition references are made to various code and)
+212 W( data pages in the)211 W
+7200 37937 MT
+(Transparent Library.  As a)
+24 W( result, twenty faults are taken in the out-of-kernel version.  Of these faults, five)25 W
+7200 39363 MT
+(are copy-on-write faults and three are fill zero faults.  This contrasts with only five faults altogether for)
+28 W( the)27 W
+7200 40789 MT
+(in-kernel Unix of which two are copy-on-write)
+150 W( faults.  The high cost of program execution in the early)151 W
+7200 42215 MT
+(SunOS 4.0 system \050included for comparison\051 was similarly the result of its use of shared libraries.)SH
+12 /Helvetica-Bold AF
+7200 45970 MT
+(6. Status)SH
+10 /Helvetica AF
+8312 47396 MT
+(All 4.3BSD binaries, Ultrix binaries or Sun)
+60 W( 3.x binaries which ran on earlier versions of Mach continue)59 W
+7200 48822 MT
+(to run. The switch)
+29 W( from older releases of Mach \050or Ultrix on the DECStation\051 can be accomplished simply)30 W
+7200 50248 MT
+(by installing a new kernel, the Unix Server and Emulator)
+10 W( Library on an existing disk.  The system includes)9 W
+7200 51674 MT
+(support for X11R4, full Berkeley networking, the)
+188 W( Andrew Nationwide File System and CMU's internal)189 W
+7200 53100 MT
+(remote file system.)SH
+8312 55667 MT
+(At the time of)
+69 W( this writing \050April, 1990\051 the pure Mach kernel with Unix as an application program was)68 W
+7200 57093 MT
+(running on multiprocessor and uniprocessor Vax)
+178 W( systems, the DECStation 3100, the Sun 3 and i386)179 W
+7200 58519 MT
+(PC-clones. We are working)
+8 W( with the Open Software Foundation on a version for the Encore Multimax. We)7 W
+7200 59945 MT
+(expect to support the Macintosh and other machines in the future.)SH
+8312 62512 MT
+(The multithreaded)
+114 W( Unix Server described in this paper is but one of two ongoing implementations of)115 W
+7200 63938 MT
+(Unix functionality at CMU.  A second)
+30 W( group)
+29 W( [9])
+SH( has been engaged in an implementation of Unix based on)29 W
+7200 65364 MT
+(multiple Mach)
+51 W( server tasks each of which performs specific functions such as file access, authentication,)52 W
+7200 66790 MT
+(etc. The)
+502 W( advantage of this approach)
+112 W( over a single server Unix implementation is flexibility \050since each)111 W
+7200 68216 MT
+(server can)
+59 W( provide services for various operating system environments\051 and security \050since each can be)60 W
+7200 69642 MT
+(individually secured and verified\051.)SH
+ES
+%%Page: 12 13
+BS
+0 SI
+10 /Helvetica-Bold AF
+30044 4329 MT
+(12)SH
+/Helvetica SF
+8312 7929 MT
+(Work using Mach to implement non-Unix environments is also)
+138 W( in progress.  A virtual Macintosh OS)137 W
+7200 9355 MT
+(environment is already)
+40 W( running on top of Mach Release 2.5 at CMU and is scheduled to be ported to the)41 W
+7200 10781 MT
+(pure kernel.  We are also providing support for DOS applications on the i386.)SH
+12 /Helvetica-Bold AF
+7200 14536 MT
+(7. Conclusions)SH
+10 /Helvetica AF
+8312 15962 MT
+(We believe we)
+155 W( have demonstrated the practicality of implementing Unix as an application program.)154 W
+7200 17388 MT
+(Our performance measures demonstrate)
+85 W( differences in the underlying cost profiles for our in-kernel and)86 W
+7200 18814 MT
+(out-of-kernel Unix systems but do not indicate)
+12 W( serious problems.  We continue to make improvements but)11 W
+7200 20240 MT
+(we have already achieved near parity)
+33 W( with Mach Release 2.5 and can outperform some commercial Unix)34 W
+7200 21666 MT
+(implementations.)SH
+12 /Helvetica-Bold AF
+7200 25421 MT
+(8. Author Biographies)SH
+11 SS 
+7200 29103 MT
+(8.1. David Golub)SH
+10 /Helvetica AF
+8312 30529 MT
+(David Golub is a Senior Research Programmer and has worked)
+60 W( on the Mach project since December)59 W
+7200 31955 MT
+(1985. He)
+318 W( received the B.)
+20 W( A. in mathematics from Brown University in 1975.  His research interests are in)21 W
+7200 33381 MT
+(distributed computing.)SH
+11 /Helvetica-Bold AF
+7200 37063 MT
+(8.2. Randall Dean)SH
+10 /Helvetica AF
+8312 38489 MT
+(Randall Dean is a Research Systems Programmer)
+136 W( working with the Mach Project since May, 1989.)135 W
+7200 39915 MT
+(His primary interests are rock climbing and volleyball.)SH
+11 /Helvetica-Bold AF
+7200 43597 MT
+(8.3. Alessandro Forin)SH
+10 /Helvetica AF
+8312 45023 MT
+(Dr. Forin received the)
+9 W( B.S. degree in Electrical Engineering in 1982 and the Ph.D.  degree in Computer)10 W
+7200 46449 MT
+(Science in 1987, both from the University of Padova, Padova, Italy.  He is currently a Research)
+10 W( Computer)9 W
+7200 47875 MT
+(Scientist at the Carnegie Mellon University.  Dr. Forin is member of)
+241 W( the Association for Computing)242 W
+7200 49301 MT
+(Machinery, SIGPLAN and SIGOPS.)SH
+11 /Helvetica-Bold AF
+7200 52983 MT
+(8.4. Richard Rashid)SH
+10 /Helvetica AF
+8312 54409 MT
+(Professor Rashid is Director of the Mach Project and has been on the faculty of)
+204 W( Carnegie-Mellon)203 W
+7200 55835 MT
+(University since September, 1979.  He received his M.S. \0501977\051 and)
+74 W( Ph.D. \0501980\051 degrees in Computer)75 W
+7200 57261 MT
+(Science from the University)
+16 W( of Rochester.  He had previously graduated with Honors in Mathematics from)15 W
+7200 58687 MT
+(Stanford University \0501974\051.)SH
+ES
+%%Page: 13 14
+BS
+0 SI
+10 /Helvetica-Bold AF
+30044 4329 MT
+(13)SH
+13 SS 
+27095 8148 MT
+(References)SH
+10 /Helvetica AF
+7200 10681 MT
+([1])SH
+10536 XM
+(Accetta, M.J., Baron, R.V., Bolosky, W., Golub, D.B., Rashid, R.F., Tevanian, A., and Young,)SH
+10536 11824 MT
+(M.W.)SH
+10536 12967 MT
+(Mach: A New Kernel Foundation for UNIX Development.)SH
+10536 14110 MT
+(In)SH
+/Helvetica-Oblique SF
+11648 XM
+(Proceedings of Summer Usenix)SH
+/Helvetica SF
+(. July,)
+278 W( 1986.)SH
+7200 15982 MT
+([2])SH
+10536 XM
+(Armand F., Gien M., Guillemont, M. and Leonard, P.)SH
+10536 17125 MT
+(Towards a Distributed UNIX System - The CHORUS Approach.)SH
+10536 18268 MT
+(In)SH
+/Helvetica-Oblique SF
+11648 XM
+(Proceedings of the European UNIX Systems User Group Conference)SH
+/Helvetica SF
+(. September,)
+278 W( 1986.)SH
+7200 20140 MT
+([3])SH
+10536 XM
+(Cooper, E. and Draves, R.)SH
+/Helvetica-Oblique SF
+10536 21283 MT
+(C Threads)SH
+/Helvetica SF
+(.)SH
+10536 22426 MT
+(Technical Report CMU-CS-88-154, Computer Science Department, Carnegie Mellon University,)SH
+12204 23569 MT
+(June, 1988.)SH
+7200 25441 MT
+([4])SH
+10536 XM
+(Parmelee, R. P, T. I. Peterson, C. C. Tillman and D. J. Hatfield.)SH
+10536 26584 MT
+(Virtual Storage and Virtual Machine Concepts.)SH
+/Helvetica-Oblique SF
+10536 27727 MT
+(IBM Systems Journal)SH
+/Helvetica SF
+20261 XM
+(11\0502\051:99-130, 1972.)SH
+7200 29599 MT
+([5])SH
+10536 XM
+(Howard, J.H., Kazar, M.L., Menees, S.G., Nichols, D.A., Satyanarayanan, M., Sidebotham, R.N.,)SH
+10536 30742 MT
+(West, M.J.)SH
+10536 31885 MT
+(Scale and Performance in a Distributed File System.)SH
+/Helvetica-Oblique SF
+10536 33028 MT
+(ACM Transactions on Computer Systems)SH
+/Helvetica SF
+29208 XM
+(6\0501\051, February, 1988.)SH
+7200 34900 MT
+([6])SH
+10536 XM
+(Lycklama, H. and Bayer, D. L.)SH
+10536 36043 MT
+(The MERT Operating System.)SH
+/Helvetica-Oblique SF
+10536 37186 MT
+(Bell System Technical Journal)SH
+/Helvetica SF
+24207 XM
+(, July, 1978.)SH
+7200 39058 MT
+([7])SH
+10536 XM
+(Ousterhout, J.)SH
+10536 40201 MT
+(Why Aren't Operating Systems Getting Faster as Fast as Hardware?)SH
+10536 41344 MT
+(In)SH
+/Helvetica-Oblique SF
+11648 XM
+(Proceedings of Summer Usenix)SH
+/Helvetica SF
+(. June,)
+278 W( 1990.)SH
+7200 43216 MT
+([8])SH
+10536 XM
+(Thacker, C. P. and Stewart, L. C. and Satterthwaite, Jr., E. H.)SH
+10536 44359 MT
+(Firefly: A Multiprocessor Workstation.)SH
+/Helvetica-Oblique SF
+10536 45502 MT
+(IEEE Transactions on Computers)SH
+/Helvetica SF
+25653 XM
+(37\0508\051:909-920, August, 1988.)SH
+7200 47374 MT
+([9])SH
+10536 XM
+(Rashid, R., Baron, R., Forin A., Golub, D., Jones, M., Julin, D., Orr, D., Sanzi, R.)SH
+10536 48517 MT
+(Mach: A Foundation for Open Systems; a Position Paper.)SH
+10536 49660 MT
+(In)SH
+/Helvetica-Oblique SF
+11648 XM
+(Proceedings of the 2nd Workshop on Workstation Operating Systems)SH
+/Helvetica SF
+(. IEEE,)
+278 W( September,)SH
+12204 50803 MT
+(1989.)SH
+ES
+%%Page: i 15
+BS
+0 SI
+10 /Helvetica-Bold AF
+30461 4329 MT
+(i)SH
+12 SS 
+25533 8075 MT
+(Table of Contents)SH
+11 SS 
+9036 9319 MT
+(1. Abstract)SH
+53388 XM
+(0)SH
+9036 10563 MT
+(2. Introduction)SH
+53388 XM
+(0)SH
+9036 11807 MT
+(3. The Organization of Unix as an application program)SH
+53388 XM
+(1)SH
+10 SS 
+11092 12956 MT
+(3.1. Key Mach Features)SH
+53444 XM
+(2)SH
+13316 14105 MT
+(3.1.1. Interprocess communication)SH
+53444 XM
+(2)SH
+13316 15254 MT
+(3.1.2. Memory object management)SH
+53444 XM
+(2)SH
+13316 16403 MT
+(3.1.3. Scheduling)SH
+53444 XM
+(2)SH
+13316 17552 MT
+(3.1.4. System call redirection)SH
+53444 XM
+(2)SH
+13316 18701 MT
+(3.1.5. Device Support)SH
+53444 XM
+(3)SH
+13316 19850 MT
+(3.1.6. User Multiprocessing)SH
+53444 XM
+(3)SH
+11092 20999 MT
+(3.2. Unix Server)SH
+53444 XM
+(3)SH
+11092 22148 MT
+(3.3. Transparent Emulator Library)SH
+53444 XM
+(5)SH
+11 SS 
+9036 23392 MT
+(4. Implementation History)SH
+53388 XM
+(5)SH
+10 SS 
+11092 24541 MT
+(4.1. Mach IPC performance enhancements)SH
+53444 XM
+(6)SH
+11092 25690 MT
+(4.2. C Thread library enhancements)SH
+53444 XM
+(6)SH
+11092 26839 MT
+(4.3. Management of signals and shared state)SH
+53444 XM
+(7)SH
+11092 27988 MT
+(4.4. Management of Unix file data)SH
+53444 XM
+(7)SH
+11 SS 
+9036 29232 MT
+(5. Performance)SH
+53388 XM
+(8)SH
+10 SS 
+11092 30381 MT
+(5.1. A compilation test suite)SH
+53444 XM
+(8)SH
+11092 31530 MT
+(5.2. File system benchmarks)SH
+53444 XM
+(9)SH
+11092 32679 MT
+(5.3. Basic File System Costs)SH
+53444 XM
+(9)SH
+11092 33828 MT
+(5.4. Process Management Costs)SH
+52888 XM
+(11)SH
+11 SS 
+9036 35072 MT
+(6. Status)SH
+52776 XM
+(11)SH
+9036 36316 MT
+(7. Conclusions)SH
+52776 XM
+(12)SH
+9036 37560 MT
+(8. Author Biographies)SH
+52776 XM
+(12)SH
+10 SS 
+11092 38709 MT
+(8.1. David Golub)SH
+52888 XM
+(12)SH
+11092 39858 MT
+(8.2. Randall Dean)SH
+52888 XM
+(12)SH
+11092 41007 MT
+(8.3. Alessandro Forin)SH
+52888 XM
+(12)SH
+11092 42156 MT
+(8.4. Richard Rashid)SH
+52888 XM
+(12)SH
+ES
+%%Page: ii 16
+BS
+0 SI
+10 /Helvetica-Bold AF
+30322 4329 MT
+(ii)SH
+12 SS 
+26465 8075 MT
+(List of Figures)SH
+11 SS 
+9036 9319 MT
+(Figure 3-1:)
+SH( Organization)
+612 W( of Unix services)SH
+53388 XM
+(3)SH
+9036 10563 MT
+(Figure 3-2:)
+SH( Implementation)
+612 W( of Unix files as memory objects)SH
+53388 XM
+(4)SH
+ES
+%%Trailer
+%%Pages: 16
+%%DocumentFonts: Helvetica Helvetica-Bold Helvetica-Oblique Symbol

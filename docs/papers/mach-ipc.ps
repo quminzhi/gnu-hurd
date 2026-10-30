@@ -1,0 +1,1989 @@
+%!PS-Adobe-2.0
+%%Title: workshop.mss
+%%DocumentFonts: (atend)
+%%Creator: Lori Iannamico and Scribe 7(1700)
+%%CreationDate: 21 May 1991 14:23
+%%Pages: (atend)
+%%EndComments
+% PostScript Prelude for Scribe.
+/BS {/SV save def 0.0 792.0 translate .01 -.01 scale} bind def
+/ES {showpage SV restore} bind def
+/SC {setrgbcolor} bind def
+/FMTX matrix def
+/RDF {WFT SLT 0.0 eq 
+  {SSZ 0.0 0.0 SSZ neg 0.0 0.0 FMTX astore}
+  {SSZ 0.0 SLT neg sin SLT cos div SSZ mul SSZ neg 0.0 0.0 FMTX astore}
+  ifelse makefont setfont} bind def
+/SLT 0.0 def
+/SI { /SLT exch cvr def RDF} bind def
+/WFT /Courier findfont def
+/SF { /WFT exch findfont def RDF} bind def
+/SSZ 1000.0 def
+/SS { /SSZ exch 100.0 mul def RDF} bind def
+/AF { /WFT exch findfont def /SSZ exch 100.0 mul def RDF} bind def
+/MT /moveto load def
+/XM {currentpoint exch pop moveto} bind def
+/UL {gsave newpath moveto dup 2.0 div 0.0 exch rmoveto
+   setlinewidth 0.0 rlineto stroke grestore} bind def
+/LH {gsave newpath moveto setlinewidth
+   0.0 rlineto
+   gsave stroke grestore} bind def
+/LV {gsave newpath moveto setlinewidth
+   0.0 exch rlineto
+   gsave stroke grestore} bind def
+/BX {gsave newpath moveto setlinewidth
+   exch
+   dup 0.0 rlineto
+   exch 0.0 exch neg rlineto
+   neg 0.0 rlineto
+   closepath
+   gsave stroke grestore} bind def
+/BX1 {grestore} bind def
+/BX2 {setlinewidth 1 setgray stroke grestore} bind def
+/PB {/PV save def newpath translate
+    100.0 -100.0 scale pop /showpage {} def} bind def
+/PE {PV restore} bind def
+/GB {/PV save def newpath translate rotate
+    div dup scale 100.0 -100.0 scale /showpage {} def} bind def
+/GE {PV restore} bind def
+/FB {dict dup /FontMapDict exch def begin} bind def
+/FM {cvn exch cvn exch def} bind def
+/FE {end /original-findfont /findfont load def  /findfont
+   {dup FontMapDict exch known{FontMapDict exch get} if
+   original-findfont} def} bind def
+/BC {gsave moveto dup 0 exch rlineto exch 0 rlineto neg 0 exch rlineto closepath clip} bind def
+/EC /grestore load def
+/SH /show load def
+/MX {exch show 0.0 rmoveto} bind def
+/W {0 32 4 -1 roll widthshow} bind def
+/WX {0 32 5 -1 roll widthshow 0.0 rmoveto} bind def
+/RC {100.0 -100.0 scale
+612.0 0.0 translate
+-90.0 rotate
+.01 -.01 scale} bind def
+/URC {100.0 -100.0 scale
+90.0 rotate
+-612.0 0.0 translate
+.01 -.01 scale} bind def
+/RCC {100.0 -100.0 scale
+0.0 -792.0 translate 90.0 rotate
+.01 -.01 scale} bind def
+/URCC {100.0 -100.0 scale
+-90.0 rotate 0.0 792.0 translate
+.01 -.01 scale} bind def
+%%EndProlog
+%%Page: 0 1
+BS
+0 SI
+15 /Times-Bold AF
+22788 13965 MT
+(A Revised IPC Interface)SH
+29808 15749 MT
+(by)SH
+25538 17533 MT
+(Richard Draves)SH
+10 /Times-Roman AF
+22289 58400 MT
+(Copyright)SH
+/Symbol SF
+26595 XM
+(\323)SH
+/Times-Roman SF
+27635 XM
+(1991 Richard)
+250 W( P. Draves, Jr.)SH
+8200 61886 MT
+(This research supported in part by the Fannie and John Hertz Foundation.)SH
+ES
+%%Page: 1 2
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(1)SH
+12 /Times-Bold AF
+7200 8004 MT
+(1. Introduction)SH
+10 /Times-Roman AF
+8200 9381 MT
+(The Mach 3.0 IPC facility efficiently supports many different styles)
+120 W( of communication, including server-client)119 W
+7200 10758 MT
+(remote procedure calls, distributed object-oriented programming, and streams.  As a)
+113 W( building block, the interface)114 W
+7200 12135 MT
+(provides a general message primitive.  The message primitive operates on capabilities for communication)
+145 W( ports.)144 W
+7200 13512 MT
+(The interface)
+15 W( remedies numerous problems that were observed in the older Mach 2.5 interface.  The implementation)16 W
+7200 14889 MT
+(provides good performance, running)
+37 W( 30-40% faster than Mach 2.5 with data structures 50% smaller.  The Mach 3.0)36 W
+7200 16266 MT
+(implementation provides backwards-compatibility support for the older interface.)SH
+12 /Times-Bold AF
+7200 19950 MT
+(2. Interface Description)SH
+10 /Times-Roman AF
+8200 21327 MT
+(The Mach IPC facility provides message-oriented, capability-based)
+111 W( interprocess communication.  The interface)112 W
+7200 22704 MT
+(supports several different styles of interaction, including remote)
+344 W( procedure calls, object-oriented distributed)343 W
+7200 24081 MT
+(programming, and streams.)
+53 W( The)
+358 W( implementation makes use of the VM system to efficiently transfer large amounts)54 W
+7200 25458 MT
+(of data using a copy-on-write optimization.)
+73 W( The)
+395 W( Mach IPC interface allows intermediaries to transparently extend)72 W
+7200 26835 MT
+(the IPC facility.  A user-level server extends Mach IPC across networks.)SH
+11 /Times-Bold AF
+7200 30452 MT
+(2.1. Remote Procedure Calls)SH
+10 /Times-Roman AF
+8200 31829 MT
+(The IPC interface supports remote procedure calls as an important special case operation.)
+193 W( The)638 W
+/Courier SF
+49200 XM
+(mach_msg)SH
+/Times-Roman SF
+7200 33206 MT
+(system call allows tasks to combine send and)
+40 W( receive operations.  The interface provides send-once rights for ports,)39 W
+7200 34583 MT
+(designed for use as reply port rights.)
+1 W( A)
+253 W( notification mechanism allows clients and servers to detect and recover from)2 W
+7200 35960 MT
+(aborted RPCs.  The MiG stub generator aids the construction of RPC interfaces.)SH
+8200 38439 MT
+(At the message)
+102 W( level, an RPC consists of a request message sent from a client task to a server task and then a)101 W
+7200 39816 MT
+(reply message)
+46 W( sent from the server task to the client.  The server task holds a receive right for the service port, and)47 W
+7200 41193 MT
+(the client task hold a send right for the port.  Many client tasks may have send rights)
+179 W( for a single port.  The)178 W
+/Courier SF
+7200 42570 MT
+(mach_msg)SH
+/Times-Roman SF
+12273 XM
+(system call satisfies the)
+23 W( needs of both client and server tasks with a single system call.  Client tasks use)24 W
+/Courier SF
+7200 43947 MT
+(mach_msg)SH
+/Times-Roman SF
+12294 XM
+(to send a)
+44 W( request message and receive the reply.  Server tasks use)43 W
+/Courier SF
+39237 XM
+(mach_msg)SH
+/Times-Roman SF
+44330 XM
+(to send a reply message)43 W
+7200 45324 MT
+(and receive the next request.)SH
+8200 47803 MT
+(The interface provides send-once rights, for use as reply ports.  The client provides the server with a send-once)79 W
+7200 49180 MT
+(right for a reply port, to which the server sends the reply.  The request message carries the)
+97 W( send-once right.  The)96 W
+7200 50557 MT
+(message header contains a field for transmitting rights to a reply port.  The holder of a send-once right can use it to)38 W
+7200 51934 MT
+(send only one message, because the act of sending to a send-once right deletes it.  When the client receives its reply)24 W
+7200 53311 MT
+(message, it knows that the server retains no rights for the reply port.)SH
+8200 55790 MT
+(Send-once rights never disappear; they always result in a message.  When a task deallocates a send-once right, the)8 W
+7200 57167 MT
+(kernel uses the send-once right to send a notification message.)
+179 W( If)
+606 W( a server dies while processing an RPC, the)178 W
+7200 58544 MT
+(server's client can recover because it receives this notification message from the kernel.)SH
+8200 61023 MT
+(The interface also provides dead names and dead-name notifications, which allow servers to detect)
+80 W( the death of)81 W
+7200 62400 MT
+(clients and abort computations.)
+98 W( When)
+444 W( a client dies, the kernel deallocates its port rights, including its reply port.)97 W
+7200 63777 MT
+(The send-once right for the reply port, held by a server, becomes invalid and turns)
+107 W( into a dead name.  When the)108 W
+7200 65154 MT
+(server tries to send its reply message)
+47 W( to the dead name, the)46 W
+/Courier SF
+31448 XM
+(mach_msg)SH
+/Times-Roman SF
+36544 XM
+(call returns an error that informs the server)46 W
+7200 66531 MT
+(of its client's death.  If a server wishes to abort computations on behalf of dead)
+93 W( clients, it can request dead-name)94 W
+7200 67908 MT
+(notifications for the send-once right reply)
+92 W( ports.  Then when a client's send-once right becomes a dead name, the)91 W
+7200 69285 MT
+(kernel will send a dead-name notification message to the server, informing it of the new dead name.)SH
+8200 71764 MT
+(Mach provides an RPC stub generator, MiG, which simplifies)
+291 W( the construction of distributed systems by)292 W
+ES
+%%Page: 2 3
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(2)SH
+7200 7886 MT
+(implementing familiar procedure-call functionality.  For the client, MiG produces stub procedures which pack a)145 W
+7200 9263 MT
+(request message, use)64 W
+/Courier SF
+16001 XM
+(mach_msg)SH
+/Times-Roman SF
+21116 XM
+(to send the request and receive a reply message, and then unpack the reply.  For)65 W
+7200 10640 MT
+(the server, MiG produces stub procedures which unpack the)
+105 W( request message, call the server's function, and then)104 W
+7200 12017 MT
+(pack a reply message.  MiG also provides servers with a standard function)
+13 W( to receive requests and send replies using)14 W
+/Courier SF
+7200 13394 MT
+(mach_msg)SH
+/Times-Roman SF
+(. MiG)
+250 W( allows clients to send asynchronous messages when they do not need a reply message.)SH
+11 /Times-Bold AF
+7200 17011 MT
+(2.2. Object-Oriented Servers)SH
+10 /Times-Roman AF
+8200 18388 MT
+(Mach IPC supports the object-oriented construction)
+110 W( of distributed systems.  In this model, a port represents an)109 W
+7200 19765 MT
+(object, and messages sent to the port manipulate the object.)
+112 W( Send)
+476 W( rights for the object port act as opaque object)113 W
+7200 21142 MT
+(pointers. Ports)
+576 W( sets)
+163 W( let a few threads serve requests for many objects.  A no-senders mechanism allows object)162 W
+7200 22519 MT
+(servers to garbage-collect unused)
+53 W( objects.  The MachObjects package simplifies the construction of object-oriented)54 W
+7200 23896 MT
+(interfaces. The)
+250 W( kernel interface represents a good example of an object-oriented interface.)SH
+8200 26375 MT
+(The interface allows object-oriented clients and servers to use send rights as)
+188 W( object pointers.  Programs can)187 W
+7200 27752 MT
+(compare send)
+39 W( rights for equality because a task only holds one send right for any given port.  If a task holds a send)40 W
+7200 29129 MT
+(right for a port, and receives another send)
+112 W( right for the same port in a message, then the kernel reuses the task's)111 W
+7200 30506 MT
+(existing name for the send right.)SH
+8200 32985 MT
+(Port sets let an object-oriented server manage hundreds or thousands of objects.)
+63 W( A)
+378 W( port set holds receive rights,)64 W
+7200 34362 MT
+(and a receive operation on the port)
+71 W( set returns the next message sent to any of the constituent ports.  The received)70 W
+7200 35739 MT
+(message specifies the port to which it was sent,)
+55 W( so that the server knows what object to manipulate.  A server with)56 W
+7200 37116 MT
+(many objects must rely on port sets, because assigning)
+267 W( a separate thread to every object would consume a)266 W
+7200 38493 MT
+(prohibitive amount of space for stacks and other data structures.)SH
+8200 40972 MT
+(The interface)
+14 W( provides a no-senders detection mechanism.  This mechanism allows the holder of a receive right to)15 W
+7200 42349 MT
+(detect the absence of send rights for the)
+217 W( receive right, and garbage-collect the receive right and the object it)216 W
+7200 43726 MT
+(represents. The)
+746 W( task holding a receive right can)
+248 W( request a no-senders notification for the right, supplying a)249 W
+7200 45103 MT
+(send-once right to)
+248 W( which the kernel will direct the notification.  Then when the last send right for the port)247 W
+7200 46480 MT
+(disappears, the kernel uses the send-once right to send the task a no-senders notification.)SH
+8200 48959 MT
+(The no-senders detection applies only to send rights, not send-once rights.  The receive right holder does not need)14 W
+7200 50336 MT
+(a notification to detect an absence of send-once rights for a port.  Because only the receive)
+70 W( right holder can create)69 W
+7200 51713 MT
+(new send-once rights, and send-once rights do not disappear but always result in a message, the holder of)
+44 W( a receive)45 W
+7200 53090 MT
+(right can keep track of the number of send-once rights without further help from the kernel.)SH
+8200 55569 MT
+(Because send-once rights do not affect no-senders detection, the)
+58 W( no-senders notification for a port can be sent to)57 W
+7200 56946 MT
+(the port itself.  This significantly reduces the number of ports used)
+63 W( by object-oriented servers, because they do not)64 W
+7200 58323 MT
+(need to create a notify port for every object port.  Clients holding)
+150 W( send rights for the object port can not forge)149 W
+7200 59700 MT
+(no-senders notifications, because the)
+16 W( server can distinguish messages sent to send-once rights from messages sent to)17 W
+7200 61077 MT
+(send rights.)SH
+8200 63556 MT
+(The MachObjects package aids the construction of complex object-oriented)
+135 W( interfaces.  MachObjects provides)134 W
+7200 64933 MT
+(functionality similar to Objective C. It allows the definition of classes,)
+161 W( the inheritance of methods for handling)162 W
+7200 66310 MT
+(request messages, and)
+35 W( the delegation of operations to another object.  Like MiG, it packs and unpacks messages for)34 W
+7200 67687 MT
+(the application.)SH
+8200 70166 MT
+(The kernel interface demonstrates object-oriented principles.  Ports represent kernel objects)
+6 W( like tasks and threads,)7 W
+7200 71543 MT
+(and user programs can manipulate any task or thread for which they have send rights with RPC operations on)
+82 W( the)81 W
+ES
+%%Page: 3 4
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(3)SH
+7200 7886 MT
+(ports. This)
+272 W( approach lets applications like the Mach 3.0)
+11 W( Unix emulation and debuggers manipulate other tasks, even)12 W
+7200 9263 MT
+(tasks on other machines, through the standard kernel interface.)SH
+11 /Times-Bold AF
+7200 12880 MT
+(2.3. Streams)SH
+10 /Times-Roman AF
+8200 14257 MT
+(Because the IPC interface)
+65 W( provides message-oriented communication, it directly supports stream protocols.  The)64 W
+7200 15634 MT
+(interface guarantees reliable message delivery.  The)
+222 W( interface also supplies flow control mechanisms for both)223 W
+7200 17011 MT
+(readers and writers.)SH
+8200 19490 MT
+(The IPC)
+279 W( interface requires reliable, sequenced message delivery.  The implementation must deliver every)278 W
+7200 20867 MT
+(message sent to)
+101 W( a port, unless the port is destroyed.  Furthermore, the implementation must preserve the order of)102 W
+7200 22244 MT
+(messages from a single source.  The interface does not define the)
+101 W( ordering of messages sent by different threads.)100 W
+7200 23621 MT
+(Network message servers extend these semantic guarantees across networks.)SH
+8200 26100 MT
+(A stream)
+33 W( reader adjusts the message queue's length to perform flow control.  The reader holds a receive right for)34 W
+7200 27477 MT
+(the port implementing the stream.  Queue of messages at)
+63 W( the port may only grow to a limited size, controlled with)62 W
+7200 28854 MT
+(the)SH
+/Courier SF
+8672 XM
+(mach_port_set_qlimit)SH
+/Times-Roman SF
+20922 XM
+(call. By)
+250 W( modifying the queue limit the reader controls the buffering in the stream.)SH
+8200 31333 MT
+(The interface also offers stream writers a flow control mechanism.  Normally when the writer exceeds the port's)51 W
+7200 32710 MT
+(queue limit, the writer's send operation blocks until the reader reduces the size of the queue.)
+133 W( Alternatively,)
+515 W( the)132 W
+7200 34087 MT
+(writer may request a msg-accepted notification.  In this case, the kernel sends the writer a notification message to)82 W
+7200 35464 MT
+(inform the writer that it can resume queuing messages.  This option allows the writer to perform)
+66 W( other work while)65 W
+7200 36841 MT
+(waiting for the reader to catch up.)SH
+11 /Times-Bold AF
+7200 40458 MT
+(2.4. Copy-On-Write)SH
+10 /Times-Roman AF
+8200 41835 MT
+(The IPC)
+175 W( implementation makes use of the VM system to efficiently transfer large amounts of data.  A VM)176 W
+7200 43212 MT
+(optimization, copy-on-write sharing, lazy-evaluates the copy operation.  The implementation also allows a message)45 W
+7200 44589 MT
+(sender to move data into a message, further reducing the transmission cost.)SH
+8200 47068 MT
+(A message body can contain the address of a region in the sender's address space)
+41 W( which should be transferred as)42 W
+7200 48445 MT
+(part of the message, as an out-of-line memory region.  When a task)
+104 W( receives a message containing an out-of-line)103 W
+7200 49822 MT
+(region, the region appears in an unused portion of the receiver's address space.  Out-of-line data)
+48 W( retains the normal)49 W
+7200 51199 MT
+(copy semantics of message transmission.  The sender)
+161 W( and receiver can freely modify the out-of-line data.  The)160 W
+7200 52576 MT
+(implementation optimizes the transmission)
+8 W( of out-of-line data so that sender and receiver share the physical pages of)9 W
+7200 53953 MT
+(data copy-on-write, and no)
+180 W( actual data copy occurs unless the sender or receiver modifies the out-of-line data.)179 W
+7200 55330 MT
+(Regions of memory up to the size of a full address space may be sent in this manner.)SH
+8200 57809 MT
+(A message sender can enable a further optimization when it does not wish to retain a copy of)
+25 W( the memory region.)26 W
+7200 59186 MT
+(The deallocate bit in the out-of-line data's type descriptor indicates that the)
+89 W( memory region should be deallocated)88 W
+7200 60563 MT
+(from the sending task.  The VM system takes advantage of this)
+65 W( information to disable copy-on-write, avoiding the)66 W
+7200 61940 MT
+(cost of write-protecting the memory region.  Instead of copying,)
+43 W( the VM system moves the memory region directly)42 W
+7200 63317 MT
+(from the sending task into the message.)SH
+11 /Times-Bold AF
+7200 66934 MT
+(2.5. Transparent Extensions)SH
+10 /Times-Roman AF
+8200 68311 MT
+(The IPC interface allows intermediate servers to transparently extend the IPC facility.  User-level servers extend)54 W
+7200 69688 MT
+(Mach IPC across networks; the Mach kernel only)
+95 W( directly handles message transmission within a single machine.)94 W
+7200 71065 MT
+(Programs can interpose on port rights, to transparently intercept message traffic.)SH
+ES
+%%Page: 4 5
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(4)SH
+8200 7886 MT
+(Because the sender and the receiver of a)
+40 W( message can not detect the presence of intermediaries, the IPC interface)41 W
+7200 9263 MT
+(is transparent.)
+77 W( Port)
+402 W( rights carry no location information, so the sender of a message knows nothing about the true)76 W
+7200 10640 MT
+(receiver. The)
+318 W( interface does not)
+34 W( give the receiver of a message the identity of the sender.  The receiver only knows)35 W
+7200 12017 MT
+(that the sender possesses a send or send-once right, because port rights are secure.)SH
+8200 14496 MT
+(The user-level extension servers)
+42 W( \050network message servers, or netmsgservers\051 take advantage of the transparency)41 W
+7200 15873 MT
+(and cooperate to forward)
+10 W( messages across a network.  When a remote task has send rights for a local port, it actually)11 W
+7200 17250 MT
+(holds a send right for a proxy port on the remote machine.)
+39 W( The)
+326 W( remote netmsgserver holds the receive right for the)38 W
+7200 18627 MT
+(proxy port, and the local)
+39 W( netmsgserver holds a send right for the local port.  When the remote task sends a message)40 W
+7200 20004 MT
+(to its send right, the remote kernel)
+24 W( delivers the message to the remote netmsgserver.  The netmsgservers transfer the)23 W
+7200 21381 MT
+(data over the network, and the local netmsgserver forwards the message to the local port using its send right.)SH
+8200 23860 MT
+(The netmsgserver provides a simple name service which bootstraps this process.  User tasks)
+125 W( can register send)126 W
+7200 25237 MT
+(rights with the local netmsgserver.  The name service provides a)
+9 W( lookup operation that a task can use to acquire send)8 W
+7200 26614 MT
+(rights that were registered with netmsgservers elsewhere in the network.  The lookup)
+37 W( can be directed to a particular)38 W
+7200 27991 MT
+(machine, or broadcast)
+145 W( on the local network.  The netmsgservers create proxy ports as needed to represent ports)144 W
+7200 29368 MT
+(elsewhere in the network.)SH
+8200 31847 MT
+(Netmsgservers can use encryption and authentication techniques to protect)
+96 W( port capabilities across the network.)97 W
+7200 33224 MT
+(They can encrypt message data.  They make use of the type data)
+141 W( in messages to convert between data formats.)140 W
+7200 34601 MT
+(Implementation choices)
+166 W( like level of security and network protocol are made at user-level, and a machine may)167 W
+7200 35978 MT
+(support multiple extension servers offering different services.)SH
+8200 38457 MT
+(Another application of transparency allows programs)
+241 W( to intercept messages.  For example, a debugger can)240 W
+7200 39834 MT
+(monitor all message traffic sent through a send right.  The debugger)
+33 W( extracts the task's send right and inserts a send)34 W
+7200 41211 MT
+(right for another port, owned by the debugger, using)
+786 W( the)785 W
+/Courier SF
+37721 XM
+(mach_port_extract_right)SH
+/Times-Roman SF
+52556 XM
+(and)SH
+/Courier SF
+7200 42588 MT
+(mach_port_insert_right)SH
+/Times-Roman SF
+20760 XM
+(calls. Unbeknownst)
+470 W( to)
+110 W( the task, the debugger receives the messages sent by the)111 W
+7200 43965 MT
+(task and forwards the messages to the extracted send right.  Suspect programs may be run in a virtual mode,)
+46 W( which)45 W
+7200 45342 MT
+(intercepts for inspection all message traffic into and out of the task.)SH
+12 /Times-Bold AF
+7200 49026 MT
+(3. Interface Advantages)SH
+10 /Times-Roman AF
+8200 50403 MT
+(The Mach 3.0 IPC facility remedies several)
+168 W( problems that were encountered when using the older Mach 2.5)169 W
+7200 51780 MT
+(interface to build complex multi-threaded applications.)
+110 W( The)
+468 W( old interface does not give complex applications the)109 W
+7200 53157 MT
+(tools they need to manage their port rights correctly.  Clients and servers written)
+51 W( to the old interface face problems)52 W
+7200 54534 MT
+(managing their reply ports.  The old interface's design)
+17 W( made it difficult for programs to use notifications effectively.)16 W
+7200 55911 MT
+(Finally, the old interface does not allow programs to recover from some classes of errors.  The new)
+82 W( IPC interface)83 W
+7200 57288 MT
+(overcomes these problems without unduly burdening the application programmer.)SH
+11 /Times-Bold AF
+7200 60905 MT
+(3.1. Port Right Management)SH
+10 /Times-Roman AF
+8200 62282 MT
+(The asynchronous nature of multi-threaded programs greatly complicates port right management.  Multi-threaded)28 W
+7200 63659 MT
+(Mach 2.5 applications commonly contain many subtle bugs because the)
+3 W( old interface makes it difficult or impossible)4 W
+7200 65036 MT
+(for these programs to)
+35 W( manage their port rights correctly in the presence of port deallocation.  Features introduced in)34 W
+7200 66413 MT
+(the new interface, reference counts for port rights and dead names, allow)
+152 W( multi-threaded programs to overcome)153 W
+7200 67790 MT
+(these problems.)SH
+ES
+%%Page: 5 6
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(5)SH
+/Times-Bold SF
+7200 7870 MT
+(3.1.1. Reference Counts)SH
+/Times-Roman SF
+8200 9247 MT
+(Reference counts for)
+166 W( send rights allow programs to deallocate send rights safely.  For example, consider the)165 W
+7200 10624 MT
+(operation of a typical client program.  The client looks up)
+40 W( a service port, acquires a send right for the port, uses the)41 W
+7200 12001 MT
+(send right to make requests, and deallocates the send right.  If several)
+252 W( threads in the client use the service)251 W
+7200 13378 MT
+(concurrently, then the)
+128 W( reference count for the send right prevents the threads from incorrectly releasing the send)129 W
+7200 14755 MT
+(right. When)
+494 W( a second thread acquires the send right, the right's reference count)
+122 W( is incremented.  When a thread)121 W
+7200 16132 MT
+(deallocates the send right, the reference count is decremented.  The client task only)
+4 W( loses the send right when the last)5 W
+7200 17509 MT
+(thread deallocates its reference for the send right.)SH
+8200 19988 MT
+(A library can not solve this problem for Mach 2.5 programs by maintaining user-level reference counts for)
+64 W( send)63 W
+7200 21365 MT
+(rights. Even)
+308 W( assuming the mandatory use of a standard library that)
+29 W( provides such a coordinating facility, the library)30 W
+7200 22742 MT
+(may not have complete)
+7 W( knowledge of the references for send rights.  A task may contain separate binaries, each with)6 W
+7200 24119 MT
+(its own libraries and data structures attempting to provide reference counts.  The Mach 3.0 Unix emulation provides)23 W
+7200 25496 MT
+(an example of this.  The transparent emulation library is a separate binary loaded into the address)
+110 W( space of Unix)109 W
+7200 26873 MT
+(processes. The)
+364 W( program and the transparent library can not coordinate their use of send)
+57 W( rights because they do not)58 W
+7200 28250 MT
+(share any data structures or code.)SH
+8200 30729 MT
+(Even without separate binaries in a single)
+223 W( task, a potential race condition prevents a standard library from)222 W
+7200 32106 MT
+(coordinating send right)
+68 W( references.  A thread in the client task that receives a send right in a message immediately)69 W
+7200 33483 MT
+(uses the library to register a reference)
+58 W( for the send right.  However, this leaves a window between when the thread)57 W
+7200 34860 MT
+(receives the send right and when it registers it.  In this window, another thread may release a reference for the send)40 W
+7200 36237 MT
+(right. If)
+270 W( it releases the last reference and the library deallocates the send right, then the first thread is deprived of the)9 W
+7200 37614 MT
+(send right which it had just received.)SH
+8200 40093 MT
+(The coordinating library avoid this race)
+112 W( condition if it ensures that no receive operation is in progress when it)113 W
+7200 41470 MT
+(deallocates a send right, perhaps by postponing deallocations.)
+56 W( This)
+360 W( solution eliminates the window, but it severely)55 W
+7200 42847 MT
+(constrains the program.  In many multi-threaded programs, most threads block in receive)
+261 W( operations, so the)262 W
+7200 44224 MT
+(coordinating library will never be able to deallocate send rights.  In practice, most Mach 2.5 programs dodge the)102 W
+7200 45601 MT
+(problem and never deallocate send rights.)SH
+/Times-Bold SF
+7200 48431 MT
+(3.1.2. Dead Names)SH
+/Times-Roman SF
+8200 49808 MT
+(Dead names give programs)
+11 W( time to recognize the asynchronous deletion of a port right.  When a port is destroyed,)12 W
+7200 51185 MT
+(because its)
+12 W( receive right is deallocated, the port's send rights become invalid.  The new interface changes the invalid)11 W
+7200 52562 MT
+(send rights into dead names.  When a task tries to)
+72 W( send a message to a dead name, the resulting error lets the task)73 W
+7200 53939 MT
+(know that the port died and its send right is no longer valid.  The task can then deallocate the dead name.)SH
+8200 56418 MT
+(Like send rights, dead names have reference counts so that multi-threaded programs)
+45 W( can safely manipulate them.)44 W
+7200 57795 MT
+(When a send right with multiple references becomes invalid, the resulting dead name)
+170 W( assumes the send right's)171 W
+7200 59172 MT
+(references. As)
+334 W( different components of the application notice the dead name and deallocate it, the dead name loses)42 W
+7200 60549 MT
+(references. When)
+250 W( the dead name loses its last reference the name becomes available for reuse by another port right.)SH
+8200 63028 MT
+(A multi-threaded Mach 2.5 program is vulnerable to port name reuse when a port right becomes invalid.  For)122 W
+7200 64405 MT
+(example, after a thread in a client task looks up a service port and receives a send right for the port,)
+5 W( the port may die.)4 W
+7200 65782 MT
+(The Mach 2.5 implementation deletes port's invalid send rights)
+55 W( immediately.  Another thread in the client task can)56 W
+7200 67159 MT
+(create or receive a port right which happens to)
+69 W( reuse the name of the invalid send right.  Then the first thread will)68 W
+7200 68536 MT
+(inadvertently use the wrong port right when it tries to make a request.)
+42 W( In)
+335 W( practice, this problem does not afflict old)43 W
+7200 69913 MT
+(programs because the Mach 2.5)
+138 W( implementation allocates port names sequentially, so that names are very rarely)137 W
+7200 71290 MT
+(reused. An)
+250 W( implementation that picked the smallest name not currently used would break many Mach 2.5 programs.)SH
+ES
+%%Page: 6 7
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(6)SH
+11 /Times-Bold AF
+7200 7937 MT
+(3.2. Reply Port Management)SH
+10 /Times-Roman AF
+8200 9314 MT
+(Mach 2.5 clients and servers face several reply port management problems stemming from the old interface's)
+28 W( use)29 W
+7200 10691 MT
+(of send rights for reply ports.)
+30 W( RPCs)
+308 W( do not leave a client failure-isolated from the server.  Servers must receive and)29 W
+7200 12068 MT
+(discard many unwanted)
+133 W( port-deleted notifications.  Finally, clients can not recover when a server dies during an)134 W
+7200 13445 MT
+(RPC. The)
+250 W( new interface provides send-once right reply ports, which solve these problems.)SH
+8200 15924 MT
+(The Mach 2.5 RPC model does not leave)
+52 W( clients isolated from bugs or faults in the server after an RPC finishes.)51 W
+7200 17301 MT
+(A faulty server can precipitate mysterious failures in any client which)
+197 W( has used it.  This negates some of the)198 W
+7200 18678 MT
+(failure-isolation advantages gained by putting the client and server in)
+91 W( separate address spaces.  Because the client)90 W
+7200 20055 MT
+(gives the server a send right)
+123 W( for the reply port, the server can potentially send many messages to the reply port.)124 W
+7200 21432 MT
+(Normally, the server sends only the reply message and then retains)
+9 W( the reply port as an unused send right.  However,)8 W
+7200 22809 MT
+(clients can not count on this behavior.)
+123 W( A)
+497 W( buggy server may send additional messages to a reply port, and these)124 W
+7200 24186 MT
+(messages will interfere with later RPCs made using the reply port.  The)
+142 W( only recourse for the client is to use a)141 W
+7200 25563 MT
+(separate pool of reply ports, with one reply port)
+30 W( per thread, for every service that the client uses.  This alternative is)31 W
+7200 26940 MT
+(prohibitively expensive, because it greatly increases the number of ports consumed by the client)
+217 W( and because)216 W
+7200 28317 MT
+(selecting the correct reply port for an RPC increases the RPC cost.)SH
+8200 30796 MT
+(From a Mach 2.5 server's viewpoint, the reply port send rights it)
+1 W( retains clutter its port name space.  After a server)2 W
+7200 32173 MT
+(sends its reply, it can not deallocate the send right reply port, because this exposes)
+10 W( it to the previously discussed port)9 W
+7200 33550 MT
+(deallocation problems.  Even if a server could safely deallocate)
+3 W( the reply port right, the deallocation operation would)4 W
+7200 34927 MT
+(make RPCs significantly more expensive.  When)
+7 W( a client program exits, its reply ports are deallocated.  Every server)6 W
+7200 36304 MT
+(which a client thread has used receives a port-deleted)
+67 W( notification, which the servers must receive.  The death of a)68 W
+7200 37681 MT
+(client precipitates a flurry of context-switches as servers wake up to receive and throw away the port-deleted)207 W
+7200 39058 MT
+(notifications.)SH
+8200 41537 MT
+(When a Mach 2.5 server dies while handling an RPC, the client)
+26 W( remains blocked waiting for a reply message that)27 W
+7200 42914 MT
+(will never come.  The client can not recover from the server's death.  A time-out is not an)
+77 W( appropriate solution to)76 W
+7200 44291 MT
+(this problem, because very often the client can not pick an appropriate time-out value.)SH
+8200 46770 MT
+(The new IPC interface)
+63 W( provides a reply port field in messages, which carries send-once rights, to support RPCs.)64 W
+7200 48147 MT
+(A client program wishing to make RPCs allocates a reply port, for which it holds the receive right.  To perform)
+53 W( an)52 W
+7200 49524 MT
+(RPC, the client sends a request message to the server, using a send)
+54 W( right for a service port held by the server.  The)55 W
+7200 50901 MT
+(request carries a send-once)
+159 W( right for the reply port.  The server sends its reply message to the send-once right,)158 W
+7200 52278 MT
+(removing the send-once right from the server's port name space, and)
+43 W( the client program receives the reply using its)44 W
+7200 53655 MT
+(receive right for)
+44 W( the reply port.  If a client dies during an RPC, the server's send-once right turns into a dead name.)43 W
+7200 55032 MT
+(When the server tries to send the reply, an error return notifies it that its client has died.  If a server wishes to receive)6 W
+7200 56409 MT
+(a more timely notification of the death of a)
+90 W( client, the server can request a dead-name notification for the client's)89 W
+7200 57786 MT
+(send-once right reply port.  If a server dies during an)
+40 W( RPC, the client receives a send-once notification for the reply)41 W
+7200 59163 MT
+(port, so it unblocks and can recover from the failure.)SH
+11 /Times-Bold AF
+7200 62780 MT
+(3.3. Notifications)SH
+10 /Times-Roman AF
+8200 64157 MT
+(The new IPC interface's strategy of only generating notifications after an explicit request)
+43 W( from a user task solves)42 W
+7200 65534 MT
+(several problems with the Mach 2.5 notification model.  The old)
+78 W( model makes it impossible for different program)79 W
+7200 66911 MT
+(components to share notifications.  Most)
+149 W( notifications generated by the Mach 2.5 kernel represent wasted effort)148 W
+7200 68288 MT
+(because tasks do not)
+46 W( want the notifications.  Finally, the asynchronous generation of notifications makes it difficult)47 W
+7200 69665 MT
+(for tasks to handle the notifications that it does want.)SH
+ES
+%%Page: 7 8
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(7)SH
+8200 7886 MT
+(The new interface only sends notifications)
+53 W( upon request.  The notification request specifies a send-once right for)52 W
+7200 9263 MT
+(the notify port.  The kernel sends the notification to the supplied send-once right.)SH
+8200 11742 MT
+(Because the old interface obliges the kernel to send port-deleted notifications for a)
+49 W( dead port's every extant send)50 W
+7200 13119 MT
+(right, the kernel often generates unwanted notifications.  Tasks must receive these notifications, so the)
+100 W( death of a)99 W
+7200 14496 MT
+(port triggers unnecessary context-switches and receive operations.  The new interface avoids this problem, because)54 W
+7200 15873 MT
+(tasks only receive notifications that they have requested.)SH
+8200 18352 MT
+(The old interface directs all notifications to a single task-wide notify port,)
+115 W( so separate program components or)114 W
+7200 19729 MT
+(libraries that try to receive notifications suffer from contention.  A standard)
+298 W( user-level library to distribute)299 W
+7200 21106 MT
+(notifications can not solve this problem, because a task may contain multiple)
+226 W( binaries which wish to receive)225 W
+7200 22483 MT
+(notifications. The)
+286 W( new)
+18 W( interface avoids this problem, because program components can specify send-once rights for)19 W
+7200 23860 MT
+(different notify ports when they request notifications.)SH
+8200 26339 MT
+(The old interface generates notifications spontaneously.  If a)
+109 W( task receives a send right for a port, and the port)108 W
+7200 27716 MT
+(dies, the kernel immediately generates a notification.  The)
+101 W( task may receive and process the notification before it)102 W
+7200 29093 MT
+(processes the received message that contains the dead send right.  Because)
+24 W( the task has not examined the send right,)23 W
+7200 30470 MT
+(the port-deleted notification does not make sense to the task.  The new interface avoids this problem,)
+88 W( because the)89 W
+7200 31847 MT
+(kernel will not generate a notification until the task examines)
+228 W( the received message and explicitly requests a)227 W
+7200 33224 MT
+(notification for the send right.)SH
+11 /Times-Bold AF
+7200 36841 MT
+(3.4. Error Recovery)SH
+10 /Times-Roman AF
+8200 38218 MT
+(The old IPC interface)
+266 W( suffers from poorly defined semantics for many exceptional conditions.  Mach 2.5)267 W
+7200 39595 MT
+(programs can not recover from some interrupted send)
+247 W( operations, which may destroy critical port rights and)246 W
+7200 40972 MT
+(out-of-line memory.  Resources shortages during an old)11 W
+/Courier SF
+29868 XM
+(msg_receive)SH
+/Times-Roman SF
+36729 XM
+(system call may result in the destruction)
+11 W( of)12 W
+7200 42349 MT
+(ports and data, with no error indication given to the receiving task.)SH
+8200 44828 MT
+(The old interface pretended that the send and receive message operations are atomic.  Unfortunately, the Mach 2.5)2 W
+7200 46205 MT
+(implementation does not make)
+8 W( send and receive atomic operations.  Mach messages are complex objects, holding an)9 W
+7200 47582 MT
+(unbounded number of port rights and out-of-line memory regions.  It is very difficult, if not)
+105 W( impossible, to make)104 W
+7200 48959 MT
+(send and receive atomic.  The new interface recognizes this and copes with the possibility of)
+103 W( partially completed)104 W
+7200 50336 MT
+(operations.)SH
+/Times-Bold SF
+7200 53166 MT
+(3.4.1. Interrupted Send)SH
+/Times-Roman SF
+8200 54543 MT
+(Send operations can not always queue a message containing resources like port)
+143 W( rights or out-of-line memory.)142 W
+7200 55920 MT
+(When this happens, the new interface returns the resources in)
+30 W( the message to the sending task.  If the task wishes, it)31 W
+7200 57297 MT
+(can retry the send operation.  The old interface destroyed the resources in the message.)SH
+8200 59776 MT
+(The send operation has)
+75 W( two phases.  First, the kernel copies the message into an internal buffer, translating port)74 W
+7200 61153 MT
+(rights and making out-of-line memory regions copy-on-write.  Second, the kernel tries to queue the message.  If the)31 W
+7200 62530 MT
+(message can not)
+39 W( be eventually queued, because the send times out or is interrupted, then the kernel must dispose of)38 W
+7200 63907 MT
+(the message.  However, the message may contain precious)
+143 W( resources like a receive right or the sole copy of an)144 W
+7200 65284 MT
+(out-of-line memory region.)SH
+8200 67763 MT
+(The new interface specifies that an incomplete send operation returns the unsent)
+12 W( message to the sender, giving the)11 W
+7200 69140 MT
+(sender the port rights and out-of-line memory in the message.  The sender can then retry the transmission.)
+114 W( This)480 W
+7200 70517 MT
+(return operation resembles a normal receive operation, and is known as a pseudo-receive.)SH
+ES
+%%Page: 8 9
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(8)SH
+8200 7886 MT
+(The Mach 2.5 interface makes no provision for returning the contents of the message to the sender in these)173 W
+7200 9263 MT
+(situations. Because)
+400 W( it destroys the message, resources which are only present)
+75 W( in the message may be irretrievably)76 W
+7200 10640 MT
+(lost. For)
+280 W( example, receive rights carried in the message are deallocated, destroying the ports.  If out-of-line memory)14 W
+7200 12017 MT
+(is sent with the deallocate option, then the sender does not retain a copy of the memory.  This possibility)
+21 W( means that)22 W
+7200 13394 MT
+(if the send operation might block,)
+18 W( the old)17 W
+/Courier SF
+24090 XM
+(msg_send)SH
+/Times-Roman SF
+29157 XM
+(system call is inherently unreliable when used to send receive)17 W
+7200 14771 MT
+(rights or out-of-line memory with the deallocate option.)SH
+/Times-Bold SF
+7200 17601 MT
+(3.4.2. Partial Receive)SH
+/Times-Roman SF
+8200 18978 MT
+(Because a receive operation consumes)
+91 W( resources, sometimes a resource shortage might prevent the reception of)92 W
+7200 20355 MT
+(some resources carried in a message.  The)
+98 W( old interface does not allow programs to recover from this possibility,)97 W
+7200 21732 MT
+(because the old)188 W
+/Courier SF
+14179 XM
+(msg_receive)SH
+/Times-Roman SF
+21217 XM
+(system call returns no error indication.)
+188 W( The)
+627 W( new interface specifies a simple)189 W
+7200 23109 MT
+(semantics for partial receive operations that allows programs to perform error recovery.)SH
+8200 25588 MT
+(When a task receives a message, the kernel transfers to the task the resources, port)
+90 W( rights and memory regions,)89 W
+7200 26965 MT
+(held in the messages.  This process consumes resources.  A port right may require a new name)
+SH( drawn from the task's)1 W
+7200 28342 MT
+(port name space, and out-of-line memory requires an)
+115 W( unused region in the task's address space.  In addition, the)114 W
+7200 29719 MT
+(kernel may need to)
+38 W( allocate internal data structures.  Because the receive operation is not atomic, an allocation may)39 W
+7200 31096 MT
+(fail after some resources have been transferred.)SH
+8200 33575 MT
+(The Mach 2.5 interface does not specify the outcome of the receive operation when a resource allocation fails.)
+18 W( In)284 W
+7200 34952 MT
+(practice, the receive operation silently deallocates any troublesome port rights or out-of-line memory.  The)
+41 W( receiver)42 W
+7200 36329 MT
+(gets no indication of a problem with the receive operation.)SH
+8200 38808 MT
+(When some port rights or memory regions can)
+179 W( not be received due to resource shortages, the new interface)178 W
+7200 40185 MT
+(specifies the semantics of a partial receive.  The partial receive attempts to give the receiver all the resources in the)42 W
+7200 41562 MT
+(message. The)
+638 W( partial receive)
+194 W( destroys those resources that can not be transferred.  The transfer of out-of-line)193 W
+7200 42939 MT
+(memory containing port rights guarantees that the receiver never gets the port rights but not the memory.)
+92 W( A)
+436 W( task)93 W
+7200 44316 MT
+(never receives a resource that it is not told)
+42 W( about in the received message.  The partial receive returns an error code)41 W
+7200 45693 MT
+(that indicates what type of resources were lost.)SH
+12 /Times-Bold AF
+7200 49377 MT
+(4. Implementation)SH
+10 /Times-Roman AF
+8200 50754 MT
+(The Mach 3.0 implementation takes advantage of several properties of the IPC interface to provide good)265 W
+7200 52131 MT
+(performance. The)
+290 W( implementation uses highly tuned data structures that represent a port in 64 bytes and a port right)19 W
+7200 53508 MT
+(in 16 bytes.  At the same time, the data structures expedite important operations like)
+51 W( looking up port rights given a)52 W
+7200 54885 MT
+(task's name, creating port rights, and deleting port rights.  When possible,)
+56 W( the IPC code makes use of a scheduling)55 W
+7200 56262 MT
+(optimization, hand-off scheduling, to reduce the context-switch overhead.  In)
+19 W( combination these optimizations make)20 W
+7200 57639 MT
+(the implementation faster and smaller than the Mach 2.5 IPC implementation.)SH
+11 /Times-Bold AF
+7200 61256 MT
+(4.1. Data structures)SH
+10 /Times-Roman AF
+8200 62633 MT
+(The Mach 3.0 implementation represents port rights with a hybrid data structure.  Most port rights fit into)
+162 W( a)161 W
+7200 64010 MT
+(per-task table, at 16 bytes per port right.)
+56 W( The)
+364 W( name of the port right is its index into the table.  Because a task can)57 W
+7200 65387 MT
+(rename its port rights to create)
+44 W( a sparse port name space, the implementation must accommodate port rights that do)43 W
+7200 66764 MT
+(not fall)
+27 W( into the task's table.  A per-task splay tree, a self-adjusting binary tree, represents these overflow port rights)28 W
+7200 68141 MT
+(in 32 bytes.  The kernel dynamically adjusts the division between)
+135 W( the table and splay tree, growing the table as)134 W
+7200 69518 MT
+(needed, to minimize memory consumption.)SH
+8200 71997 MT
+(The new implementation solves the reverse translation problem, finding a name given a task and a port, in several)14 W
+ES
+%%Page: 9 10
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(9)SH
+7200 7886 MT
+(different ways.  Every port contains a pointer)
+148 W( to the task holding the receive right and that task's name for the)147 W
+7200 9263 MT
+(receive right.  If)
+71 W( that check fails, the kernel looks for a send right in the task's table of port rights.  A closed hash)72 W
+7200 10640 MT
+(table that translates send rights to port names is folded into the table of port rights.)
+114 W( Finally,)
+476 W( the kernel checks a)113 W
+7200 12017 MT
+(global open hash table to find send rights represented in a splay tree.)SH
+8200 14496 MT
+(This data structure takes)
+49 W( advantage of two properties of dead names.  First, dead names allow tasks to cope with)50 W
+7200 15873 MT
+(an implementation that)
+8 W( reuses names quickly.  The per-task tables contain a free list of unused entries.  The entry for)7 W
+7200 17250 MT
+(a deleted port right is pushed onto the free list, and it will be reused for)
+39 W( the next port right to be allocated.  Second,)40 W
+7200 18627 MT
+(dead names allow the implementation to lazy-evaluate port destruction.  The)
+12 W( data structure does not allow the kernel)11 W
+7200 20004 MT
+(to traverse a dead port's send rights and convert)
+26 W( them to dead names.  Instead, the kernel converts the send rights to)27 W
+7200 21381 MT
+(dead names as it comes across them.  The kernel uses a separate list of send-once rights)
+134 W( attached to the port to)133 W
+7200 22758 MT
+(generate dead-name notifications.)SH
+8200 25237 MT
+(The hybrid data structures makes)
+117 W( the important operations efficient.  A name lookup, to convert from a task's)118 W
+7200 26614 MT
+(name for a port to an internal port pointer, performs)
+6 W( a bounds check and indexes into the task's table.  The allocation)5 W
+7200 27991 MT
+(of a send-once right pops an unused entry off of the free list, and the deallocation of the)
+41 W( send-once right pushes the)42 W
+7200 29368 MT
+(entry back onto the free list.  Because every send-once right gets its own port name,)
+13 W( send-once rights are not entered)12 W
+7200 30745 MT
+(into the reverse hash tables.  A)
+91 W( simple RPC with a send-once right reply port does not use the reverse translation)92 W
+7200 32122 MT
+(algorithm.)SH
+8200 34601 MT
+(The Mach 2.5 implementation uses a straightforward data structure.  It represents every port right with a)
+46 W( 52-byte)45 W
+7200 35978 MT
+(structure, and every port with an 88-byte structure.  Each port right is on four doubly-linked lists.)
+62 W( Each)
+376 W( port has a)63 W
+7200 37355 MT
+(list of its rights, each task holds a list of port)
+19 W( rights, and each port right belongs to two global open hash tables.  The)18 W
+7200 38732 MT
+(hash tables perform the translations from task and name to port and the reverse translation from)
+111 W( task and port to)112 W
+7200 40109 MT
+(name. This)
+250 W( representation of port rights makes all operations possible, but no operations are particularly efficient.)SH
+11 /Times-Bold AF
+7200 43726 MT
+(4.2. Hand-off scheduling)SH
+10 /Times-Roman AF
+8200 45103 MT
+(The hand-off scheduling optimization significantly reduces the cost of an RPC.  Hand-off)
+147 W( scheduling directly)146 W
+7200 46480 MT
+(transfers control of)
+254 W( the processor from one thread to another.  The new IPC interface allows the Mach 3.0)255 W
+7200 47857 MT
+(implementation to take full advantage of hand-off scheduling.)SH
+8200 50336 MT
+(The)SH
+/Courier SF
+10077 XM
+(mach_msg)SH
+/Times-Roman SF
+15199 XM
+(system call allows the)
+72 W( implementation to do hand-off scheduling in both directions of an RPC.)71 W
+7200 51713 MT
+(A fast RPC implementation makes two hand-offs.  First the client threads)
+12 W( hands-off to a server thread blocked doing)13 W
+7200 53090 MT
+(a receive, leaving)
+64 W( itself blocked waiting for the reply.  Then the server thread hands-off to the client, leaving itself)63 W
+7200 54467 MT
+(blocked waiting for the next request.  If)
+115 W( both client and server use the)116 W
+/Courier SF
+36839 XM
+(mach_msg)SH
+/Times-Roman SF
+42005 XM
+(call to combine the send and)116 W
+7200 55844 MT
+(receive operations, the implementation will avoid queuing and dequeuing of the messages and)
+274 W( instead hand)273 W
+7200 57221 MT
+(messages and control of the processor directly from sender to receiver.)SH
+8200 59700 MT
+(The Mach 2.5 implementation only achieves a hand-off in one direction, from client thread to server)
+34 W( thread.  The)35 W
+7200 61077 MT
+(old interface's)31 W
+/Courier SF
+13260 XM
+(msg_rpc)SH
+/Times-Roman SF
+17741 XM
+(system call, used)
+31 W( by the client, does not provide enough flexibility.)30 W
+/Courier SF
+45407 XM
+(msg_rpc)SH
+/Times-Roman SF
+49887 XM
+(first sends)30 W
+7200 62454 MT
+(to the destination port a message that carries a reply port, and then)
+54 W( it receives from the reply port.  Servers can not)55 W
+7200 63831 MT
+(use)SH
+/Courier SF
+8830 XM
+(msg_rpc)SH
+/Times-Roman SF
+13327 XM
+(to send a reply message and then receive a request, because reply messages should)
+47 W( not carry a reply)46 W
+7200 65208 MT
+(port and)SH
+/Courier SF
+10755 XM
+(msg_rpc)SH
+/Times-Roman SF
+15205 XM
+(can not receive from a port set.)SH
+ES
+%%Page: 10 11
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(10)SH
+11 /Times-Bold AF
+7200 7937 MT
+(4.3. Performance)SH
+10 /Times-Roman AF
+8200 9314 MT
+(Space and)
+94 W( time are both important performance measures.  The Mach 3.0 Unix emulation relies heavily on the)95 W
+7200 10691 MT
+(Mach IPC facility.  A current single-server Unix system uses approximately)
+105 W( 2000 ports.  The emulation of many)104 W
+7200 12068 MT
+(Unix system calls requires one or more Mach RPCs.  The multi-server system under)
+170 W( development makes even)171 W
+7200 13445 MT
+(greater use of the IPC system.)SH
+8200 15924 MT
+(The following table presents performance numbers for)
+123 W( a DECstation 3100 running a Mach 3.0 kernel, version)122 W
+7200 17301 MT
+(XMK23, with single-server Unix emulation, version XUX16.)SH
+30600 19092 MT
+(Mach 3.0)SH
+41400 XM
+(Mach 2.5)SH
+12600 21302 MT
+(kernel ports)SH
+23400 XM
+(976)SH
+12600 22407 MT
+(user ports)SH
+23400 XM
+(1320)SH
+12600 23512 MT
+(total ports)SH
+23400 XM
+(2296)SH
+30600 XM
+(146944 bytes)SH
+41400 XM
+(202048 bytes)SH
+12600 25722 MT
+(kernel rights)SH
+23400 XM
+(976)SH
+30600 XM
+(0 bytes)SH
+41400 XM
+(50752 bytes)SH
+12600 26827 MT
+(rights in tables)SH
+23400 XM
+(2447)SH
+41400 XM
+(127244 bytes)SH
+12600 27932 MT
+(total size of tables)SH
+23400 XM
+(3032)SH
+30600 XM
+(48512 bytes)SH
+12600 29037 MT
+(rights in trees)SH
+23400 XM
+(37)SH
+30600 XM
+(1184 bytes)SH
+41400 XM
+(1924 bytes)SH
+12600 31247 MT
+(total size)SH
+30600 XM
+(196640 bytes)SH
+41400 XM
+(381968 bytes)SH
+12600 33457 MT
+(null RPC)SH
+30600 XM
+(125us)SH
+41400 XM
+(210us)SH
+/Times-Bold SF
+23045 35067 MT
+(Table 4-1:)SH
+/Times-Roman SF
+27906 XM
+(Performance Comparison)SH
+11 /Times-Bold AF
+7200 38684 MT
+(4.4. Implementation History)SH
+10 /Times-Roman AF
+8200 40061 MT
+(The implementation of)
+203 W( the new interface went through several phases, culminating in the current Mach 3.0)204 W
+7200 41438 MT
+(implementation. The)
+486 W( goal was)
+118 W( to test the new interface with a prototype before putting substantial time into the)117 W
+7200 42815 MT
+(radically different implementation that was envisioned.)SH
+8200 45294 MT
+(A modified version of Mach 2.5 first implemented the)
+83 W( new interface.  The augmented Mach 2.5 data structures)84 W
+7200 46671 MT
+(did not perform well, principally because the creation and)
+271 W( deletion of send-once rights was relatively slow.)270 W
+7200 48048 MT
+(However, the prototype implementation did allow test programs to exercise the new interface.)
+92 W( The)
+435 W( test programs)93 W
+7200 49425 MT
+(demonstrated the usefulness of the new features.  This evaluation was used to refine the new interface.)SH
+8200 51904 MT
+(The core of)
+55 W( the new implementation, about 80% of the total including all the data structures, was developed and)54 W
+7200 53281 MT
+(tested as a user-level library.  First, interactive programs tested the low-level data structures.  After)
+41 W( the higher-level)42 W
+7200 54658 MT
+(message functions and kernel calls were written, they were tested with communicating user-level coroutine threads.)38 W
+7200 56035 MT
+(Finally, the code was moved into kernel space and mated with the Mach kernel.  This)
+232 W( development process)233 W
+7200 57412 MT
+(produced an exceptionally trouble-free implementation.)SH
+8200 59891 MT
+(The Mach 2.5 netmsgserver runs under)
+9 W( the new interface, using the compatibility code.  Although new clients and)8 W
+7200 61268 MT
+(servers can use the)
+36 W( netmsgserver to communicate over the network, the performance is oppressively poor.  Because)37 W
+7200 62645 MT
+(the netmsgserver sees the send-once right reply ports as send rights which are destroyed, after every RPC it)
+99 W( goes)98 W
+7200 64022 MT
+(through a broadcast protocol to destroy the reply)
+29 W( port.  With knowledge of send-once rights, a revised netmsgserver)30 W
+7200 65399 MT
+(can avoid this performance pessimization.)SH
+ES
+%%Page: 11 12
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(11)SH
+12 /Times-Bold AF
+7200 8004 MT
+(5. Compatibility)SH
+10 /Times-Roman AF
+8200 9381 MT
+(The Mach)
+148 W( 3.0 IPC facility includes complete backwards-compatible support for the older Mach 2.5 interface.)147 W
+7200 10758 MT
+(This design)
+45 W( requirement motivated some aspects of the Mach 3.0 interface.  Programs written to the older interface)46 W
+7200 12135 MT
+(make use of)
+115 W( a compatibility mode that supports the older system calls and kernel calls.  The compatibility mode)114 W
+7200 13512 MT
+(allows programs to use both interfaces simultaneously.)
+109 W( Programs)
+469 W( written to the new and old interfaces can even)110 W
+7200 14889 MT
+(interoperate, exchanging messages and)
+48 W( forming client-server relationships.  The compatibility mode does not affect)47 W
+7200 16266 MT
+(the performance of programs written to the new interface, and if desired)
+162 W( the Mach 3.0 kernel can be compiled)163 W
+7200 17643 MT
+(without the compatibility code.)SH
+11 /Times-Bold AF
+7200 21260 MT
+(5.1. Compatibility Requirements)SH
+10 /Times-Roman AF
+8200 22637 MT
+(The compatibility requirement motivated some important design decisions for the new interface.  If it were not for)5 W
+7200 24014 MT
+(compatibility considerations, the IPC interface could be potentially have)
+63 W( simplified message formats and port right)64 W
+7200 25391 MT
+(management.)SH
+8200 27870 MT
+(The interoperability requirement prevented radical changes to the message)
+221 W( format.  The Mach 3.0 message)220 W
+7200 29247 MT
+(format, a message header followed by typed data, differs from the Mach 2.5 message)
+57 W( format in only minor details.)58 W
+7200 30624 MT
+(Because the)
+1 W( formats are so similar, programs using the compatibility mode can interoperate with programs written to)SH
+7200 32001 MT
+(the new interface.  The implementation converts between the two formats when a)
+6 W( programs uses the old system calls)7 W
+7200 33378 MT
+(to send and receive messages.)SH
+8200 35857 MT
+(The new interface allows reply ports to be send rights)
+34 W( or send-once rights.  It would be simpler if only send-once)33 W
+7200 37234 MT
+(right reply ports were)
+152 W( allowed, but this would make it difficult to convert some programs to the new interface.)153 W
+7200 38611 MT
+(These programs use the reply port field as a general mechanism for conveying a send right,)
+34 W( instead of restricting its)33 W
+7200 39988 MT
+(use to RPCs.)SH
+8200 42467 MT
+(Compatibility considerations motivated the)
+152 W( design of reference counts for send rights.  An alternative design,)153 W
+7200 43844 MT
+(without reference counts, would make send rights behave like)
+61 W( send-once rights.  When a task would receive a port)60 W
+7200 45221 MT
+(right, the port)
+60 W( right would always appear in the task's port name space with a new name.  A task could potentially)61 W
+7200 46598 MT
+(hold many send rights for)
+27 W( a single port.  This alternative would simplify the interface and the implementation, but it)26 W
+7200 47975 MT
+(would prohibit backwards-compatibility.  Some programs rely on the current behavior to perform authentication and)12 W
+7200 49352 MT
+(naming functions by comparing send rights.)SH
+11 /Times-Bold AF
+7200 52969 MT
+(5.2. Compatibility Support)SH
+10 /Times-Roman AF
+8200 54346 MT
+(The compatibility code supports the complete Mach 2.5 interface, with no exceptions.  This does not)
+31 W( mean that it)30 W
+7200 55723 MT
+(is impossible to write a program which will determine)
+41 W( under which implementation it is running.  However, it does)42 W
+7200 57100 MT
+(guarantee that correct programs will continue to operate.)
+39 W( The)
+327 W( compatibility code hides new features like send-once)38 W
+7200 58477 MT
+(rights from old programs.)SH
+8200 60956 MT
+(The compatibility code supports programs which use both the old and)
+15 W( new IPC interfaces.  This allows a program)16 W
+7200 62333 MT
+(to be gradually converted from the old interface to the new interface.  For example,)
+135 W( libraries May be written to)134 W
+7200 63710 MT
+(different interfaces.  This occurs frequently in practice, because the Mach 3.0 transparent emulation library)
+35 W( uses the)36 W
+7200 65087 MT
+(new IPC interface.  Any process using the old interface has the emulation library in its)
+24 W( address space, using the new)23 W
+7200 66464 MT
+(interface to implement the Unix emulation.)SH
+8200 68943 MT
+(Although the new and old interfaces)
+177 W( are similar in many respects, they share no names.  The new interface)178 W
+7200 70320 MT
+(prefixes every name with "mach_" or "MACH_".  This prevents name conflicts between the interfaces.  It allows a)50 W
+7200 71697 MT
+(common set of include)
+240 W( files to serve both interfaces, and allows a binary to call freely functions from both)241 W
+ES
+%%Page: 12 13
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(12)SH
+7200 7886 MT
+(interfaces.)SH
+8200 10365 MT
+(The compatibility mode operates on a per-port right basis, not per-task.)
+53 W( For)
+354 W( example, a send right received with)52 W
+7200 11742 MT
+(the old)6 W
+/Courier SF
+10212 XM
+(msg_receive)SH
+/Times-Roman SF
+17068 XM
+(system calls is marked internally with a compatibility flag.  If)
+6 W( the port is destroyed, the send)7 W
+7200 13119 MT
+(right disappears and the kernel sends a port-deleted notification to)
+174 W( the task's notify port, implementing the old)173 W
+7200 14496 MT
+(semantics for port destruction.  The same task may also hold other send rights received)
+85 W( with the new)86 W
+/Courier SF
+49200 XM
+(mach_msg)SH
+/Times-Roman SF
+7200 15873 MT
+(system call.  When those ports are destroyed, the send rights turn into dead names.)SH
+8200 18352 MT
+(The compatibility code disguises send-once rights as send rights.  When a task receives a send-once right)
+28 W( with an)27 W
+7200 19729 MT
+(old system call, like)82 W
+/Courier SF
+15778 XM
+(msg_receive)SH
+/Times-Roman SF
+(, the task gets what looks like a)
+82 W( send right.  However, when the task sends a)83 W
+7200 21106 MT
+(message to the faux send right, the right disappears and the task receives a port-deleted notification.  This behavior)48 W
+7200 22483 MT
+(preserves the essential send-once character of)
+157 W( the right.  It allows servers written to the old interface to handle)158 W
+7200 23860 MT
+(clients using send-once right reply ports.)SH
+11 /Times-Bold AF
+7200 27477 MT
+(5.3. Implementation Impact)SH
+10 /Times-Roman AF
+8200 28854 MT
+(The compatibility code does not affect the Mach 3.0 interface's performance.  The code does slightly increase)
+20 W( the)19 W
+7200 30231 MT
+(size of the kernel, but a build-time option allows the code to be removed if this is a problem.  In many respects,)
+35 W( the)36 W
+7200 31608 MT
+(Mach 3.0 compatibility code is a)
+4 W( better implementation of the Mach 2.5 interface than the Mach 2.5 implementation,)3 W
+7200 32985 MT
+(because the compatibility code does not suffer)
+129 W( from the old implementation's bugs.  However, the compatibility)130 W
+7200 34362 MT
+(code does perform more slowly than the Mach 2.5 implementation.  The)
+33 W( new implementation does not optimize the)32 W
+7200 35739 MT
+(common paths through the compatibility code.)SH
+12 /Times-Bold AF
+7200 39423 MT
+(6. Conclusion)SH
+10 /Times-Roman AF
+8200 40800 MT
+(The Mach 3.0)
+1 W( IPC facility revises the Mach IPC interface to improve support for multi-threaded programs, remote)2 W
+7200 42177 MT
+(procedure calls, and object-oriented programming.  The)
+253 W( new interface corrects several problems in the older)252 W
+7200 43554 MT
+(interface that made it difficult to use)
+189 W( correctly.  The Mach 3.0 implementation meets the needs of demanding)190 W
+7200 44931 MT
+(applications, like the Mach 3.0 Unix emulation, with substantially improved space and)
+65 W( time performance.  Finally,)64 W
+7200 46308 MT
+(the implementation supports the old Mach 2.5 interface with a compatibility mode that lets programs gradually)161 W
+7200 47685 MT
+(migrate to the new interface.)SH
+12 /Times-Bold AF
+7200 51369 MT
+(I. Interface Summary)SH
+ES
+%%Page: 13 14
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(13)SH
+46800 50 7200 7400 UL
+/Times-Bold SF
+7200 10255 MT
+(mach_msg\050msg, options, send_size, rcv_size, rcv_name, timeout, notify\051)SH
+/Times-Italic SF
+10800 11335 MT
+(Send a message, receive a message, or do)
+10 W( both.  When sending, the message header contains a right for the)9 W
+10800 12415 MT
+(destination port.  Some options use the timeout value and the notify port.)SH
+/Times-Bold SF
+7200 13959 MT
+(mach_host_self\050\051)SH
+/Times-Italic SF
+10800 15039 MT
+(Returns a send right for a port representing the caller's host.)SH
+/Times-Bold SF
+7200 16583 MT
+(mach_task_self\050\051)SH
+/Times-Italic SF
+10800 17663 MT
+(Returns a send right for a port representing the caller's task.)SH
+/Times-Bold SF
+7200 19207 MT
+(mach_thread_self\050\051)SH
+/Times-Italic SF
+10800 20287 MT
+(Returns a send right for a port representing the caller's thread.)SH
+/Times-Bold SF
+7200 21831 MT
+(mach_reply_port\050\051)SH
+/Times-Italic SF
+10800 22911 MT
+(Allocates a port in)
+59 W( the calling task and returns the name of the receive right.  This call provides a way of)60 W
+10800 23991 MT
+(allocating a reply port that)
+32 W( does not use a reply port.  The implementation may optimize the allocated port)31 W
+10800 25071 MT
+(for use as a reply port.)SH
+45800 50 8200 26648 UL
+/Times-Bold SF
+25599 29363 MT
+(Table I-1:)SH
+/Times-Roman SF
+30349 XM
+(System Calls)SH
+ES
+%%Page: 14 15
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(14)SH
+46800 50 7200 7400 UL
+/Times-Bold SF
+7200 10255 MT
+(mach_port_allocate\050task, what_right, OUT name\051)SH
+/Times-Italic SF
+10800 11335 MT
+(Allocates a port, port set, or dead name in the task.  Returns the name of the new right.)SH
+/Times-Bold SF
+7200 12879 MT
+(mach_port_allocate_name\050task, what_right, name\051)SH
+/Times-Italic SF
+10800 13959 MT
+(Allocates a port, port set, or dead name in the task.  The new right has the specified name.)SH
+/Times-Bold SF
+7200 15503 MT
+(mach_port_get_refs\050task, name, what_right, OUT refs\051)SH
+/Times-Italic SF
+10800 16583 MT
+(Returns the number of references held by the task for the specified port right.)SH
+/Times-Bold SF
+7200 18127 MT
+(mach_port_mod_refs\050task, name, what_right, delta\051)SH
+/Times-Italic SF
+10800 19207 MT
+(Modifies the number of references held by the task for the specified port right.)SH
+/Times-Bold SF
+7200 20751 MT
+(mach_port_deallocate\050task, name\051)SH
+/Times-Italic SF
+10800 21831 MT
+(Deallocates a reference for a send right, send-once right, or dead name.)SH
+/Times-Bold SF
+7200 23375 MT
+(mach_port_destroy\050task, name\051)SH
+/Times-Italic SF
+10800 24455 MT
+(Deallocates all references and rights denoted by the name.)SH
+/Times-Bold SF
+7200 25999 MT
+(mach_port_type\050task, name, OUT type\051)SH
+/Times-Italic SF
+10800 27079 MT
+(Returns the type of the specified port right.)SH
+/Times-Bold SF
+7200 28623 MT
+(mach_port_names\050task, OUT names, OUT types\051)SH
+/Times-Italic SF
+10800 29703 MT
+(Returns a list of the names in the task's port name space, with a corresponding list of port right types.)SH
+/Times-Bold SF
+7200 31247 MT
+(mach_port_rename\050task, old_name, new_name\051)SH
+/Times-Italic SF
+10800 32327 MT
+(Renames a port right.)SH
+/Times-Bold SF
+7200 33871 MT
+(mach_port_get_receive_status\050task, name, OUT status\051)SH
+/Times-Italic SF
+10800 34951 MT
+(Returns status information for a receive right.)SH
+/Times-Bold SF
+7200 36495 MT
+(mach_port_set_qlimit\050task, name, qlimit\051)SH
+/Times-Italic SF
+10800 37575 MT
+(Modifies a receive right's queue limit.)SH
+/Times-Bold SF
+7200 39119 MT
+(mach_port_set_mscount\050task, name, mscount\051)SH
+/Times-Italic SF
+10800 40199 MT
+(Modifies a receive right's make-send count.)SH
+/Times-Bold SF
+7200 41743 MT
+(mach_port_move_member\050task, port_name, set_name\051)SH
+/Times-Italic SF
+10800 42823 MT
+(Moves a receive right into or out of a port set.)SH
+/Times-Bold SF
+7200 44367 MT
+(mach_port_get_set_status\050task, set_name, OUT members\051)SH
+/Times-Italic SF
+10800 45447 MT
+(Returns a list of the members of a port set.)SH
+/Times-Bold SF
+7200 46991 MT
+(mach_port_request_notification\050task, name, which, sync, notify, previous\051)SH
+/Times-Italic SF
+10800 48071 MT
+(Uses the supplied notify send-once right to request the specified notification for)
+67 W( a port right.  Returns the)68 W
+10800 49151 MT
+(previously registered send-once right, if any.)SH
+/Times-Bold SF
+7200 50695 MT
+(mach_port_insert_right\050task, name, right\051)SH
+/Times-Italic SF
+10800 51775 MT
+(Inserts the supplied send, send-once, or receive right into the target task, giving it the specified name.)SH
+/Times-Bold SF
+7200 53319 MT
+(mach_port_extract_right\050task, name, how_extracted, OUT right\051)SH
+/Times-Italic SF
+10800 54399 MT
+(Returns a send, send-once, or receive right extracted from the target task.)SH
+45800 50 8200 55976 UL
+/Times-Bold SF
+25711 58691 MT
+(Table I-2:)SH
+/Times-Roman SF
+30461 XM
+(Kernel Calls)SH
+ES
+%%Page: i 16
+BS
+0 SI
+10 /Times-Roman AF
+30461 4286 MT
+(i)SH
+12 /Times-Bold AF
+26033 8004 MT
+(Table of Contents)SH
+11 SS 
+8850 9172 MT
+(1. Introduction)SH
+53450 XM
+(1)SH
+8850 10340 MT
+(2. Interface Description)SH
+53450 XM
+(1)SH
+10 SS 
+10700 11420 MT
+(2.1. Remote Procedure Calls)SH
+53500 XM
+(1)SH
+10700 12500 MT
+(2.2. Object-Oriented Servers)SH
+53500 XM
+(2)SH
+10700 13580 MT
+(2.3. Streams)SH
+53500 XM
+(3)SH
+10700 14660 MT
+(2.4. Copy-On-Write)SH
+53500 XM
+(3)SH
+10700 15740 MT
+(2.5. Transparent Extensions)SH
+53500 XM
+(3)SH
+11 SS 
+8850 16908 MT
+(3. Interface Advantages)SH
+53450 XM
+(4)SH
+10 SS 
+10700 17988 MT
+(3.1. Port Right Management)SH
+53500 XM
+(4)SH
+12700 19068 MT
+(3.1.1. Reference Counts)SH
+53500 XM
+(5)SH
+12700 20148 MT
+(3.1.2. Dead Names)SH
+53500 XM
+(5)SH
+10700 21228 MT
+(3.2. Reply Port Management)SH
+53500 XM
+(6)SH
+10700 22308 MT
+(3.3. Notifications)SH
+53500 XM
+(6)SH
+10700 23388 MT
+(3.4. Error Recovery)SH
+53500 XM
+(7)SH
+12700 24468 MT
+(3.4.1. Interrupted Send)SH
+53500 XM
+(7)SH
+12700 25548 MT
+(3.4.2. Partial Receive)SH
+53500 XM
+(8)SH
+11 SS 
+8850 26716 MT
+(4. Implementation)SH
+53450 XM
+(8)SH
+10 SS 
+10700 27796 MT
+(4.1. Data structures)SH
+53500 XM
+(8)SH
+10700 28876 MT
+(4.2. Hand-off scheduling)SH
+53500 XM
+(9)SH
+10700 29956 MT
+(4.3. Performance)SH
+53000 XM
+(10)SH
+10700 31036 MT
+(4.4. Implementation History)SH
+53000 XM
+(10)SH
+11 SS 
+8850 32204 MT
+(5. Compatibility)SH
+52900 XM
+(11)SH
+10 SS 
+10700 33284 MT
+(5.1. Compatibility Requirements)SH
+53000 XM
+(11)SH
+10700 34364 MT
+(5.2. Compatibility Support)SH
+53000 XM
+(11)SH
+10700 35444 MT
+(5.3. Implementation Impact)SH
+53000 XM
+(12)SH
+11 SS 
+8850 36612 MT
+(6. Conclusion)SH
+52900 XM
+(12)SH
+8850 37780 MT
+(I. Interface Summary)SH
+52900 XM
+(12)SH
+ES
+%%Page: ii 17
+BS
+0 SI
+10 /Times-Roman AF
+30322 4286 MT
+(ii)SH
+12 /Times-Bold AF
+27099 8004 MT
+(List of Tables)SH
+11 SS 
+8850 9172 MT
+(Table 4-1:)
+SH( Performance)
+550 W( Comparison)SH
+52900 XM
+(10)SH
+8850 10340 MT
+(Table I-1:)
+SH( System)
+550 W( Calls)SH
+52900 XM
+(13)SH
+8850 11508 MT
+(Table I-2:)
+SH( Kernel)
+550 W( Calls)SH
+52900 XM
+(14)SH
+ES
+%%Trailer
+%%Pages: 17
+%%DocumentFonts: Times-Roman Times-Bold Symbol Courier Times-Italic

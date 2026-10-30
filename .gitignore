@@ -1,0 +1,5 @@
+# macOS Finder metadata
+.DS_Store
+
+# Generated POSIX experiment programs and debugger artifacts
+docs/labs/posix/build/

@@ -1,0 +1,151 @@
+% Selected bibliography for studying GNU Hurd and microkernels.
+% Sources checked 2026-10-08; local copies indexed in bibliography.md.
+@misc{bushnellStrategy,
+  author = {Thomas Bushnell},
+  title = {Towards a New Strategy of OS Design},
+  url = {https://www.gnu.org/software/hurd/hurd-paper.html},
+  note = {GNU architectural design article; first-publication year not established here}
+}
+@article{walfieldBrinkmann2007Critique,
+  author = {Neal H. Walfield and Marcus Brinkmann},
+  title = {A Critique of the {GNU Hurd} Multi-Server Operating System},
+  journal = {ACM SIGOPS Operating Systems Review},
+  volume = {41}, number = {4}, pages = {30--39}, year = {2007},
+  doi = {10.1145/1278901.1278907},
+  url = {http://walfield.org/papers/200707-walfield-critique-of-the-GNU-Hurd.pdf}
+}
+@misc{walfieldBrinkmann2007Policy,
+  author = {Neal H. Walfield and Marcus Brinkmann},
+  title = {Improving Usability via Access Decomposition and Policy Refinement},
+  year = {2007},
+  url = {http://walfield.org/papers/20070104-walfield-access-decomposition-policy-refinement.pdf},
+  note = {Position paper, author manuscript; venue not verified}
+}
+@inproceedings{golub1990Unix,
+  author = {David Golub and Randall Dean and Alessandro Forin and Richard Rashid},
+  title = {Unix as an Application Program},
+  booktitle = {Proceedings of the Summer USENIX Conference}, year = {1990},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/published/mach3_intro.ps}
+}
+@inproceedings{young1987Duality,
+  author = {Michael Young and Avadis Tevanian and Richard Rashid and David Golub and Jeffrey Eppinger and Jonathan Chew and William Bolosky and David Black and Robert Baron},
+  title = {The Duality of Memory and Communication in the Implementation of a Multiprocessor Operating System},
+  booktitle = {Proceedings of the 11th Symposium on Operating Systems Principles}, year = {1987},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/published/dual-mem-com.ps}
+}
+@inproceedings{rashid1987VM,
+  author = {Richard Rashid and Avadis Tevanian and Michael Young and David Golub and Robert Baron and David Black and William Bolosky and Jonathan Chew},
+  title = {Machine-Independent Virtual Memory Management for Paged Uniprocessor and Multiprocessor Architectures},
+  booktitle = {Proceedings of the 2nd Symposium on Architectural Support for Programming Languages and Operating Systems}, year = {1987},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/published/MIvmm.ps}
+}
+@inproceedings{draves1990IPC,
+  author = {Richard P. Draves}, title = {A Revised IPC Interface},
+  booktitle = {Proceedings of the USENIX Mach Conference}, year = {1990},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/published/ipc.ps},
+  note = {CMU index dates publication to 1990; archived author file carries a 1991 copyright}
+}
+@misc{draves1989MIG,
+  author = {Richard P. Draves and Michael B. Jones and Mary R. Thompson},
+  title = {{MIG}: The {MACH} Interface Generator}, year = {1989},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/unpublished/mig.ps},
+  note = {Carnegie Mellon University, version of 2 November 1989}
+}
+@inproceedings{chenBershad1993Memory,
+  author = {J. Bradley Chen and Brian N. Bershad},
+  title = {The Impact of Operating System Structure on Memory System Performance},
+  booktitle = {Proceedings of the 14th Symposium on Operating Systems Principles},
+  year = {1993}, pages = {120--133},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/published/os-memorysys.ps}
+}
+@inproceedings{liedtke1995Construction,
+  author = {Jochen Liedtke}, title = {On Micro-Kernel Construction},
+  booktitle = {Proceedings of the 15th Symposium on Operating Systems Principles},
+  year = {1995}, pages = {237--250}, doi = {10.1145/224056.224075},
+  note = {Publication metadata verified; full text not downloaded}
+}
+@article{heiserElphinstone2016L4,
+  author = {Gernot Heiser and Kevin Elphinstone},
+  title = {{L4} Microkernels: The Lessons from 20 Years of Research and Deployment},
+  journal = {ACM Transactions on Computer Systems}, volume = {34}, number = {1},
+  year = {2016}, doi = {10.1145/2893177},
+  url = {https://trustworthy.systems/publications/nicta_full_text/8988.pdf},
+  note = {Article 1; journal extended version, not the 2013 SOSP paper}
+}
+@inproceedings{klein2009seL4,
+  author = {Gerwin Klein and Kevin Elphinstone and Gernot Heiser and June Andronick and David Cock and Philip Derrin and Dhammika Elkaduwe and Kai Engelhardt and Rafal Kolanski and Michael Norrish and Thomas Sewell and Harvey Tuch and Simon Winwood},
+  title = {{seL4}: Formal Verification of an {OS} Kernel},
+  booktitle = {Proceedings of the 22nd Symposium on Operating Systems Principles},
+  year = {2009}, pages = {207--220}, doi = {10.1145/1629575.1629596},
+  url = {https://sel4.systems/Research/pdfs/sel4-formal-verification-os-kernel.pdf}
+}
+@manual{loepere1992Principles,
+  author = {Keith Loepere}, title = {Mach 3 Kernel Principles},
+  organization = {Open Software Foundation and Carnegie Mellon University},
+  year = {1992}, note = {NORMA-MK12, July 15, 1992},
+  url = {https://www.cs.cmu.edu/afs/cs/project/mach/public/doc/osf/kernel_principles.ps}
+}
+@misc{thibault2026Hurd,
+  author = {Samuel Thibault},
+  title = {Updates on {GNU/Hurd} Progress: Rump Drivers, 64bit, {SMP}, Software Bootstrapping},
+  year = {2026},
+  url = {https://fosdem.org/2026/schedule/event/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping/},
+  note = {FOSDEM 2026 talk, February 1; slides and video}
+}
+@article{klein2014Comprehensive,
+  author = {Gerwin Klein and June Andronick and Kevin Elphinstone and Toby Murray and Thomas Sewell and Rafal Kolanski and Gernot Heiser},
+  title = {Comprehensive Formal Verification of an OS Microkernel},
+  journal = {ACM Transactions on Computer Systems}, volume = {32}, number = {1}, pages = {2:1--2:70}, year = {2014},
+  doi = {10.1145/2560537},
+  url = {https://sel4.systems/Research/pdfs/comprehensive-formal-verification-os-microkernel.pdf}
+}
+@inproceedings{sewell2011Integrity,
+  author = {Thomas Sewell and Simon Winwood and Peter Gammie and Toby Murray and June Andronick and Gerwin Klein},
+  title = {seL4 Enforces Integrity},
+  booktitle = {Interactive Theorem Proving}, year = {2011}, pages = {325--340},
+  url = {https://sel4.systems/Research/pdfs/sel4-enforces-integrity.pdf}
+}
+@inproceedings{murray2013InformationFlow,
+  author = {Toby Murray and Daniel Matichuk and Matthew Brassil and Peter Gammie and Timothy Bourke and Sean Seefried and Corey Lewis and Xin Gao and Gerwin Klein},
+  title = {seL4: From General Purpose to a Proof of Information Flow Enforcement},
+  booktitle = {IEEE Symposium on Security and Privacy}, year = {2013}, pages = {415--429},
+  url = {https://sel4.systems/Research/pdfs/sel4-from-general-purpose-to-proof-information-flow-enforcement.pdf}
+}
+@inproceedings{sewell2013TranslationValidation,
+  author = {Thomas Sewell and Magnus Myreen and Gerwin Klein},
+  title = {Translation Validation for a Verified OS Kernel},
+  booktitle = {ACM SIGPLAN Conference on Programming Language Design and Implementation}, year = {2013}, pages = {471--481},
+  url = {https://sel4.systems/Research/pdfs/translation-validation-verified-os-kernel.pdf}
+}
+@article{klein2018RealWorld,
+  author = {Gerwin Klein and June Andronick and Matthew Fernandez and Ihor Kuz and Toby Murray and Gernot Heiser},
+  title = {Formally Verified Software in the Real World},
+  journal = {Communications of the ACM}, volume = {61}, number = {10}, pages = {68--77}, year = {2018},
+  url = {https://sel4.systems/Research/pdfs/formally-verified-software-real-world.pdf}
+}
+@inproceedings{lyons2018SchedulingContext,
+  author = {Anna Lyons and Kent McLeod and Hesham Almatary and Gernot Heiser},
+  title = {Scheduling-Context Capabilities: A Principled, Light-Weight Operating-System Mechanism for Managing Time},
+  booktitle = {EuroSys Conference}, year = {2018}, pages = {26:1--26:16},
+  doi = {10.1145/3190508.3190539},
+  url = {https://sel4.systems/Research/pdfs/scheduling-context-capabilities.pdf}
+}
+@inproceedings{ge2019TimeProtection,
+  author = {Qian Ge and Yuval Yarom and Tom Chothia and Gernot Heiser},
+  title = {Time Protection: The Missing OS Abstraction},
+  booktitle = {EuroSys Conference}, year = {2019}, pages = {1:1--1:17},
+  doi = {10.1145/3302424.3303976},
+  url = {https://sel4.systems/Research/pdfs/time-protection-missing-os-abstraction.pdf}
+}
+@inproceedings{sewell2016WCET,
+  author = {Thomas Sewell and Felix Kam and Gernot Heiser},
+  title = {Complete, High-Assurance Determination of Loop Bounds and Infeasible Paths for WCET Analysis},
+  booktitle = {IEEE Real-Time and Embedded Technology and Applications Symposium}, year = {2016}, pages = {185--195},
+  url = {https://sel4.systems/Research/pdfs/complete-high-assurance-determination.pdf}
+}
+@manual{sel4Manual2026,
+  author = {{seL4 Foundation}}, title = {seL4 Reference Manual}, organization = {seL4 Foundation},
+  year = {2026}, edition = {16.0.0},
+  url = {https://sel4.systems/Info/Docs/seL4-manual-latest.pdf},
+  note = {Local copy retrieved 2026-10-08}
+}

@@ -1,0 +1,60 @@
+[//]: # ([[meta copyright="Copyright © 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010, 2013 Free Software Foundation, Inc."]])
+
+[[!meta license="""[[!toggle id="license" text="GFDL 1.2+"]][[!toggleable
+id="license" text="Permission is granted to copy, distribute and/or modify this
+document under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no Invariant
+Sections, no Front-Cover Texts, and no Back-Cover Texts.  A copy of the license
+is included in the section entitled [[GNU Free Documentation
+License|/fdl]]."]]"""]]
+
+[[!meta title="Mach Documentation"]]
+
+  * Mach's [[concepts]].
+
+  * [*Meet Mach* by James
+    Scott](http://beefchunk.com/documentation/macosx-programming/Meet_Mach.pdf),
+    a summary of Mach's history and main concepts.
+
+  * *[[The_GNU_Mach_Reference_Manual|gnumach/reference_manual]]*.
+
+  * {{$mach#kernel_foundation_unix}}
+
+  * {{$mach#vm}}
+
+  * {{$mach#kernel_principles}}
+
+  * {{$mach#kernel_interface}}
+
+  * {{$mach#server_writer}}
+
+  * {{$mach#server_interface}}
+
+  * [*The Unofficial GNU Mach IPC beginner's
+    guide*](http://hurdextras.nongnu.org/ipc_guide/), an easy introduction to
+    Inter Process Comunication in the Mach microkernel by Manuel Pavón
+    Valderrama.
+
+  * [*Mach IPC without
+    MIG*](http://walfield.org/pub/people/neal/papers/hurd-misc/mach-ipc-without-mig.txt),
+    an exercise by Neal Walfield *to understand Mach IPC at one of its lowest
+    application levels*.
+    
+      * [*ipc-hello.c*](http://walfield.org/pub/people/neal/papers/hurd-misc/ipc-hello.c):
+        *Hello world à la mach ipc*.
+
+  - [Porting and Modifying the Mach 3.0 Microkernel](http://shakthimaan.com/downloads/hurd/Porting%20and%20Modifying%20the%20Mach%203.0%20Microkernel.pdf)
+
+  - [An IO System for Mach](http://shakthimaan.com/downloads/hurd/An%20IO%20System%20for%20Mach.pdf)
+
+  - [A Programmers' Guide to Mach System Call](http://shakthimaan.com/downloads/hurd/A.Programmers.Guide.to.the.Mach.System.Calls.pdf)
+
+
+### IRC, freenode, #hurd, 2013-09-15
+
+    <teythoon> braunr: btw, are there multiple kernel threads in gnumach?
+    <teythoon> and is it safe to do a synchronous rpc call to a userspace server?
+    <braunr> teythoon: there are yes, but few
+    <braunr> teythoon: the main (perhaps only) kernel thread is the page daemon
+    <braunr> and no, it's not safe to do synchronous calls to userspace
+    <braunr> except to the default pager

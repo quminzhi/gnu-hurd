@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Debian -- Debian GNU/Hurd --- Hurd-CDs </title>
+  <link rel="author" href="mailto:webmaster@debian.org">
+  <meta name="Generator" content="WML 2.32.0">
+  <meta name="Modified" content="2026-09-23 15:40:44">
+  <meta name="viewport" content="width=device-width">
+  <meta name="mobileoptimized" content="300">
+  <meta name="HandheldFriendly" content="true">
+<link href="../../debian.css" rel="stylesheet" type="text/css">
+  <link href="../../debian-en.css" rel="stylesheet" type="text/css" media="all">
+<link rel="search" type="application/opensearchdescription+xml" title="Debian website search" href="../../search.en.xml">
+</head>
+<body>
+<div id="header">
+  <div id="upperheader">
+    <div id="logo">
+    <a href="../../" title="Debian Home"><img src="../../Pics/openlogo-50.png" alt="Debian" width="50" height="61"></a>
+    </div> <!-- end logo -->
+    <div id="searchbox">
+      <form name="p" method="get" action="https://search.debian.org/cgi-bin/omega">
+      <p>
+<input type="hidden" name="DB" value="en">
+        <input name="P" value="" size="14">
+        <input type="submit" value="Search">
+      </p>
+      </form>
+    </div>   <!-- end sitetools -->
+  </div> <!-- end upperheader -->
+  <!--UdmComment-->
+  <div id="navbar">
+    <p class="hidecss"><a href="#content">Skip Quicknav</a></p>
+    <ul>
+      <!-- Link to Debian's own Social Media resources -->
+      <li><a href="https://bits.debian.org/" title="Bits from Debian">Blog</a></li>
+      <li><a href="https://micronews.debian.org" title="Micronews from Debian">Micronews</a></li>
+      <li><a href="https://planet.debian.org/" title="The Planet of Debian">Planet</a></li>
+      <li><a href="https://wiki.debian.org/" title="The Debian Wiki">Wiki</a></li>
+    </ul>
+  </div> <!-- end navbar -->
+<p id="breadcrumbs"><a href="./../">Ports</a>
+ &#x2F; <a href="./">Debian GNU/Hurd</a>
+ &#x2F;
+Debian GNU/Hurd --- Hurd-CDs</p>
+</div> <!-- end header -->
+<!--/UdmComment-->
+<div id="content">
+[&nbsp;<a href="../../ports/index">Ports</a>&nbsp;]
+[&nbsp;<a href="index">Debian GNU/Hurd</a>&nbsp;]
+[&nbsp;<a href="hurd-news">News</a>&nbsp;]
+[&nbsp;<a href="hurd-install">Configuration</a>&nbsp;]
+[&nbsp;<b>Hurd CDs</b>&nbsp;]
+[&nbsp;<a href="hurd-doc">Documentation</a>&nbsp;]
+[&nbsp;<a href="hurd-devel">Development</a>&nbsp;]
+[&nbsp;<a href="hurd-contact">Contact</a>&nbsp;]
+<h1>Debian GNU/Hurd</h1>
+<p>While many people call the GNU system GNU/Hurd this is not strictly true.
+The kernel is GNU Mach not the Hurd. The Hurd is a series of servers which
+run on top of the microkernel, GNU Mach. Both the Hurd and GNU Mach are
+part of the GNU project while the Linux kernel is an independent project.</p>
+<p>The easiest (and well-tested) method of trying Debian GNU/Hurd is to use a
+virtual machine via KVM. Some pre-installed images are available on
+<a href="https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/README.txt">https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/README.txt</a>, but one can also
+use the Debian Installer to install in KVM or a native machine (but hardware
+support vary, so it is more recommended to give a try with KVM).
+</p>
+<h2>Using the Debian Installer installation CD-ROM</h2>
+<p>A hurd-i386 port of the standard Debian Installer can be
+downloaded from <a href="https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/">https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/</a> , and a
+hurd-amd64 pre-release port can be downloaded from <a href="https://cdimage.debian.org/cdimage/ports/latest/hurd-amd64/">https://cdimage.debian.org/cdimage/ports/latest/hurd-amd64/</a>
+Make sure to read the README file available along the iso images: <a href="https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/README">README 32bit</a> or <a href="https://cdimage.debian.org/cdimage/ports/stable/hurd-amd64/README">README 64bit</a> file.
+It works like the usual Linux port of the Debian Installer, i.e. automatically, except a
+few details:</p>
+<ul>
+<li>Make sure to enable swap space, else Mach will have troubles if you use all
+your memory.</li>
+<li>Do not mount a separate partition on <code>/usr</code>, else the boot will
+fail.</li>
+<li>
+Read <a href="hurd-install">the notes about manual installation</a> which
+document some of the final configuration steps.
+</li>
+</ul>
+<p>Instructions for burning CDs from the images can be found in the
+<a href="../../CD/faq/">Debian CD FAQ</a>.</p>
+<h2>Newer snapshots</h2>
+<p>Some newer tested snapshots are available on <a href="https://cdimage.debian.org/cdimage/ports/latest/hurd-i386/">https://cdimage.debian.org/cdimage/ports/latest/hurd-i386/</a> for i386 and <a href="https://cdimage.debian.org/cdimage/ports/latest/hurd-amd64/">https://cdimage.debian.org/cdimage/ports/latest/hurd-amd64/</a> for amd64</p>
+<p>Daily (<b>untested</b>!) snapshots are available on
+<a href="https://people.debian.org/~sthibault/hurd-i386/installer/cdimage/">https://people.debian.org/~sthibault/hurd-i386/installer/cdimage/</a> for i386
+and <a href="https://people.debian.org/~sthibault/hurd-amd64/installer/cdimage/">https://people.debian.org/~sthibault/hurd-amd64/installer/cdimage/</a> for amd64.
+Since they are based on the unstable distribution, quite often they cannot
+actually install a system, due to ongoing transitions in unstable etc. So really
+rather use the snapshot linked above.</p>
+<h2>Making a GRUB boot-disk</h2>
+<p>
+If you are installing the Hurd alone on your system, you can let the installer
+install GRUB itself. If you are installing the Hurd along an existing system,
+you will most probably want to be able to choose between both. If your existing
+system is Linux, you can probably simply run update-grub and it will detect your
+newly-installed Hurd system. Otherwise, or if you do not manage to boot the Hurd
+that way, you can use a GRUB boot-disk.</p>
+<p>
+Install the package grub-disk or grub-rescue-pc, they contain a GRUB floppy
+image. You can use "dd" if you are working in GNU/Linux or rawrite if you are
+working in MS.
+</p>
+<p>
+Make certain that you understand Linux, GRUB and Hurd methods
+of naming drives and partitions. You will be using all three and the
+relationship between them can be confusing.
+</p>
+<p>Hurd uses different partition names to Linux, so be careful. IDE
+hard disks are numbered in order, beginning from hd0 for the primary
+master and its slave hd1, followed by the secondary master hd2 and
+its slave hd3. SCSI drives are also numbered in absolute order. They will
+always be sd0, sd1, and so on regardless of whether the two drives are
+SCSI id 4 and 5 or whatever. Experience has shown that CD-ROM drives
+can be tricky. More about this later.</p>
+<p>Linux-style partitions are always called sn when using the Hurd,
+where n is the partition number, so the first partition on the first
+IDE drive will be hd0s1, the third partition on the second SCSI drive
+will be sd1s3, and so on.</p>
+<p>GRUB1 has yet another partition naming system. It calls partitions (hdN,n),
+but this time the disk number and partition number are both zero indexed, and
+the disks run in order, all the IDE disks first, and the SCSI ones second. This
+time, the first partition on the first IDE drive will be (hd0,0). GRUB2 does
+the same, but the partition number is one indexed, so in that case it will be
+(hd0,1). To really cause a confusion, (hd1,2) could refer to the first SCSI
+drive if you only have one IDE drive, or it could refer to the second IDE drive.
+So it is important that you have worked out the various names of your partitions
+before you start.</p>
+<p>Enjoy the Hurd.</p>
+<div class="clr"></div>
+</div> <!-- end content -->
+<div id="footer">
+<hr class="hidecss">
+<p>Back to the <a href="../../">Debian Project homepage</a>.</p>
+<hr>
+<!--UdmComment-->
+<div id="pageLang">
+<div id="langSelector">
+This page is also available in the following languages:
+<div id="langContainer">
+<select onchange="location = this.value;">
+<option value="" disabled selected>Select your language</option>
+ <option value="hurd-cd.da.html" title="Danish" lang="da">dansk</option>
+ <option value="hurd-cd.es.html" title="Spanish" lang="es">espa&ntilde;ol</option>
+ <option value="hurd-cd.fr.html" title="French" lang="fr">fran&ccedil;ais</option>
+ <option value="hurd-cd.it.html" title="Italian" lang="it">Italiano</option>
+ <option value="hurd-cd.nl.html" title="Dutch" lang="nl">Nederlands</option>
+ <option value="hurd-cd.pt.html" title="Portuguese" lang="pt">Portugu&ecirc;s</option>
+ <option value="hurd-cd.sv.html" title="Swedish" lang="sv">svenska</option>
+ <option value="hurd-cd.ru.html" title="Russian" lang="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (Russkij)</option>
+ <option value="hurd-cd.zh-cn.html" title="Chinese (China)" lang="zh-CN">&#20013;&#25991;(&#31616;)</option>
+ <option value="hurd-cd.zh-hk.html" title="Chinese (Hong Kong)" lang="zh-HK">&#20013;&#25991;(HK)</option>
+ <option value="hurd-cd.zh-tw.html" title="Chinese (Taiwan)" lang="zh-TW">&#20013;&#25991;(&#32321;)</option>
+ <option value="hurd-cd.ja.html" title="Japanese" lang="ja">&#26085;&#26412;&#35486; (Nihongo)</option>
+</select>
+</div>
+How to set <a href="../../intro/cn">the default document language</a>
+</div></div><!--/UdmComment-->
+<hr>
+<div id="footermap">
+<!--UdmComment-->
+<p><strong><a href="/">Home</a></strong></p>
+    <ul id="footermap-cola">
+		<li><a href="../../intro/about">About</a>
+		  <ul>
+		  <li><a href="../../social_contract">Social Contract</a></li>
+		  <li><a href="../../code_of_conduct">Code of Conduct</a></li>
+		  <li><a href="../../intro/free">Free Software</a></li>
+          <li><a href="../../legal">Legal Info</a></li>
+		  </ul>
+		</li>
+        <li><a href="../../intro/help">Help Debian</a></li>
+    </ul>
+	<ul id="footermap-colb">
+			<li><a href="../../distrib/">Getting Debian</a>
+			  <ul>
+			  <li><a href="../../distrib/netinst">Network install</a></li>
+			  <li><a href="../../CD/">CD/USB ISO images</a></li>
+            <li><a href="../../blends/">Pure Blends</a></li>
+			<li><a href="../../distrib/packages">Debian Packages</a></li>
+			<li><a href="../../devel/">Developers' Corner</a></li>
+			  </ul>
+			</li>
+	</ul>
+	<ul id="footermap-colc">
+		<li><a href="../../News/">News</a>
+		  <ul>
+		  <li><a href="../../News/weekly/">Project News</a></li>
+		  <li><a href="../../events/">Events</a></li>
+		  </ul>
+		</li>
+    <li><a href="../../doc/">Documentation</a>
+      <ul>
+      <li><a href="../../releases/">Release Info</a></li>
+      <li><a href="https://wiki.debian.org/">Debian Wiki</a></li>
+      </ul>
+    </li>
+   </ul>
+   <ul id="footermap-cold">
+    <li><a href="../../support">Support</a>
+	  <ul>
+			  <li><a href="../../international/">Debian International</a></li>
+			  <li><a href="../../security/">Security Information</a></li>
+			  <li><a href="../../Bugs/">Bug reports</a></li>
+			  <li><a href="../../MailingLists/">Mailing Lists</a></li>
+      </ul>
+    </li>
+</ul>
+<ul id="footermap-cole">
+  <li><a href="../../sitemap">Site map</a></li>
+  <li><a href="https://search.debian.org/">Search</a></li>
+  <li><a href="https://bits.debian.org">The Debian Blog</a></li>
+  <li><a href="https://micronews.debian.org">Debian Micronews</a></li>
+  <li><a href="https://planet.debian.org">Debian Planet</a></li>
+</ul>
+<!--/UdmComment-->
+</div> <!-- end footermap -->
+<div id="fineprint">
+<!--UdmComment-->
+  <p>See our <a href="../../contact">contact page</a> to get in touch. Web site source code is <a href="https://salsa.debian.org/webmaster-team/webwml">available</a>.</p>
+<p>
+Last Modified: Thu, Jun 11 15:24:12 UTC 2026
+&emsp;
+Last Built: Wed, Sep 23 15:40:44 UTC 2026
+  <br>
+  Copyright &copy; 1997-2026 <a href="https://www.spi-inc.org/">SPI</a> and others; See <a href="../../license" rel="copyright">license terms</a><br>
+  Debian is a registered <a href="../../trademark">trademark</a> of Software in the Public Interest, Inc.
+</p>
+<!--/UdmComment-->
+</div>
+</div> <!-- end footer -->
+</body>
+</html>

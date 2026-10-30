@@ -1,0 +1,6 @@
+flowchart TB
+    A[应用程序] -->|POSIX 函数| G[glibc]
+    G <-->|逻辑上的 RPC 请求与回复| H[Hurd 服务器：文件系统、auth、proc、exec 等]
+    G -.->|mach_msg 等内核接口| M[GNU Mach：任务、线程、虚拟内存、IPC 等机制]
+    H -.->|mach_msg 等内核接口| M
+    M --> HW[硬件]

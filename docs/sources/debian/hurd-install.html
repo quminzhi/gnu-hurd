@@ -1,0 +1,602 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Debian -- Debian GNU/Hurd &mdash; Configuration </title>
+  <link rel="author" href="mailto:webmaster@debian.org">
+  <meta name="Generator" content="WML 2.32.0">
+  <meta name="Modified" content="2026-09-23 15:40:51">
+  <meta name="viewport" content="width=device-width">
+  <meta name="mobileoptimized" content="300">
+  <meta name="HandheldFriendly" content="true">
+<link href="../../debian.css" rel="stylesheet" type="text/css">
+  <link href="../../debian-en.css" rel="stylesheet" type="text/css" media="all">
+<link rel="search" type="application/opensearchdescription+xml" title="Debian website search" href="../../search.en.xml">
+</head>
+<body>
+<div id="header">
+  <div id="upperheader">
+    <div id="logo">
+    <a href="../../" title="Debian Home"><img src="../../Pics/openlogo-50.png" alt="Debian" width="50" height="61"></a>
+    </div> <!-- end logo -->
+    <div id="searchbox">
+      <form name="p" method="get" action="https://search.debian.org/cgi-bin/omega">
+      <p>
+<input type="hidden" name="DB" value="en">
+        <input name="P" value="" size="14">
+        <input type="submit" value="Search">
+      </p>
+      </form>
+    </div>   <!-- end sitetools -->
+  </div> <!-- end upperheader -->
+  <!--UdmComment-->
+  <div id="navbar">
+    <p class="hidecss"><a href="#content">Skip Quicknav</a></p>
+    <ul>
+      <!-- Link to Debian's own Social Media resources -->
+      <li><a href="https://bits.debian.org/" title="Bits from Debian">Blog</a></li>
+      <li><a href="https://micronews.debian.org" title="Micronews from Debian">Micronews</a></li>
+      <li><a href="https://planet.debian.org/" title="The Planet of Debian">Planet</a></li>
+      <li><a href="https://wiki.debian.org/" title="The Debian Wiki">Wiki</a></li>
+    </ul>
+  </div> <!-- end navbar -->
+<p id="breadcrumbs"><a href="./../">Ports</a>
+ &#x2F; <a href="./">Debian GNU/Hurd</a>
+ &#x2F;
+Debian GNU/Hurd &mdash; Configuration</p>
+</div> <!-- end header -->
+<!--/UdmComment-->
+<div id="content">
+[&nbsp;<a href="../../ports/index">Ports</a>&nbsp;]
+[&nbsp;<a href="index">Debian GNU/Hurd</a>&nbsp;]
+[&nbsp;<a href="hurd-news">News</a>&nbsp;]
+[&nbsp;<b>Configuration</b>&nbsp;]
+[&nbsp;<a href="hurd-cd">Hurd CDs</a>&nbsp;]
+[&nbsp;<a href="hurd-doc">Documentation</a>&nbsp;]
+[&nbsp;<a href="hurd-devel">Development</a>&nbsp;]
+[&nbsp;<a href="hurd-contact">Contact</a>&nbsp;]
+<h1>Debian GNU/Hurd Configuration</h1>
+<p>
+This document aims to provide an easy and relatively painless set of
+instructions on how to configure Debian GNU/Hurd with a minimum
+amount of effort.
+</p>
+<p>
+It is based in Neal H. Walfield's <q>The Hurd Installation Guide</q>.
+Many thanks to Neal for his contribution.
+</p>
+<h2>Overview </h2>
+<p>
+GNU is similar in nature to any Unix-like system: after logging in, the user is
+presented with a shell and the familiar Unix VFS (virtual filesystem). Although
+GNU tries to be POSIX compliant, it is <q>Not Unix</q>. GNU/Hurd builds upon many of
+the Unix concepts and extends them to either add new functionality or to fix
+what has been perceived as flaws in the original design. The most noticeable
+difference is translators, user space programs which interact with the VFS.
+These filesystems do not live in the kernel nor do they need to be run
+as root; they only need access to the backing store and the
+<code>mount point</code>. Another difference is that processes, rather than having a single
+user identity fixed at creation time, have identity tokens which are disjoint
+from the process, i.e. they may be added with the appropriate permission from
+an authority or destroyed.
+</p>
+<p>
+Being familiar with the Unix environment (and especially GNU userland, found in
+popular variants such as GNU/Linux) is an imperative for feeling at ease in
+GNU. Having experience with the Debian tools will also prove invaluable to the
+configuration and maintenance of a GNU/Hurd box.
+</p>
+<p>
+This guide endeavors to make installing GNU/Hurd as painless a process as
+possible. If there are errors, they are most certainly the author's. Please
+report them, along with any other suggestions or criticisms, to him; all are
+gladly accepted.
+</p>
+<h2> Installation </h2>
+<p>
+You can simply use the Debian installer, see the
+<a href="hurd-cd">prepared CD images</a>.
+Then the following steps will be needed for proper configuration.
+</p>
+<p>
+You can also get a pre-installed image and run it in qemu:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+$ wget https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/debian-hurd.img.tar.gz
+$ tar xzf debian-hurd.img.tar.gz
+$ kvm -m 2G -drive file=$(echo debian-hurd*.img),cache=writeback
+</pre></td></tr></table>
+(or <code>https://cdimage.debian.org/cdimage/ports/latest/hurd-amd64/debian-hurd.img.tar.gz</code> for the 64-bit pre-release)
+<p>
+Make sure to read the <a href="https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/README">README 32bit</a> or
+<a href="https://cdimage.debian.org/cdimage/ports/stable/hurd-amd64/README">README 64bit</a> file.
+</p>
+<p>
+Latest (less tested) images are available on <code>https://cdimage.debian.org/cdimage/ports/stable/hurd-i386/debian-hurd.img.tar.gz</code> and <code>https://cdimage.debian.org/cdimage/ports/stable/hurd-amd64/debian-hurd.img.tar.gz</code>, again make sure to read the <a href="https://cdimage.debian.org/cdimage/ports/latest/hurd-i386/README">README 32bit</a> or
+<a href="https://cdimage.debian.org/cdimage/ports/latest/hurd-amd64/README">README 64bit</a> file.
+</p>
+<p>
+To enable accessing the box through ssh, you can append
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+-net nic -net user,hostfwd=tcp:127.0.0.1:2222-:22
+</pre></td></tr></table>
+<p>
+and ssh to your local TCP port 2222.
+</p>
+<p>
+You can also convert the image to the VDI format for virtualbox (but running inside virtualbox is not really tested, so you are on your own and may encounter issues that don't happen with qemu/kvm):
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+$ VBoxManage convertfromraw debian-hurd-*.img debian-hurd.vdi --format vdi
+</pre></td></tr></table>
+<h2> Configuration </h2>
+<h3> The Network </h3>
+<p>
+The Debian way is supported starting from sysvinit 2.88dsf-48 and hurd 1:0.5.git20140320-1: <tt>/etc/network/interfaces</tt> is used like on
+Linux. The only difference is that network boards appear in <tt>/dev</tt>, and
+interfaces should thus be specified as <tt>/dev/eth0</tt> etc.
+</p>
+<p>
+If network does not seem to work, use the following to get debugging information
+from the DDE driver:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # settrans -fga /dev/netdde /hurd/netdde
+</pre></td></tr></table>
+<p>
+and then kill any devnode and pfinet process to let them restart with the newer
+netdde. If it still does not work, please post in a bug report the full output of the netdde settrans
+above, as well as the output of <code>lspci</code> and <code>lspci -n</code> .
+</p>
+<p>
+To configure the network without going through <tt>/etc/network/interfaces</tt>,
+the pfinet translator must be configured.
+This can be done by using <code>dhclient</code> from the
+<code>isc-dhcp-client</code> package.
+This can also be done by hand by using <code>inetutils-ifconfig</code>
+from the <code>inetutils-tools</code> package, and <code>ping</code> is
+available in the <code>inetutils-ping</code> package.
+Last but not least, this can be done (and recorded for good) by hand using the
+<code>settrans</code> command to attach a translator to a given
+filesystem node. When programs access the node by, for example sending an RPC,
+the operating system will transparently start the server to handle the request.
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # settrans -fgap /servers/socket/2 /hurd/pfinet -i /dev/eth0 -a a.b.c.d -g e.f.g.h -m i.j.k.l
+</pre></td></tr></table>
+<p>
+Here, <code>settrans</code> is passed several options. The first two,
+<q><var>fg</var></q>, force any existing translator to go away. The next two,
+<q><var>ap</var></q>, make both active and passive translators. By making the
+translator active, we will immediately see any error messages on
+<tt><q>stderr</q></tt>. The latter saves the translator and arguments in the node
+so it can be transparently restarted later (i.e. making the setting persistent
+across reboots). The options are followed by the node to which the translator
+is to be attached, then the program (i.e. translator) to run and any arguments
+to give it. The <q><var>-i</var></q> option is the interface <code>pfinet</code>
+will listen on, <q><var>-a</var></q> is the IP address, <q><var>-g</var></q> is the
+gateway and <q><var>-m</var></q> is the network mask.
+</p>
+<p>
+Be sure to add name servers to your <tt><q>/etc/resolv.conf</q></tt> file:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+  nameserver 192.168.1.1
+</pre></td></tr></table>
+<p>
+To test the configuration, <code>ping -c2 gateway</code>. The
+<q><var>-c</var></q> is important to limit the number of pings; recall,
+<kbd>CONTROL-C</kbd> does not work in single user mode.
+</p>
+<p>
+Help on <code>settrans</code> can be obtained by passing it the
+<q><var>--help</var></q> option. Help on a specific translator can be gotten by
+invoking it from the command line with the same argument, e.g.:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # /hurd/pfinet --help
+</pre></td></tr></table>
+<p>
+As there can be a lot of output, consider piping this through a pager such as
+<code>less</code>.
+</p>
+<p>
+To also configure IPv6 support, the same configuration has to be recorded on
+both <tt>/servers/socket/2</tt> and <tt>/servers/socket/26</tt>, referencing
+each other so that only one is actually started, bound to both nodes:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # settrans -fgap /servers/socket/2 /hurd/pfinet -6 /servers/socket/26 -i /dev/eth0 -a a.b.c.d -g e.f.g.h -m i.j.k.l
+ # settrans -p /servers/socket/26 /hurd/pfinet -4 /servers/socket/2 -i /dev/eth0 -a a.b.c.d -g e.f.g.h -m i.j.k.l
+</pre></td></tr></table>
+<p>
+The pfinet server enables IPv6 autoconfiguration by default. The current status
+can be obtained from <tt>fsysopts /servers/socket/26</tt>. Addresses can also
+be set by hand, by using e.g. <tt>-A 2001:123:123::42/64 -G 2001:123:123::1</tt>.
+</p>
+<p>
+The configuration of pfinet can also be changed live
+(without record on disk) by using <tt>fsysopts</tt>:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # fsysopts /servers/socket/2
+ /hurd/pfinet --interface=/dev/eth0 --address=10.3.0.1 --netmask=255.255.0.0 --gateway=10.3.0.128
+ # fsysopts /server/socket/2 -a 10.3.0.2 -m 255.255.0.0 -g 10.3.0.128
+</pre></td></tr></table>
+<p>
+A firewall can be set up by interposing the <tt>eth-filter</tt> translator, for instance, this prevents access to port 22:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # settrans -c /dev/eth0f /hurd/eth-filter -i /dev/eth0 -r "not port 22"
+</pre></td></tr></table>
+<p>
+The filtered device, <tt>/dev/eth0f</tt>, can then be given to <tt>pfinet</tt>
+or <tt>dhclient</tt> instead of /dev/eth0.
+</p>
+<h3> Keyboard layout </h3>
+<p>
+The layout of the keyboard can be configured through the standard
+<code>keyboard-configuration</code> package. Make sure that it is installed, and
+run <code>dpkg-reconfigure keyboard-configuration</code>. Only the layout is
+supported, variants are not (yet). The effect will not
+be immediate, as the console needs to be restarted to take the parameter into
+account. Rebooting should be fine for instance.
+</p>
+<h3> Other File Systems </h3>
+<p>
+Next, edit <tt><q>/etc/fstab</q></tt> to add any additional filesystems as well as
+swap space. It is <em>very important</em> that swap space be used; the Hurd
+will be an order of magnitude more stable. Note that the Hurd can transparently
+share a swap partition with Linux but will happily page to any device including
+a raw partition such as your home partition. By default, <code>nano</code> and <code>vi</code> are
+the only editors installed by the base distribution.
+</p>
+<p>
+Here is an example <tt><q>/etc/fstab</q></tt> file:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+# &#60;file system&#62; &#60;mount point&#62;   &#60;type&#62;  &#60;options&#62;  &#60;dump&#62;  &#60;pass&#62;
+/dev/hd0s1      /               ext2    rw         0       1
+/dev/hd0s2      /home           ext2    rw         0       2
+/dev/hd0s3      none            swap    sw         0       0
+</pre></td></tr></table>
+<p>
+If any <code>/dev</code> device entry is missing, remember to create it using the <code>MAKEDEV</code> command:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # cd /dev
+ # ./MAKEDEV hd0s1 hd0s2 hd0s3
+</pre></td></tr></table>
+<p>
+You can also mount a filesystem by hand by calling <code>settrans</code>:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # settrans /mnt /hurd/ext2fs /dev/hd0s5
+</pre></td></tr></table>
+<p>
+The idea behind this command is that you set on the <code>/mnt</code> node the
+<code>/hurd/ext2fs /dev/hd0s5</code> translator. <code>/hurd/ext2fs</code> will
+get executed and start read/writing <code>/dev/hd0s5</code> and show its content
+on <code>/mnt</code>. More information can be found in the
+<a href="hurd-doc-translator">Translator documentation</a>.
+</p>
+<p>
+To mount an nfs filesystem, <code>/hurd/nfs</code> translator is used. When
+run as non-root, the translator will connect to the server using a port above
+1023. By default, GNU/Linux will reject this. To tell GNU/Linux to accept
+connections originating from a non-reserved port, add the
+<q><var>insecure</var></q> option to the export line. Here is an example
+<tt><q>/etc/exports</q></tt> file assuming the client's ip address is
+<tt><q>192.168.1.2</q></tt>:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+  /home  192.168.1.2(rw,insecure)
+</pre></td></tr></table>
+<p>
+To mount this from a GNU box and assuming that nfs server's ip address is
+<tt><q>192.168.1.1</q></tt>:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+# settrans -cga /mount/point /hurd/nfs 192.168.1.1:/home
+</pre></td></tr></table>
+<h2> Have fun with Debian GNU/Hurd </h2>
+<p>
+Now, what nice things can we do with the Hurd?
+</p>
+<h3> Mount disk images </h3>
+<p>
+Accessing the content of a CD image is a bit tedious with standard Unix systems
+if you are not root. On GNU/Hurd, it amounts to this:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+settrans ~/mnt /hurd/iso9660fs CD_image.iso
+</pre></td></tr></table>
+<p>
+And it is completely safe: the <code>iso9660fs</code> translator is running
+under your identity, not root. You can even code your own translator for any
+kind of filesystem. Yes, this is like FUSE. Without all the kludge.
+</p>
+<h3> Transparent FTP </h3>
+<p>
+The following sets up a transparent <code>ftp</code> directory:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+settrans -c /ftp: /hurd/hostmux /hurd/ftpfs /
+</pre></td></tr></table>
+<p>
+Now, <code>cd</code> to e.g. <code>/ftp://ftp.gnu.org/</code>, and run <code>ls</code> there.
+Yes, you can from your home simply run <code>tar xf ftp://ftp.gnu.org/pub/gnu/gcc/gcc-4.6.0/gcc-4.6.0.tar.bz2</code> !
+</p>
+<h3> Sub-Hurd </h3>
+<p>
+A <a href="https://www.gnu.org/software/hurd/hurd/subhurd.html">sub-Hurd</a> is a
+complete subsystem. Very much like virtualization containers on first
+sight. Except that you do not need to be root at all to run one.
+</p>
+<h3> gdb ext2fs, pfinet, ... </h3>
+<p>
+Yes, you can run gdb on e.g. the ext2fs implementation, the <code>pfinet</code> TCP/IP stack, etc.
+</p>
+<h3> And many more things! </h3>
+<p>
+Some in-progress work include <code>mboxfs</code>, <code>tarfs</code>, <code>xmlfs</code>, <code>gopherfs</code>, ...
+</p>
+<h2>Final Words </h2>
+<p>
+The following are just install-time quickies, make sure to also read
+documentation for the installed system: the <a href="hurd-doc">Debian GNU/Hurd documentation</a>,
+but also the <a href="http://hurd.gnu.org">Upstream website</a>.
+</p>
+<h3><a name="morepackages"> Installing More Packages </a></h3>
+<p>
+There are several ways to add packages. Downloading and using
+<code>dpkg -i</code> works but is very inconvenient. The easiest method
+is to use <code>apt</code>.
+</p>
+<p>
+If you have used the Debian GNU/Hurd 2025 release, the safest
+way is use the snapshot of this release as apt source: edit
+<tt><q>/etc/apt/sources.list</q></tt>, add the following entries.
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+deb [check-valid-until=no trusted=yes] https://snapshot.debian.org/archive/debian-ports/20250807T000000Z/ sid main
+deb [check-valid-until=no trusted=yes] https://snapshot.debian.org/archive/debian-ports/20250807T000000Z/ unreleased main
+deb-src [check-valid-until=no trusted=yes] https://snapshot.debian.org/archive/debian/20250807T000000Z/ sid main
+</pre></td></tr></table>
+<p>
+Update, install the <code>debian-ports-archive-keyring</code> package, and update again, you now have the
+full Debian GNU/Hurd 2025 release available.
+</p>
+<p>
+Note: If you have used <code>apt modernize-sources</code>, make sure to add a <code>Check-Valid-Until=no</code> line (see <a href="https://bugs.debian.org/1143584">bug report</a>).
+</p>
+<p>
+You can then also add these sources to get the most recent packages:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+deb http://deb.debian.org/debian-ports unstable main
+deb-src http://deb.debian.org/debian unstable main
+deb http://deb.debian.org/debian-ports unreleased main
+</pre></td></tr></table>
+<p>
+Update, install the <code>debian-ports-archive-keyring</code> package, and
+update again.
+</p>
+<p>
+If you have kept the old snapshot source lines, you may need to add the
+<code>signed-by=/usr/share/keyrings/debian-ports-archive-keyring-removed.gpg</code>
+option to the snapshot debian-ports lines, and
+<code>signed-by=/usr/share/keyrings/debian-archive-removed-keys.gpg</code>
+to the snapshot debian line, to give apt the proper gpg key to check the
+repository.
+</p>
+<p>
+If when doing your first <code>apt</code>, <code>dpkg</code> complains of
+missing programs, get root in a login shell (i.e. <code>su -</code>, not just
+<code>su</code>).
+</p>
+<p>
+If GNU Mach does not recognize your network card or you use a modem, the only
+way to upgrade will be to download the packages and then transfer them to the
+GNU system. The easiest way to do this is to use apt off-line. Refer to
+<tt><q>/usr/share/doc/apt-doc/offline.text.gz</q></tt> for detailed instructions.
+</p>
+<h3>The Hurd console</h3>
+<p>
+Besides the Mach console you encountered during installation, the GNU/Hurd
+features a powerful user-space console providing virtual terminals.
+If you have installed in pseudo-graphical mode, it should be started
+automatically at boot, otherwise you can start it manually with the following
+command:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+ # console -d vga -d pc_mouse --repeat=mouse -d pc_kbd --repeat=kbd -d generic_speaker -c /dev/vcs
+</pre></td></tr></table>
+<p>
+If it is confirmed to be working, it can be enabled at boot from
+<tt>/etc/default/hurd-console</tt>: turn <tt>ENABLE="false"</tt> into
+<tt>ENABLE="true"</tt>.
+</p>
+<p>
+Inside the Hurd console, you can switch between virtual terminals via
+<kbd>ALT+F1</kbd>, <kbd>ALT+F2</kbd> and so on. <kbd>ALT+CTRL+BACKSPACE</kbd> detaches
+the Hurd console and brings you back to the Mach console, from where you
+can reattach again with the above command.
+</p>
+<h3>X.Org </h3>
+<p>
+X.Org has been ported and all video cards, which it supports that do not
+require a kernel module or drm should work.
+</p>
+<p>
+You need to already be running the Hurd console and have repeaters setup as
+indicated in the previous section. For instance, check that <code>echo
+$TERM</code> prints <code>hurd</code>, and check that <code>/dev/cons/kbd</code>
+and <code>/dev/cons/mouse</code> exist.
+</p>
+<p>
+You need to run <tt>dpkg-reconfigure x11-common xserver-xorg-legacy</tt> to allow any user to start
+Xorg, because the X wrapper does not know about the Hurd and Mach consoles.
+</p>
+<p>
+You also need to create a <tt>/etc/X11/xorg.conf</tt> to enable the control-alt-backspace shortcut:
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+Section "InputDevice"
+   Identifier "Generic Keyboard"
+   Driver "kbd"
+   Option "XkbOptions" "terminate:ctrl_alt_bksp"
+EndSection
+</pre></td></tr></table>
+<p>
+It may happen that for some reason Xorg chooses a 16/9 resolution but a 4/3 desktop size. Blame Xorg, not the Hurd :) To avoid the issue, append this to <tt>/etc/X11/xorg.conf</tt> :
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+Section "Screen"
+   Identifier "myScreen"
+   SubSection "Display"
+      Virtual 1024 768
+   EndSubSection
+EndSection
+</pre></td></tr></table>
+<p>
+You will need several X packages. <code>xorg</code>,
+<code>rxvt</code> and a window manager: <code>twm</code>, <code>icewm</code>, <code>openbox</code>, ...
+are a good start. If you want X to get started at boot, you have to install a
+display manager. <code>lightdm</code> and <code>gdm</code> do not work yet, but
+<code>xdm</code> should just work fine.
+</p>
+<p>
+Finally, run <code>startx /usr/bin/yourwm</code>
+</p>
+<p>
+If that doesn't work, as mentioned by the error message, look in <tt>/var/log/Xorg.0.log</tt> (or post it to the list for people to have a look).
+</p>
+<h3>Upgrading your System</h3>
+<p>
+If you are using a Debian release snapshot, you will not have any upgrade
+available, since the released distribution is frozen at the release date.
+<b>This means you will not get security updates!</b> You may rather want to
+enable the unstable distribution as described in section
+<a href="#morepackages">Installing More Packages</a>.
+</p>
+<p>
+Once you have enabled the unstable distribution, note that since this is
+unstable, it is affected by library transition hickups, so do not be surprised
+that it will sometimes not be able to upgrade some packages. Generally, you can
+use the recommended Debian upgrade procedure: first use
+</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+# apt upgrade --without-new-pkgs
+</pre></td></tr></table>
+<p>to upgrade what can be without changing the list of packages, and then use</p>
+<table summary=""><tr><td>&nbsp;</td><td class="example"><pre>
+# apt full-upgrade
+</pre></td></tr></table>
+<p>to upgrade the rest.</p>
+<p>Note: if you very seldom upgrade your system, you may hit upgrade
+issues. Make sure to first upgrade to the latest release snapshot (Hurd 2025,
+see section <a href="#morepackages">Installing More Packages</a>) before upgrading
+from the unstable distribution.</p>
+<h3>Last words</h3>
+<p>
+To shutdown your system, simply use <code>halt</code>, <code>poweroff</code> or <code>reboot</code>. If that happens to sometimes hang because some daemon is not terminating properly, you can use instead <code>halt-hurd</code>, <code>poweroff-hurd</code>, <code>reboot-hurd</code>, which don't actually shut down daemons, but properly sync data to disk.
+</p>
+<div class="clr"></div>
+</div> <!-- end content -->
+<div id="footer">
+<hr class="hidecss">
+<p>Back to the <a href="../../">Debian Project homepage</a>.</p>
+<hr>
+<!--UdmComment-->
+<div id="pageLang">
+<div id="langSelector">
+This page is also available in the following languages:
+<div id="langContainer">
+<select onchange="location = this.value;">
+<option value="" disabled selected>Select your language</option>
+ <option value="hurd-install.fr.html" title="French" lang="fr">fran&ccedil;ais</option>
+ <option value="hurd-install.it.html" title="Italian" lang="it">Italiano</option>
+ <option value="hurd-install.nl.html" title="Dutch" lang="nl">Nederlands</option>
+ <option value="hurd-install.pt.html" title="Portuguese" lang="pt">Portugu&ecirc;s</option>
+ <option value="hurd-install.ru.html" title="Russian" lang="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (Russkij)</option>
+</select>
+</div>
+How to set <a href="../../intro/cn">the default document language</a>
+</div></div><!--/UdmComment-->
+<hr>
+<div id="footermap">
+<!--UdmComment-->
+<p><strong><a href="/">Home</a></strong></p>
+    <ul id="footermap-cola">
+		<li><a href="../../intro/about">About</a>
+		  <ul>
+		  <li><a href="../../social_contract">Social Contract</a></li>
+		  <li><a href="../../code_of_conduct">Code of Conduct</a></li>
+		  <li><a href="../../intro/free">Free Software</a></li>
+          <li><a href="../../legal">Legal Info</a></li>
+		  </ul>
+		</li>
+        <li><a href="../../intro/help">Help Debian</a></li>
+    </ul>
+	<ul id="footermap-colb">
+			<li><a href="../../distrib/">Getting Debian</a>
+			  <ul>
+			  <li><a href="../../distrib/netinst">Network install</a></li>
+			  <li><a href="../../CD/">CD/USB ISO images</a></li>
+            <li><a href="../../blends/">Pure Blends</a></li>
+			<li><a href="../../distrib/packages">Debian Packages</a></li>
+			<li><a href="../../devel/">Developers' Corner</a></li>
+			  </ul>
+			</li>
+	</ul>
+	<ul id="footermap-colc">
+		<li><a href="../../News/">News</a>
+		  <ul>
+		  <li><a href="../../News/weekly/">Project News</a></li>
+		  <li><a href="../../events/">Events</a></li>
+		  </ul>
+		</li>
+    <li><a href="../../doc/">Documentation</a>
+      <ul>
+      <li><a href="../../releases/">Release Info</a></li>
+      <li><a href="https://wiki.debian.org/">Debian Wiki</a></li>
+      </ul>
+    </li>
+   </ul>
+   <ul id="footermap-cold">
+    <li><a href="../../support">Support</a>
+	  <ul>
+			  <li><a href="../../international/">Debian International</a></li>
+			  <li><a href="../../security/">Security Information</a></li>
+			  <li><a href="../../Bugs/">Bug reports</a></li>
+			  <li><a href="../../MailingLists/">Mailing Lists</a></li>
+      </ul>
+    </li>
+</ul>
+<ul id="footermap-cole">
+  <li><a href="../../sitemap">Site map</a></li>
+  <li><a href="https://search.debian.org/">Search</a></li>
+  <li><a href="https://bits.debian.org">The Debian Blog</a></li>
+  <li><a href="https://micronews.debian.org">Debian Micronews</a></li>
+  <li><a href="https://planet.debian.org">Debian Planet</a></li>
+</ul>
+<!--/UdmComment-->
+</div> <!-- end footermap -->
+<div id="fineprint">
+<!--UdmComment-->
+  <p>See our <a href="../../contact">contact page</a> to get in touch. Web site source code is <a href="https://salsa.debian.org/webmaster-team/webwml">available</a>.</p>
+<p>
+Last Modified: Wed, Aug 5 23:24:12 UTC 2026
+&emsp;
+Last Built: Wed, Sep 23 15:40:51 UTC 2026
+  <br>
+  Copyright &copy; 1997-2026 <a href="https://www.spi-inc.org/">SPI</a> and others; See <a href="../../license" rel="copyright">license terms</a><br>
+  Debian is a registered <a href="../../trademark">trademark</a> of Software in the Public Interest, Inc.
+</p>
+<!--/UdmComment-->
+</div>
+</div> <!-- end footer -->
+</body>
+</html>

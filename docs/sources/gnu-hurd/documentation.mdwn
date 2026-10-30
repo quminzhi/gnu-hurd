@@ -1,0 +1,112 @@
+[[!meta license="""[[!toggle id="license" text="GFDL 1.2+"]][[!toggleable
+id="license" text="Permission is granted to copy, distribute and/or modify this
+document under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no Invariant
+Sections, no Front-Cover Texts, and no Back-Cover Texts.  A copy of the license
+is included in the section entitled [[GNU Free Documentation
+License|/fdl]]."]]"""]]
+
+[[!meta title="Documentation"]]
+
+/!\ Some stuff is missing (see [[!taglink Documentation_Issues|open_issue_documentation]]).
+
+Are you interested in getting familiar with the GNU/Hurd system architecture,
+or specific components of it?  Here is a collection of texts to read.
+
+[[!toc levels=1]]
+
+---
+# Basic Knowledge
+
+Before diving in, you should learn basic operating system architecture (Yes, really). You needn't go through all of these, but they're very enjoyable if you want to.
+
+## Operating Systems Basics
+
+* [Udacity](https://www.udacity.com/) - Good, free, self-paced online courses about operating systems.
+* [Operating Systems: Three Easy Pieces](http://pages.cs.wisc.edu/~remzi/OSTEP/) - An excellent book on operating systems.
+* [[!wikipedia Advanced_Programming_in_the_Unix_Environment]] - May help you grasp UNIX & POSIX standards.
+* [Operating Systems](http://www.deitel.com/Books/OperatingSystems/OperatingSystems3e/tabid/1711/Default.aspx) - A well praised book on the subject.
+* [Operating System Concepts](https://www.os-book.com/OS9/) - Another well praised book.
+* [Modern Operating Systems](https://en.wikipedia.org/wiki/Modern_Operating_Systems) - This book has achieved world-wide praise. Of course [the cat-v.org people don't like it](http://harmful.cat-v.org/software/andy_tanenbaum).
+
+## GNU/Hurd System Architecture
+You may want to start reading a [[quick overview|overview]] of how the GNU/Hurd system
+starts, and thus how it is structured. Also see our [[FAQ]]
+
+### Capabilities
+  * [[Capabilities|capability]]
+  * [[!wikipedia Capability-based_security]] (Wikipedia)
+  * [What is a Capability, Anyway?](https://archive.is/20130112225523/http://www.eros-os.org/essays/capintro.html)
+  * [Capability Theory by Sound Bytes](http://www.cap-lore.com/CapTheory/)
+  * [What Are Capabilities?](http://habitatchronicles.com/2017/05/what-are-capabilities/)
+
+In the Hurd, a capability is represented by a [[Mach port|microkernel/mach/port]].
+
+---
+# Specific Components
+
+The GNU/Hurd system is composed of the Hurd servers running on top of the
+GNU Mach microkernel. Mach only handles scheduling tasks and threads, memory
+management, and message passing. Mig is used to abstract RPCs on top of Mach's
+message passing. Eventually, the Hurd servers and Unix processes discuss with
+each other using these RPCs.
+
+Depending on your background, you may want to start reading the documentation
+from userlandish interfaces (Hurd) or from the microkernel itself (Mach).
+
+  * [[GNU_Hurd|hurd/documentation]]
+  * [[Introduction to Translators|/hurd-paper#translator]] and
+  [[Existing Translators|hurd/translator]]
+  * [[Subhurds|hurd/subhurd]]
+  * [[Mach|microkernel/mach/documentation]]
+  * [[MIG|microkernel/mach/mig/documentation]]
+  * [[UNIX]]
+
+---
+# Presentations
+
+* **2026**
+ * FOSDEM: {{$community/meetings/fosdem_2026#thibault_hurd}}
+* **2022**
+ * FOSDEM: {{$community/meetings/fosdem_2022#zammit_hurd}}
+* **2019**
+ * FOSDEM: {{$community/meetings/fosdem_2019#thibault_hurd}}
+* **2018**
+ * FOSDEM: {{$community/meetings/fosdem_2018#thibault_hurd}}
+ * Brent Baccala: [[Building a GNU/Hurd Cluster|https://www.youtube.com/watch?v=JwsuAEF2FYE]]
+* **2017**
+  * FOSDEM: {{$community/meetings/fosdem_2017#ragkousis_guix_hurd}}
+  * FOSDEM: {{$community/meetings/fosdem_2017#winter_hurd}}
+* **2016**
+  * FOSDEM: {{$community/meetings/fosdem_2016#ragkousis_guix_hurd}}
+  * FOSDEM: {{$community/meetings/fosdem_2016#thibault_hurd}}
+* **2015**
+  * FOSDEM: {{$community/meetings/fosdem_2015#thibault_hurd}}
+  * Debconf: {{$community/meetings/debconf15#youpi_hurd}}
+* **2014**
+  * FOSDEM: {{$community/meetings/fosdem_2014#thibault_hurd}}
+* **2013**
+  * GNU Hackers Meeting in Paris: {{$community/meetings/ghm2013#thibault_hurd}}
+  * FOSDEM: {{$community/meetings/fosdem_2013#thibault_hurd}}
+* **2011**
+  * GNU Hackers Meeting in Paris: {{$community/meetings/ghm2011#thibault_hurd}}
+* **2010**
+  * GNU Hackers Meeting in the Hague: {{$community/meetings/ghm2010#walfield_hurd}}
+  * Debconf: {{$community/meetings/debconf10#banck_hurd}}
+  * FOSDEM: {{$community/meetings/fosdem_2010#olaf_hurd1}}
+  * FOSDEM: {{$community/meetings/fosdem_2010#olaf_hurd2}}
+* **2004**
+  * Ognyan Kulev, [*presentation of the Hurd*](http://debian.fmi.uni-sofia.bg/~ogi/hurd/liofest-20040702-hurd.ppt) 
+at the seminar *LIO and friends*, in Bulgarian.
+
+<!-- The above link is broken. My browser cannot load .ppt files so I do not know which wayback link should be used) -->
+
+---
+# General
+  * [[Media_Appearances]]
+  * [IRC Logs](http://richtlijn.be/~larstiq/hurd/)
+
+The IRC logs contain wealth of information.  Many topics have been covered before in the IRC logs.  You can use wget to
+download all of the logs and grep for the information that you want (~100MB):
+
+     wget --mirror --no-parent -A "hurd-*" -e robots=off http://richtlijn.be/~larstiq/hurd/

@@ -1,0 +1,68 @@
+                         Mach IPC without MiG
+                          by Neal H Walfield
+                          November 17, 2001
+
+The goal of this exercise is to understand Mach IPC at one of its
+lowest application levels.  Thus, you will be generating the
+interfaces by hand -- not MiG or another interface generator.  During
+the exercise, you will create two threads in a task and send a message
+from one, the client, to the other, the server, and have the server
+send a response to the client.
+
+What you will learn:
+
+	C Threads: how to create two threads.
+	Mach ports: how to allocate send and receive rights
+		    (the former implicitly in mach_msg and the latter
+		    directly via mach_port_allocate).
+	mach_msg: how to send and receive the messages.
+
+The point of keeping both the server and the client in a single task
+is to simplify the implementation: there is no need to try to register
+the server with a central name server nor communicate the identifier
+to the client: this is another exercise in and of itself.
+
+As such, it is recommended that you initially create a single receive
+right and store it in a global variable accessible to both the client
+and server threads.
+
+The following interface should be implemented:
+
+	routine hello (name: string_t;
+		       out message: string_t);
+
+Which is to say, the client should send his name to the server and the
+server should reply by sending another string containing: "Hello, %s!"
+where the `%s' is substituted by the contents of name.
+
+The following resources will be of value:
+
+	Mach 3 Kernel Principles [1]
+		Chapters 2: Architectural Model
+
+	Mach 3 Kernel Interfaces [1]
+		mach_msg: page 5
+                mach_port_allocate: page 39
+		mach_msg_header_t: page 327
+		mach_msg_type_t: page 330
+
+	Mach 3 Server's Guide [1]
+		Chaper 5: C Threads
+
+Inline messages have the following general structure:
+
+ [ [mach_msg_header_t] [[mach_msg_type_t][data]] [[mach_msg_type_t][data]]... ]
+ ^ ^                   ^^                ^       ^
+ | |                   ||                |       \- Second set of arguments
+ | |                   ||                \- First set of arguments
+ | \- Message header   |\- Header for first set of arguments
+ \- Message            \- Pay load
+
+When data is marked out of line, the data section is detached.
+
+
+Estimated length of project: 20-40 hours for someone who knows C and
+Unix but is a beginner to Mach.
+
+
+[1] ftp://ftp.cs.cmu.edu/afs/cs/project/mach/public/doc/osf

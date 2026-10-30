@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="nanoc">
+    <link rel="apple-touch-icon" sizes="120x120" href="/2026/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/2026/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/2026/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/2026/manifest/">
+    <link rel="mask-icon" href="/2026/safari-pinned-tab.svg" color="#af2c93">
+    <meta name="msapplication-TileColor" content="#af2c93">
+    <meta name="theme-color" content="#ffffff">
+    <link media="all" rel="stylesheet" type="text/css" href="/2026/assets/style/fosdem-f542b117891d4c63ffb781d3a237e121c6d7e0f01907ee8806c87128f0788a89.css">
+    <link href="/2026/atom.xml" type="application/atom+xml" rel="alternate" title="FOSDEM 2026 ATOM Feed">
+    <link href="/2026/rss.xml" type="application/rss+xml" rel="alternate" title="FOSDEM 2026 RSS Feed">
+    <link rel="search" href="/2026/opensearch.xml" type="application/opensearchdescription+xml" title="FOSDEM 2026 Search">
+    
+    
+    
+    <title>FOSDEM 2026 - Updates on GNU/Hurd progress: rump drivers, 64bit, SMP, software bootstrapping ...</title>
+    <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/">
+    <meta name="DC.Title" content="Updates on GNU/Hurd progress: rump drivers, 64bit, SMP, software bootstrapping ...">
+    <meta name="DC.Format" content="text/html">
+    <meta name="DC.Language" content="en">
+    <meta name="DC.Subject" content="FOSDEM 2026">
+    <meta name="DC.Rights" content="https://creativecommons.org/licenses/by/4.0/">
+    <meta property="og:title" content="FOSDEM 2026 - Updates on GNU/Hurd progress: rump drivers, 64bit, SMP, software bootstrapping ...">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://fosdem.org/2026/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png">
+  </head>
+  <body class="schedule-event"> 
+    <div id="header">
+      <div class="header-holder">
+        <h1 class="logo"><a href="/2026/">fosdem-2026</a></h1>
+        <ul id="nav">
+          <li class="home"><a href="/2026/">Home</a></li>
+<li><a href="/2026/about/">About</a></li>
+<li><a href="/2026/news/">News</a></li>
+<li class="active"><a href="/2026/schedule/">Schedule</a></li>
+<li><a href="/2026/stands/">Stands</a></li>
+<li><a href="/2026/volunteer/">Volunteer</a></li>
+<li><a href="/2026/practical/">Practical</a></li>
+        </ul> <!-- #nav -->
+      </div> <!-- .header-holder -->
+    </div> <!-- #header -->
+    
+      <div class="title-box">
+        <div class="holder">
+          <div class="frame">
+            <div class="text-block">
+              <h2>Brussels <span>/</span> <strong>31 January &amp; 1 February 2026</strong></h2>
+              
+              <a class="btn-purple" href="/2026/schedule/">schedule</a>
+              
+            </div>
+            <ul class="navbar">
+              <li><a href="/2026/news/">News</a></li>
+<li><a href="/2026/about/sponsors/">Sponsors</a></li>
+<li><a href="/2026/contact/">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div> <!-- .title-box -->
+    
+    
+          <div id="main">
+      
+      <ul class="breadcrumbs">
+        <li><a href="/2026/">FOSDEM 2026</a></li><li class="separator">/</li><li><a href="/2026/schedule/">Schedule</a></li><li class="separator">/</li><li><a href="/2026/schedule/events/">Events</a></li><li class="separator">/</li><li>Developer rooms</li><li class="separator">/</li><li><a href="/2026/schedule/track/microkernel/">Microkernel and Component-Based OS</a></li><li class="separator">/</li><li class="active">Updates on GNU/Hurd progress: rump drivers, 64bit, SMP, software bootstrapping ...</li>
+      </ul>
+      
+
+      
+        <div id="pagetitles">
+        <h1>Updates on GNU/Hurd progress: rump drivers, 64bit, SMP, software bootstrapping ...</h1>
+	
+	<h2></h2>
+	
+	</div>
+      
+
+      
+
+
+<ul class="side-box">
+  <li><i class="icon-road"></i> <strong>Track</strong>: <a href="/2026/schedule/track/microkernel/">Microkernel and Component-Based OS</a></li>
+  <li><i class="icon-home"></i> <strong>Room</strong>: <a href="/2026/schedule/room/k4201/">K.4.201</a></li>
+  <li><i class="icon-calendar"></i> <strong>Day</strong>: <a href="/2026/schedule/day/sunday/">Sunday</a></li>
+  <li><i class="icon-play"></i> <strong>Start (UTC+1)</strong>: <a class="value-title" title="2026-02-01T15:55:00+01:00" href="/2026/schedule/day/sunday/#1555">15:55</a></li>
+  <li><i class="icon-stop"></i> <strong>End (UTC+1)</strong>: <a class="value-title" title="2026-02-01T16:25:00+01:00" href="/2026/schedule/day/sunday/#1625">16:25</a></li>
+  
+  
+  <li>
+    <i class="icon-comment"></i> <strong>Chat</strong>:
+    <a href="https://chat.fosdem.org/#/room/#2026-microkernel:fosdem.org">Join the conversation!</a>
+  </li>
+  
+</ul>
+<br style="clear: both;"/>
+
+
+
+
+<div class="event-blurb">
+
+<div class="event-abstract"><p>It has been a while since the last FOSDEM update on GNU/Hurd, so we have a lot to talk about :)</p>
+<p>Driver support improvement is on its way through using netbsd's rump layer, now being used in production although there are a few things left to fix. Some SMP support has been added, which should allow at least compilation to be run in parallel. Hurd support was added to the rust ecosystem, which became more and more a necessity due to various software now requiring it. The x86_64 port is essentially complete, which mostly required fixing the MIG RPC layer, and telling various software that it exists. To bootstrap the Debian GNU/Hurd x86_64 distribution, many of the crossbuilding, rebootstrapping and build profiles tools were used to make it relatively smooth. Additionally, the Guix/Hurd distribution is also on its way, as well as an Alpine/Hurd distribution. And more to discover during the talk!</p></div>
+
+
+<div class="event-description"></div>
+
+</div>
+
+
+
+<div class="video">
+  <video preload="none" controls="controls" width="75%">
+    <source src="https://video.fosdem.org/2026/k4201/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping.av1.webm" type='video/webm; codecs="av01.0.08M.08.0.110.01.01.01.0"' />
+    <source src="https://video.fosdem.org/2026/k4201/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping.mp4" type='video/mp4' />
+  </video>
+</div>
+
+
+
+
+
+<h3>Speakers</h3>
+<table>
+    <tbody>
+        
+        <tr>
+          
+          <td><a href="/2026/schedule/speaker/samuel_thibault/"><img class="thumb" height="32" width="32" src="/2026/schedule/speaker/samuel_thibault/e0a08d9aeef9d832d3f1b4728da64da55cf257550e7c59cc9e27b9331cb78dd4.jpg" alt="Photo of Samuel Thibault"/></a></td>
+          <td><a href="/2026/schedule/speaker/samuel_thibault/">Samuel Thibault</a></td>
+        </tr>
+        
+    </tbody>
+</table>
+
+
+
+  <h3>Attachments</h3>
+  <ul class="event-attachments unstyled">
+    
+      <li><i class="icon-download"></i> <a href="/2026/events/attachments/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping/slides/267668/2026-02-0_u3q2sgt.pdf">Slides (pdf)</a></li>
+    
+      <li><i class="icon-download"></i> <a href="/2026/events/attachments/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping/slides/267668/2026-02-0_zvivcvv.odp">Slides (odp)</a></li>
+    
+  </ul>
+
+
+
+  <h3>Links</h3>
+  <ul>
+    
+      <li><a href="http://hurd.gnu.org/">GNU/Hurd project</a></li>
+    
+      <li><a href="http://www.debian.org/ports/hurd/">Debian GNU/Hurd distribution</a></li>
+    
+      <li><a href="https://guix.gnu.org/en/download/latest/">GNU Guix/Hurd distribution</a></li>
+    
+      <li><a href="https://video.fosdem.org/2026/k4201/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping.mp4">Video recording (MP4; for legacy systems) - 694.8 MB</a></li>
+    
+      <li><a href="https://video.fosdem.org/2026/k4201/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping.av1.webm">Video recording (AV1/WebM; preferred) - 77.2 MB</a></li>
+    
+      <li><a href="https://video.fosdem.org/2026/k4201/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping.vtt">Video recording subtitle file (VTT)</a></li>
+    
+      <li><a href="https://chat.fosdem.org/#/room/#2026-microkernel:fosdem.org">Chat room(web)</a></li>
+    
+      <li><a href="https://matrix.to/#/#2026-microkernel:fosdem.org?web-instance[element.io]=chat.fosdem.org">Chat room(app)</a></li>
+    
+      <li><a href="https://pretalx.fosdem.org/fosdem-2026/talk/7FZXHF/feedback/">Submit Feedback</a></li>
+    
+  </ul>
+
+
+
+
+    </div> <!-- #main -->
+    <footer>
+      <div class="footer-holder">
+        <div class="panel-block">
+          
+          <div class="panel-column">
+            <h3>FOSDEM</h3>
+            <ul class="panel">
+              <li class="home"><a accesskey="1" href="/2026/">Home</a></li>
+<li><a accesskey="2" href="/2026/news/">News</a></li>
+<li><a href="/2026/about/">About</a></li>
+<li><a href="/2026/about/sponsors/">Sponsors</a></li>
+<li><a href="/2026/support/donate/">Donate</a></li>
+<li><a accesskey="5" href="/2026/faq/">FAQ</a></li>
+<li><a href="/2026/archives/">Archives</a></li>
+            </ul>
+          </div> <!-- .panel-column -->
+        
+          <div class="panel-column">
+            <h3>This year</h3>
+            <ul class="panel">
+              <li><a accesskey="s" href="/2026/schedule/">Schedule</a></li>
+<li><a href="/2026/stands/">Stands</a></li>
+<li><a href="/2026/certification/">Certification exams</a></li>
+<li><a href="/2026/volunteer/">Volunteer</a></li>
+<li><a href="/2026/fringe/">Fringe</a></li>
+            </ul>
+          </div> <!-- .panel-column -->
+        
+          <div class="panel-column">
+            <h3>Practical information</h3>
+            <ul class="panel">
+              <li><a href="/2026/practical/accessibility/">Accessibility</a></li>
+<li><a href="/2026/practical/conduct/">Code of Conduct</a></li>
+<li><a href="/2026/practical/services/">During the Event</a></li>
+<li><a href="/2026/practical/covid/">COVID-19 policy</a></li>
+            </ul>
+          </div> <!-- .panel-column -->
+        
+          <div class="panel-column">
+            <h3>Media and press</h3>
+            <ul class="panel">
+              <li><a href="/2026/social/">Social media</a></li>
+            </ul>
+          </div> <!-- .panel-column -->
+        
+        </div> <!-- .panel-block -->
+        <div class="company-info">
+          <div class="company-info-logo"></div>
+          <strong class="logo-small"><a href="/2026/schedule/">fosdem-2026</a></strong>
+          <p>Brussels <span>/</span> <strong>31 January &amp; 1 February 2026</strong></p>
+        </div>
+        <div class="license-info">
+          <div class="license-info-logo"></div>
+          This work is licensed under the Creative Commons Attribution 4.0 International.<br>
+          To view a copy of this licence, visit
+          <a class="quiet" rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en">https://creativecommons.org/licenses/by/4.0/deed.en</a><br>
+          or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.<br>
+          All content such as talks and biographies is the sole responsibility of the speaker.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

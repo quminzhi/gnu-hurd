@@ -1,0 +1,38 @@
+[[!meta copyright="Copyright © 2012, 2013, 2014, 2015, 2016, 2018, 2019, 2022, 2026 Free Software Foundation,
+Inc."]]
+
+[[!meta license="""[[!toggle id="license" text="GFDL 1.2+"]][[!toggleable
+id="license" text="Permission is granted to copy, distribute and/or modify this
+document under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no Invariant
+Sections, no Front-Cover Texts, and no Back-Cover Texts.  A copy of the license
+is included in the section entitled [[GNU Free Documentation
+License|/fdl]]."]]"""]]
+
+[[!meta title="FOSDEM 2026"]]
+
+<http://fosdem.org/2026>
+
+FOSDEM has taken place on January 31th / February 1st at the Université Libre de Bruxelles.
+
+
+
+
+# Microkernels devroom
+
+<https://fosdem.org/2026/schedule/track/microkernel/>
+
+  * {{$thibault_hurd}}
+
+It has been a while since the last FOSDEM update on GNU/Hurd, so we have a lot to talk about :)
+
+Driver support improvement is on its way through using netbsd's rump layer, now being used in production although there are a few things left to fix. Some SMP support has been added, which should allow at least compilation to be run in parallel. Hurd support was added to the rust ecosystem, which became more and more a necessity due to various software now requiring it. The x86_64 port is essentially complete, which mostly required fixing the MIG RPC layer, and telling various software that it exists. To bootstrap the Debian GNU/Hurd x86_64 distribution, many of the crossbuilding, rebootstrapping and build profiles tools were used to make it relatively smooth. Additionally, the Guix/Hurd distribution is also on its way, as well as an Alpine/Hurd distribution. And more to discover during the talk!
+
+
+[[!ymlfront data="""
+
+thibault_hurd:
+
+  "presentation (including video) by Samuel Thibault: [*Updates on GNU/Hurd progress: rump drivers, 64bit, SMP, software bootstrapping ...*](https://fosdem.org/2026/schedule/event/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping/) ([PDF slides](https://fosdem.org/2026/events/attachments/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping/slides/266546/2026-02-0_u3q2sgt.pdf), [ODP slides](https://fosdem.org/2026/events/attachments/7FZXHF-updates_on_gnuhurd_progress_rump_drivers_64bit_smp_software_bootstrapping/slides/266546/2026-02-0_zvivcvv.odp))"
+
+"""]]

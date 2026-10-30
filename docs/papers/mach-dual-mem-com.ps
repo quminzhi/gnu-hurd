@@ -1,0 +1,3707 @@
+%!PS-Adobe-2.0
+%%Title: sosp11.mss
+%%DocumentFonts: (atend)
+%%Creator: Mary Thompson and Scribe 7(1700)
+%%CreationDate: 24 November 1993 15:23
+%%Pages: (atend)
+%%EndComments
+% PostScript Prelude for Scribe.
+/BS {/SV save def 0.0 792.0 translate .01 -.01 scale} bind def
+/ES {showpage SV restore} bind def
+/SC {setrgbcolor} bind def
+/FMTX matrix def
+/RDF {WFT SLT 0.0 eq 
+  {SSZ 0.0 0.0 SSZ neg 0.0 0.0 FMTX astore}
+  {SSZ 0.0 SLT neg sin SLT cos div SSZ mul SSZ neg 0.0 0.0 FMTX astore}
+  ifelse makefont setfont} bind def
+/SLT 0.0 def
+/SI { /SLT exch cvr def RDF} bind def
+/WFT /Courier findfont def
+/SF { /WFT exch findfont def RDF} bind def
+/SSZ 1000.0 def
+/SS { /SSZ exch 100.0 mul def RDF} bind def
+/AF { /WFT exch findfont def /SSZ exch 100.0 mul def RDF} bind def
+/MT /moveto load def
+/XM {currentpoint exch pop moveto} bind def
+/UL {gsave newpath moveto dup 2.0 div 0.0 exch rmoveto
+   setlinewidth 0.0 rlineto stroke grestore} bind def
+/LH {gsave newpath moveto setlinewidth
+   0.0 rlineto
+   gsave stroke grestore} bind def
+/LV {gsave newpath moveto setlinewidth
+   0.0 exch rlineto
+   gsave stroke grestore} bind def
+/BX {gsave newpath moveto setlinewidth
+   exch
+   dup 0.0 rlineto
+   exch 0.0 exch neg rlineto
+   neg 0.0 rlineto
+   closepath
+   gsave stroke grestore} bind def
+/BX1 {grestore} bind def
+/BX2 {setlinewidth 1 setgray stroke grestore} bind def
+/PB {/PV save def newpath translate
+    100.0 -100.0 scale pop /showpage {} def} bind def
+/PE {PV restore} bind def
+/GB {/PV save def newpath translate rotate
+    div dup scale 100.0 -100.0 scale
+    /showpage {} def
+    /letter {} def
+    /lettersmall {} def
+    /note {} def
+    } bind def
+/GE {PV restore} bind def
+/FB {dict dup /FontMapDict exch def begin} bind def
+/FM {cvn exch cvn exch def} bind def
+/FE {end /original-findfont /findfont load def  /findfont
+   {dup FontMapDict exch known{FontMapDict exch get} if
+   original-findfont} def} bind def
+/BC {gsave moveto dup 0 exch rlineto exch 0 rlineto neg 0 exch rlineto closepath clip} bind def
+/EC /grestore load def
+/SH /show load def
+/MX {exch show 0.0 rmoveto} bind def
+/W {0 32 4 -1 roll widthshow} bind def
+/WX {0 32 5 -1 roll widthshow 0.0 rmoveto} bind def
+/RC {100.0 -100.0 scale
+612.0 0.0 translate
+-90.0 rotate
+.01 -.01 scale} bind def
+/URC {100.0 -100.0 scale
+90.0 rotate
+-612.0 0.0 translate
+.01 -.01 scale} bind def
+/RCC {100.0 -100.0 scale
+0.0 -792.0 translate 90.0 rotate
+.01 -.01 scale} bind def
+/URCC {100.0 -100.0 scale
+-90.0 rotate 0.0 792.0 translate
+.01 -.01 scale} bind def
+%%EndProlog
+%%Page: 0 1
+BS
+0 SI
+13 /Times-Bold AF
+18196 13831 MT
+(The Duality of Memory and Communication)SH
+23233 15404 MT
+(in the Implementation of a)SH
+21212 16977 MT
+(Multiprocessor Operating System)SH
+10 /Times-Roman AF
+17504 22434 MT
+(Michael Young, Avadis Tevanian, Richard Rashid, David Golub,)SH
+13810 23539 MT
+(Jeffrey Eppinger, Jonathan Chew, William Bolosky, David Black and Robert Baron)SH
+24434 24644 MT
+(Computer Science Department)SH
+24948 25749 MT
+(Carnegie-Mellon University)SH
+26280 26854 MT
+(Pittsburgh, PA 15213)SH
+17115 30338 MT
+(Appeared in Proceedings of the 11th Operating Systems Principles,)SH
+27239 31443 MT
+(November, 1987)SH
+13 /Times-Bold AF
+28181 44993 MT
+(Abstract)SH
+10 /Times-Roman AF
+7200 47366 MT
+(Mach is)
+238 W( a multiprocessor operating system being implemented at Carnegie-Mellon University.  An important)237 W
+7200 48471 MT
+(component of the Mach design is the use of memory objects which can)
+50 W( be managed either by the kernel or by user)51 W
+7200 49576 MT
+(programs through a message interface.  This feature allows applications such)
+32 W( as transaction management systems to)31 W
+7200 50681 MT
+(participate in decisions regarding secondary storage management and page replacement.)SH
+7200 52888 MT
+(This paper explores the goals, design and implementation of Mach and its external memory management)
+100 W( facility.)101 W
+7200 53993 MT
+(The relationship between memory and communication in Mach is examined as)
+132 W( it relates to overall performance,)131 W
+7200 55098 MT
+(applicability of Mach to new multiprocessor architectures, and the structure of application programs.)SH
+8200 61886 MT
+(This research was sponsored by the Defense Advanced Research Projects Agency \050DOD\051, ARPA Order)
+177 W( No.)178 W
+7200 62991 MT
+(4864, monitored by the Space and Naval Warfare Systems Command under)
+181 W( contract N00039-85-C-1034.  The)180 W
+7200 64096 MT
+(views expressed are those of the authors alone.)SH
+/Times-Bold SF
+8200 66303 MT
+(Permission to copy without fee all or part of this material is granted provided that the copies)
+29 W( are not made)30 W
+7200 67408 MT
+(or distributed for direct commercial advantage, the ACM copyright notice and the title of)
+7 W( the publication and)6 W
+7200 68513 MT
+(its date)
+15 W( appear, and notice is given that copying is by permission of the Association of Computing Machinery.)16 W
+7200 69618 MT
+(To copy otherwise, or to republish, requires a fee and/or specific permission.)SH
+ES
+%%Page: 1 2
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(1)SH
+12 /Times-Bold AF
+7200 8004 MT
+(1. Introduction)SH
+10 /Times-Roman AF
+8200 9381 MT
+(In late 1984, we began implementation of an operating system called Mach.  Our goals for Mach were:)SH
+/Symbol SF
+8990 10834 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(an object oriented interface with a small number of basic system objects,)SH
+/Symbol SF
+8990 12592 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(support for both distributed computing and multiprocessing,)SH
+/Symbol SF
+8990 14350 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(portability to a wide range of multiprocessor and uniprocessor architectures,)SH
+/Symbol SF
+8990 16108 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(compatibility with Berkeley UNIX, and)SH
+/Symbol SF
+8990 17866 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(performance comparable to commercial UNIX offerings.)SH
+8200 20345 MT
+(Most of these early goals have been met.  The underlying Mach kernel)
+53 W( is based on five interrelated abstractions;)52 W
+7200 21722 MT
+(operations on Mach objects are)
+63 W( invoked through message passing.  Mach runs on the majority of workstations and)64 W
+7200 23099 MT
+(mainframes within the Department of Computer Science, and supports projects in distributed computing and)
+8 W( parallel)7 W
+7200 24476 MT
+(processing such as)
+409 W( the Camelot distributed transaction processing system)
+410 W( [21],)
+SH( the Agora parallel speech)410 W
+7200 25853 MT
+(understanding system)
+41 W( [3])
+SH( and a parallel implementation of OPS5)
+41 W( [7].)
+SH( Mach)
+332 W( has already been ported to more than a)41 W
+8 SS 
+49691 26885 MT
+(1)SH
+10 SS 
+7200 27230 MT
+(dozen computer systems including ten members of the VAX family of)
+23 W( uniprocessors and multiprocessors)24 W
+50091 XM
+(, the IBM)24 W
+7200 28607 MT
+(RT PC, the SUN 3, the 16-processor Encore MultiMax , and the 26-processor Sequent Balance)
+116 W( 21000.  Mach is)115 W
+7200 29984 MT
+(binary compatible with Berkeley UNIX 4.3bsd and has been)
+50 W( shown to outperform 4.3bsd in several benchmarks of)51 W
+7200 31361 MT
+(overall system performance [1].)SH
+8200 33840 MT
+(A key and unusual)
+147 W( element in the design of Mach is the notion that communication \050in the form of message)146 W
+7200 35217 MT
+(passing\051 and virtual memory can play complementary roles, not only in the organization of distributed and)
+59 W( parallel)60 W
+7200 36594 MT
+(applications, but in the implementation of the operating)
+296 W( system kernel itself.  Mach uses memory-mapping)295 W
+7200 37971 MT
+(techniques to make the passing of large messages on a tightly coupled multiprocessor or uniprocessor)
+SH( more efficient.)1 W
+7200 39348 MT
+(In addition, Mach implements)
+223 W( virtual memory by mapping process addresses onto memory objects which are)222 W
+7200 40725 MT
+(represented as communication channels and accessed via messages.  The advantages gained by Mach)
+128 W( in treating)129 W
+7200 42102 MT
+(memory and communication as duals in this way include:)SH
+/Symbol SF
+8990 43555 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(increased flexibility in memory management available to user programs,)SH
+/Symbol SF
+8990 45313 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(a better match between Mach facilities and both tightly and loosely coupled multiprocessors, and)SH
+/Symbol SF
+8990 47071 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(improved performance.)SH
+8200 49550 MT
+(In this paper we describe the relationship)
+197 W( between memory and communication in Mach.  In particular, we)196 W
+7200 50927 MT
+(examine the design and implementation of)
+55 W( key Mach memory management operations, how Mach memory objects)56 W
+7200 52304 MT
+(can be managed)
+246 W( outside the Mach kernel by application programs and the overall performance of the Mach)245 W
+7200 53681 MT
+(operating system.)SH
+12 /Times-Bold AF
+7200 57365 MT
+(2. Early Work in Virtual Memory/Message Integration)SH
+10 /Times-Roman AF
+8200 58742 MT
+(The design of Mach owes a great deal to a previous system developed at CMU called)
+117 W( Accent)
+118 W( [15].)
+SH( A)
+486 W( central)118 W
+7200 60119 MT
+(feature of Accent was the integration of virtual memory and communication.  Large amounts)
+172 W( of data could be)171 W
+7200 61496 MT
+(transmitted between processes in Accent with extremely high performance)
+175 W( through its use of memory-mapping)176 W
+7200 62873 MT
+(techniques. This)
+366 W( allowed client and server processes)
+58 W( to exchange potentially huge data objects, such as large files,)57 W
+7200 64250 MT
+(without concern for the traditional data copying costs of message passing.)SH
+10800 50 7200 68504 UL
+6 SS 
+8000 69843 MT
+(1)SH
+8 SS 
+8300 70152 MT
+(The VAX 11/750, 11/780, 11/785, 8200, 8300, 8600, 8650, 8800, MicroVAX)
+5 W( I and MicroVAX II are supported, including support for QBUS,)6 W
+7200 71076 MT
+(UNIBUS, MASSBUS and BIBUS devices. Several experimental VAXen are also in use including a VAX 11/784 \050four)
+57 W( processor 780\051, 11/787)56 W
+7200 72000 MT
+(\050two processor 785\051 and 8204 \050four processor 8200\051.)SH
+ES
+%%Page: 2 3
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(2)SH
+8200 7886 MT
+(In effect, Accent carried into the domain)
+201 W( of message-passing systems the notion that I/O can be performed)202 W
+7200 9263 MT
+(through virtual memory management.  It supported a)8 W
+/Times-Italic SF
+28678 XM
+(single level)
+8 W( store)7 W
+/Times-Roman SF
+35727 XM
+(in which primary memory acted as a cache of)7 W
+7200 10640 MT
+(secondary storage.  Filesystem data and runtime allocated storage were both implemented as)
+SH( disk-based data objects.)1 W
+7200 12017 MT
+(Copies of large messages were managed using shadow paging techniques.  Other systems of the time, such)
+82 W( as the)81 W
+7200 13394 MT
+(IBM System 38)
+84 W( [6])
+SH( and)
+84 W( Apollo Aegis)
+85 W( [13],)
+SH( also used the single level store approach, but limited its application to)85 W
+7200 14771 MT
+(the management of files.)SH
+8200 17250 MT
+(For the operating system designer, a single level store can be very)
+59 W( attractive.  It can simplify the construction of)58 W
+7200 18627 MT
+(application programs by allowing programmers to map a file into the address space of)
+227 W( a process. This often)228 W
+7200 20004 MT
+(encourages the replacement of state-laden libraries of I/O routines \050)184 W
+/Times-Italic SF
+(e.g.)SH
+/Times-Roman SF
+(, the UNIX standard)
+184 W( I/O package\051 with)183 W
+7200 21381 MT
+(conceptually simpler programming language)
+114 W( constructs such as arrays and records.  A single level store can also)115 W
+7200 22758 MT
+(make programs more efficient.  File data can be read directly into the pages)
+37 W( of physical memory used to implement)36 W
+7200 24135 MT
+(the virtual address space of)
+187 W( a program rather than into intermediate buffers managed by the operating system.)188 W
+7200 25512 MT
+(Because physical memory is used to cache secondary storage, repeated references)
+130 W( to the same data can often be)129 W
+7200 26889 MT
+(made without corresponding disk transfers.)SH
+8200 29368 MT
+(Accent was successful in demonstrating the utility of combining memory mapping)
+55 W( with message passing.  At its)56 W
+7200 30745 MT
+(peak, Accent ran on over 150 workstations at CMU and served as the base for)
+230 W( a number of experiments in)229 W
+7200 32122 MT
+(distributed transaction)
+209 W( processing)
+210 W( [20],)
+SH( distributed sensor networks)
+210 W( [8],)
+SH( distributed filesystems)
+210 W( [12],)
+SH( and process)210 W
+7200 33499 MT
+(migration [24].)SH
+8200 35978 MT
+(Accent was unsuccessful, however, in surviving the introduction)
+118 W( of new hardware architectures and was never)117 W
+7200 37355 MT
+(able to efficiently support the large body of UNIX software used within the academic community)
+31 W( [16].)
+SH( In)
+314 W( addition,)32 W
+7200 38732 MT
+(from the point of view of a system designer, the Accent style of)
+134 W( message/memory integration lacked symmetry.)133 W
+7200 40109 MT
+(Accent allowed communication to be managed using memory-mapping techniques, but the)
+210 W( notion of a virtual)211 W
+7200 41486 MT
+(memory object was highly specialized and the management of such)
+53 W( an object was largely reserved to the operating)52 W
+7200 42863 MT
+(system itself.  Late in the life of Accent this issue was partially addressed)
+154 W( by the implementation of)155 W
+/Times-Italic SF
+49889 XM
+(imaginary)SH
+7200 44240 MT
+(segments)SH
+/Times-Roman SF
+11116 XM
+([24] which could be provided by user-state processes, but such objects did not have the flexibility)
+172 W( or)171 W
+7200 45617 MT
+(performance of kernel data objects.)SH
+12 /Times-Bold AF
+7200 49301 MT
+(3. The Mach Design)SH
+10 /Times-Roman AF
+8200 50678 MT
+(The Mach design grew out of an attempt to adapt Accent from its role as a network)
+168 W( operating system for a)169 W
+7200 52055 MT
+(uniprocessor to a new)
+206 W( environment that supported multiprocessors and uniprocessors connected on high speed)205 W
+7200 53432 MT
+(networks. Its)
+250 W( history led to a design that provided both the message passing prevalent in Accent and new support)
+SH( for)1 W
+7200 54809 MT
+(parallel processing and shared memory.)SH
+8200 57288 MT
+(There are four basic abstractions that Mach inherited)
+23 W( \050although substantially changed\051 from Accent:)22 W
+/Times-Italic SF
+49006 XM
+(task)SH
+/Times-Roman SF
+(,)SH
+/Times-Italic SF
+51139 XM
+(thread)SH
+/Times-Roman SF
+(,)SH
+/Times-Italic SF
+7200 58665 MT
+(port)SH
+/Times-Roman SF
+9233 XM
+(and)SH
+/Times-Italic SF
+11043 XM
+(message)SH
+/Times-Roman SF
+(. Their)
+482 W( primary purpose is to provide)
+116 W( control over program execution, internal program virtual)117 W
+7200 60042 MT
+(memory management)
+134 W( and interprocess communication.  In addition, Mach provides a fifth abstraction called the)133 W
+/Times-Italic SF
+7200 61419 MT
+(memory object)SH
+/Times-Roman SF
+13365 XM
+(around which secondary storage management is structured.  It is the)
+SH( Mach memory object abstraction)1 W
+7200 62796 MT
+(that most sets it apart from Accent)
+106 W( and that gives Mach the ability to efficiently manage system services such as)105 W
+7200 64173 MT
+(network paging and filesystem support outside the kernel.)SH
+ES
+%%Page: 3 4
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(3)SH
+11 /Times-Bold AF
+7200 7937 MT
+(3.1. Execution Control Primitives)SH
+10 /Times-Roman AF
+8200 9314 MT
+(Program execution in Mach is controlled through the use)
+14 W( of tasks and threads.  A)15 W
+/Times-Italic SF
+41079 XM
+(task)SH
+/Times-Roman SF
+42955 XM
+(is the basic unit of resource)15 W
+7200 10691 MT
+(allocation. It)
+264 W( includes a paged virtual address space and)
+7 W( protected access to system resources such as processors and)6 W
+7200 12068 MT
+(communication capabilities.  The)160 W
+/Times-Italic SF
+21422 XM
+(thread)SH
+/Times-Roman SF
+24443 XM
+(is the basic unit of computation.  It is a lightweight process operating)160 W
+7200 13445 MT
+(within a)
+129 W( task; its only physical attribute is its processing state \050)128 W
+/Times-Italic SF
+(e.g.)SH
+/Times-Roman SF
+(, program counter and registers\051.  All threads)128 W
+7200 14822 MT
+(within a task share the address space and capabilities of that task.)SH
+11 /Times-Bold AF
+7200 18439 MT
+(3.2. Inter-Process Communication)SH
+10 /Times-Roman AF
+8200 19816 MT
+(Inter-process communication \050IPC\051 in)
+34 W( Mach is defined in terms of)35 W
+/Times-Italic SF
+35265 XM
+(ports)SH
+/Times-Roman SF
+37606 XM
+(and)SH
+/Times-Italic SF
+39335 XM
+(messages)SH
+/Times-Roman SF
+(. These)
+320 W( constructs provide)35 W
+7200 21193 MT
+(for location independence, security and data type tagging.)SH
+8200 23672 MT
+(A)SH
+/Times-Italic SF
+9322 XM
+(port)SH
+/Times-Roman SF
+11389 XM
+(is a)
+150 W( communication channel.  Logically, a port is a finite length queue for messages protected by the)149 W
+7200 25049 MT
+(kernel. Access)
+450 W( to a port is granted by receiving a message containing a port capability)
+100 W( \050to either send or receive)101 W
+7200 26426 MT
+(messages\051. A)
+250 W( port may have any number of senders but only one receiver.)SH
+8200 28905 MT
+(A)SH
+/Times-Italic SF
+9238 XM
+(message)SH
+/Times-Roman SF
+12941 XM
+(consists of a fixed length header and a variable-size collection of typed data objects.  Messages may)65 W
+7200 30282 MT
+(contain port capabilities or imbedded pointers as long as they are properly typed.  A single message may transfer)
+22 W( up)23 W
+7200 31659 MT
+(to the entire address space of a task.)SH
+46800 50 7200 33236 UL
+9 /Times-Bold AF
+7200 35936 MT
+(msg_send\050message, option, timeout\051)SH
+/Times-Italic SF
+10800 36741 MT
+(Send a message to the destination specified in the message header.)SH
+/Times-Bold SF
+7200 37854 MT
+(msg_receive\050message, option, timeout\051)SH
+/Times-Italic SF
+10800 38659 MT
+(Receive a message from the port specified in the message header, or the default group of ports.)SH
+/Times-Bold SF
+7200 39772 MT
+(msg_rpc\050message, option, rcv_size, send_timeout, receive_timeout\051)SH
+/Times-Italic SF
+10800 40577 MT
+(Send a message, then receive a reply.)SH
+46800 50 7200 43256 UL
+10 /Times-Bold AF
+22114 45971 MT
+(Table 3-1:)SH
+/Times-Roman SF
+26975 XM
+(Primitive Message Operations)SH
+45800 50 8200 47548 UL
+8200 49827 MT
+(The fundamental primitive operations on ports are those to send and receive messages.)
+2 W( These)
+253 W( primitives are listed)1 W
+7200 51204 MT
+(Table 3-1.)
+60 W( Other)
+371 W( than these primitives and a few functions that return the identity of the calling task or thread,)61 W
+/Times-Bold SF
+52944 XM
+(all)SH
+/Times-Roman SF
+7200 52581 MT
+(Mach facilities are expressed in terms of remote procedure calls on ports.)SH
+8200 55060 MT
+(The Mach kernel can itself be considered a task with multiple threads of control.)
+31 W( The)
+311 W( kernel task acts as a server)30 W
+7200 56437 MT
+(which in turn implements tasks and threads.  The act of creating)
+35 W( a task or thread returns send access rights to a port)36 W
+7200 57814 MT
+(that represents the new task or thread)
+60 W( and that can be used to manipulate it.  Messages sent to such a port result in)59 W
+7200 59191 MT
+(operations being performed on the object it represents.  Ports used in this way can)
+9 W( be thought of as though they were)10 W
+7200 60568 MT
+(capabilities to objects in an object-oriented system)
+148 W( [10].)
+SH( The act of sending a message \050and)
+148 W( perhaps receiving a)147 W
+7200 61945 MT
+(reply\051 corresponds to a cross-domain procedure call in a capability-based system such as Hydra [23] or StarOS [11].)SH
+8200 64424 MT
+(The indirection provided by message passing allows objects to be arbitrarily placed in the)
+19 W( network without regard)20 W
+7200 65801 MT
+(to programming details.  For example, a thread can suspend another thread by sending a suspend message to the)
+6 W( port)5 W
+7200 67178 MT
+(representing that other thread)
+32 W( even if the request is initiated on another node in a network.  It is thus possible to run)33 W
+7200 68555 MT
+(varying system configurations on different classes of machines while providing a consistent)
+288 W( interface to all)287 W
+7200 69932 MT
+(resources. The)
+250 W( actual system running on any particular machine is more a function of its servers than its kernel.)SH
+ES
+%%Page: 4 5
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(4)SH
+8200 7886 MT
+(Tasks allocate ports to represent their)
+58 W( own objects or to perform communication.  A task may also deallocate its)59 W
+7200 9263 MT
+(rights to a port.  When the receive rights to a port are destroyed,)
+32 W( that port is destroyed and tasks holding send rights)31 W
+7200 10640 MT
+(are notified.  Table 3-2 summarizes the operations available to manage port rights and control message reception.)SH
+46800 50 7200 12217 UL
+9 /Times-Bold AF
+7200 14917 MT
+(port_allocate\050task, port\051)SH
+/Times-Italic SF
+10800 15722 MT
+(Allocate a new port.)SH
+/Times-Bold SF
+7200 16835 MT
+(port_deallocate\050task, port\051)SH
+/Times-Italic SF
+10800 17640 MT
+(Deallocate the task's rights to this port.)SH
+/Times-Bold SF
+7200 18753 MT
+(port_enable\050task, port\051)SH
+/Times-Italic SF
+10800 19558 MT
+(Add this port to the task's default group of ports for msg_receive.)SH
+/Times-Bold SF
+7200 20671 MT
+(port_disable\050task, port\051)SH
+/Times-Italic SF
+10800 21476 MT
+(Remove this port from the task's default group of ports for msg_receive.)SH
+/Times-Bold SF
+7200 22589 MT
+(port_messages\050task, ports, ports_count\051)SH
+/Times-Italic SF
+10800 23394 MT
+(Return an array of enabled ports on which messages are currently queued.)SH
+/Times-Bold SF
+7200 24507 MT
+(port_status\050task, port, unrestricted, num_msgs, backlog, receiver, owner\051)SH
+/Times-Italic SF
+10800 25312 MT
+(Return status information about this port.)SH
+/Times-Bold SF
+7200 26425 MT
+(port_set_backlog\050task, port, backlog\051)SH
+/Times-Italic SF
+10800 27230 MT
+(Limit the number of messages that can be waiting on this port.)SH
+46800 50 7200 29909 UL
+10 /Times-Bold AF
+25017 32624 MT
+(Table 3-2:)SH
+/Times-Roman SF
+29878 XM
+(Port Operations)SH
+45800 50 8200 34201 UL
+11 /Times-Bold AF
+7200 37618 MT
+(3.3. Virtual Memory Management)SH
+10 /Times-Roman AF
+8200 38995 MT
+(A task's address space consists)
+86 W( of an ordered collection of valid memory regions.  Tasks may allocate memory)87 W
+8 SS 
+44082 40027 MT
+(2)SH
+10 SS 
+7200 40372 MT
+(regions anywhere within)
+219 W( the virtual address space defined by the underlying hardware)220 W
+44482 XM
+(. The)
+690 W( only restriction)220 W
+7200 41749 MT
+(imposed by Mach is that regions must be aligned on system page boundaries.  The system page size)
+57 W( is a boot time)56 W
+7200 43126 MT
+(parameter and can be any multiple of the hardware page size.)SH
+8200 45605 MT
+(Mach supports read/write sharing of memory among tasks of)
+146 W( common ancestry through inheritance.  When a)147 W
+7200 46982 MT
+(child task is created, its address space may share \050read/write\051 or copy)
+14 W( any region of its parent's address space.  As in)13 W
+7200 48359 MT
+(Accent, copy-on-write sharing is used to efficiently perform virtual memory copying both)
+61 W( during task creation and)62 W
+7200 49736 MT
+(during message transfer.)SH
+8200 52215 MT
+(Table 3-3 summarizes the full set of virtual memory operations that can be performed on a task.)SH
+11 /Times-Bold AF
+7200 55832 MT
+(3.4. External Memory Management)SH
+10 /Times-Roman AF
+8200 57209 MT
+(An important part of the Mach strategy)
+96 W( was a reworking of the basic concept of secondary storage.  Instead of)95 W
+7200 58586 MT
+(basing secondary storage around a kernel-supplied file system \050as)
+163 W( was done in Accent and Aegis\051, Mach treats)164 W
+7200 59963 MT
+(secondary storage objects in the same way as other server-provided resources accessible through)
+72 W( message passing.)71 W
+7200 61340 MT
+(This form of)112 W
+/Times-Italic SF
+12841 XM
+(external memory management)113 W
+/Times-Roman SF
+25538 XM
+(allows the advantages of a single level store to be made available to)113 W
+7200 62717 MT
+(ordinary user-state servers.)SH
+8200 65196 MT
+(The Mach external memory management interface is based on the)
+58 W( the Mach)57 W
+/Times-Italic SF
+39552 XM
+(memory object)57 W
+/Times-Roman SF
+(. Like)
+364 W( other abstract)57 W
+7200 66573 MT
+(objects in the Mach environment, a memory object is represented by a)
+7 W( port.  Unlike other Mach objects, the memory)8 W
+10800 50 7200 69428 UL
+6 SS 
+8000 70767 MT
+(2)SH
+8 SS 
+8300 71076 MT
+(For example, an RT PC task can address)
+17 W( a full 4 gigabytes of memory under Mach while a VAX task is limited to at most 2 gigabytes of user)16 W
+7200 72000 MT
+(address space by the hardware.)SH
+ES
+%%Page: 5 6
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(5)SH
+46800 50 7200 7400 UL
+9 /Times-Bold AF
+7200 10100 MT
+(vm_allocate\050task, address, size, anywhere\051)SH
+/Times-Italic SF
+10800 10905 MT
+(Allocate new virtual memory at the specified address or anywhere space can be found \050filled-zero on demand\051.)SH
+/Times-Bold SF
+7200 12018 MT
+(vm_deallocate\050task, address, size\051)SH
+/Times-Italic SF
+10800 12823 MT
+(Deallocate a range of addresses, making them no longer valid.)SH
+/Times-Bold SF
+7200 13936 MT
+(vm_inherit\050task, address, size, inheritance\051)SH
+/Times-Italic SF
+10800 14741 MT
+(Specify how this range should be inherited in child tasks.)SH
+/Times-Bold SF
+7200 15854 MT
+(vm_protect\050task, address, size, set_max, protection\051)SH
+/Times-Italic SF
+10800 16659 MT
+(Set the protection attribute of this address range.)SH
+/Times-Bold SF
+7200 17772 MT
+(vm_read\050task, address, size, data, data_count\051)SH
+/Times-Italic SF
+10800 18577 MT
+(Read the contents of this task's address space.)SH
+/Times-Bold SF
+7200 19690 MT
+(vm_write\050task, address, count, data, data_count\051)SH
+/Times-Italic SF
+10800 20495 MT
+(Write the contents of this task's address space.)SH
+/Times-Bold SF
+7200 21608 MT
+(vm_copy\050task, src_addr, count, dst_addr\051)SH
+/Times-Italic SF
+10800 22413 MT
+(Copy a range of memory from one address to another.)SH
+/Times-Bold SF
+7200 23526 MT
+(vm_regions\050task, address, size, elements, elements_count\051)SH
+/Times-Italic SF
+10800 24331 MT
+(Return a description of this task's address space.)SH
+/Times-Bold SF
+7200 25444 MT
+(vm_statistics\050task, vm_stats\051)SH
+/Times-Italic SF
+10800 26249 MT
+(Return statistics about this task's use of virtual memory.)SH
+46800 50 7200 28928 UL
+10 /Times-Bold AF
+22587 31643 MT
+(Table 3-3:)SH
+/Times-Roman SF
+27448 XM
+(Virtual Memory Operations)SH
+45800 50 8200 33220 UL
+7200 34811 MT
+(object is not provided solely by the Mach kernel, but can be created and serviced by a user-level data manager task.)SH
+8200 37290 MT
+(A memory object is an abstract object representing a collection of data bytes on which)
+87 W( several operations \050)86 W
+/Times-Italic SF
+(e.g.)SH
+/Times-Roman SF
+(,)SH
+7200 38667 MT
+(read, write\051 are defined.  The data manager is entirely responsible for the initial values of)
+231 W( this data and the)232 W
+7200 40044 MT
+(permanent storage of the data)
+180 W( if necessary.  The Mach kernel makes no assumptions about the purpose of the)179 W
+7200 41421 MT
+(memory object.)SH
+8200 43900 MT
+(In order to make memory object data)
+14 W( available to tasks in the form of physical memory, the Mach kernel acts as a)15 W
+7200 45277 MT
+(cache manager for the contents of the memory object.  When a page fault)
+134 W( occurs for which the kernel does not)133 W
+7200 46654 MT
+(currently have a valid cached resident page, a remote procedure call is made on the memory object requesting)
+62 W( that)63 W
+7200 48031 MT
+(data. When)
+346 W( the cache is full \050)48 W
+/Times-Italic SF
+(i.e.)SH
+/Times-Roman SF
+(, all physical)
+48 W( pages contain other valid data\051, the kernel must choose some cached)47 W
+7200 49408 MT
+(page to replace.  If the data in that page was modified while it)
+59 W( was in physical memory, that data must be flushed;)60 W
+7200 50785 MT
+(again, a remote procedure call is made on the memory object.  Similarly, when all references)
+31 W( to a memory object in)30 W
+7200 52162 MT
+(all task address maps are relinquished, the kernel releases the cached pages for)
+114 W( that object for use by other data,)115 W
+7200 53539 MT
+(cleaning them as necessary.)SH
+8200 56018 MT
+(For historical reasons, the external memory)
+38 W( management interface has been expressed in terms of kernel activity,)37 W
+7200 57395 MT
+(namely paging.  As a result, the term)37 W
+/Times-Italic SF
+22494 XM
+(paging object)37 W
+/Times-Roman SF
+28290 XM
+(is often used)
+37 W( to refer to a memory object, and the term)38 W
+/Times-Italic SF
+50712 XM
+(pager)SH
+/Times-Roman SF
+53333 XM
+(is)SH
+7200 58772 MT
+(frequently used to describe the data manager task that implements a memory object.)SH
+/Times-Bold SF
+7200 61602 MT
+(3.4.1. Detailed Description)SH
+/Times-Roman SF
+8200 62979 MT
+(The interface between data manager tasks and the Mach kernel consists of three parts:)SH
+/Symbol SF
+8990 64432 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Calls made by an application program to cause a memory object to)
+87 W( be mapped into its address space.)86 W
+9700 65537 MT
+(Table 3-4 shows this extension to Table 3-3.)SH
+/Symbol SF
+8990 67295 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Calls made by the kernel on the data manager.  Table 3-5 summarizes this interface.)SH
+/Symbol SF
+8990 69053 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Calls made by the data manager on the)
+112 W( Mach kernel to control use of its memory object.  Table 3-6)113 W
+9700 70158 MT
+(summarizes these operations.)SH
+7200 71535 MT
+(As in other Mach interfaces, these calls are implemented)
+109 W( using IPC; the first argument to each call is the port to)108 W
+ES
+%%Page: 6 7
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(6)SH
+7200 7886 MT
+(which the request is sent, and represents the object to be affected by the operation.)SH
+46800 50 7200 9463 UL
+9 /Times-Bold AF
+7200 12163 MT
+(vm_allocate_with_pager\050task, address, size, anywhere, memory_object, offset\051)SH
+/Times-Italic SF
+10800 12968 MT
+(Allocate a region of memory at the specified address.  The specified memory object provides the initial)
+13 W( data values and)14 W
+10800 13769 MT
+(receives changes.)SH
+45800 50 8200 15346 UL
+10 /Times-Bold AF
+21907 18061 MT
+(Table 3-4:)SH
+/Times-Roman SF
+26768 XM
+(Application to Kernel Interface)SH
+45800 50 8200 19638 UL
+8200 21917 MT
+(A memory object may be mapped into the address space of an)
+457 W( application task by exercising the)456 W
+/Times-Italic SF
+7200 23294 MT
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+17397 XM
+(primitive, specifying that memory object)
+3 W( \050a port\051.  A single memory object may be mapped)4 W
+7200 24671 MT
+(in more than once, possibly in different tasks.)SH
+8200 27150 MT
+(The memory region)
+149 W( specified by)148 W
+/Times-Italic SF
+22245 XM
+(address)SH
+/Times-Roman SF
+25754 XM
+(in the)148 W
+/Times-Italic SF
+28550 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+38892 XM
+(call will be mapped to the specified)148 W
+/Times-Italic SF
+7200 28527 MT
+(offset)SH
+/Times-Roman SF
+9658 XM
+(in the memory object.  The offset into)
+41 W( the memory object is not required to align on system page boundaries;)42 W
+7200 29904 MT
+(however, the Mach kernel will only guarantee consistency among mappings with similar page alignment.)SH
+46800 50 7200 31481 UL
+9 /Times-Bold AF
+7200 34181 MT
+(pager_init\050memory_object, pager_request_port, pager_name\051)SH
+/Times-Italic SF
+10800 34986 MT
+(Initialize a memory object.)SH
+/Times-Bold SF
+7200 36099 MT
+(pager_data_request\050memory_object, pager_request_port, offset, length, desired_access\051)SH
+/Times-Italic SF
+10800 36904 MT
+(Requests data from an external data manager.)SH
+/Times-Bold SF
+7200 38017 MT
+(pager_data_write\050memory_object, offset, data, data_count\051)SH
+/Times-Italic SF
+10800 38822 MT
+(Writes data back to a memory object.)SH
+/Times-Bold SF
+7200 39935 MT
+(pager_data_unlock\050memory_object, pager_request_port, offset, length, desired_access\051)SH
+/Times-Italic SF
+10800 40740 MT
+(Requests that data be unlocked.)SH
+/Times-Bold SF
+7200 41853 MT
+(pager_create\050old_memory_object, new_memory_object, new_request_port, new_name\051)SH
+/Times-Italic SF
+10800 42658 MT
+(Accept responsibility for a kernel-created memory object.)SH
+46800 50 7200 45337 UL
+10 /Times-Bold AF
+21422 48052 MT
+(Table 3-5:)SH
+/Times-Roman SF
+26283 XM
+(Kernel to Data Manager Interface)SH
+45800 50 8200 49629 UL
+8200 51908 MT
+(When asked to map a memory object for the first time, the kernel responds by)
+92 W( making a)91 W
+/Times-Italic SF
+45144 XM
+(pager_init)SH
+/Times-Roman SF
+49652 XM
+(call on the)91 W
+7200 53285 MT
+(memory object.  Included in this message are:)SH
+/Symbol SF
+8990 54738 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(a)SH
+/Times-Italic SF
+10475 XM
+(pager request)82 W
+/Times-Roman SF
+16416 XM
+(port that the data manager may use to make cache management requests of the Mach)82 W
+9700 55843 MT
+(kernel;)SH
+/Symbol SF
+8990 57601 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(a)SH
+/Times-Italic SF
+10655 XM
+(pager name)261 W
+/Times-Roman SF
+16176 XM
+(port that the kernel will use to identify this memory)
+261 W( object to other tasks in the)260 W
+8 SS 
+25975 58369 MT
+(3)SH
+10 SS 
+9700 58714 MT
+(description returned by)SH
+/Times-Italic SF
+19226 XM
+(vm_regions)SH
+/Times-Roman SF
+24142 XM
+(calls)SH
+26375 XM
+(.)SH
+7200 60091 MT
+(The Mach kernel holds send rights to the memory object port, and both send and receive rights on the)
+28 W( pager request)27 W
+7200 61468 MT
+(and pager name ports.)SH
+8200 63947 MT
+(If a memory object is mapped into the address space)
+61 W( of more than one task on different hosts \050with independent)62 W
+7200 65324 MT
+(Mach kernels\051, the data manager)
+19 W( will receive an initialization call from each kernel.  For identification purposes, the)18 W
+7200 66701 MT
+(pager request port is specified in future operations made by the kernel.)SH
+10800 50 7200 69428 UL
+6 SS 
+8000 70767 MT
+(3)SH
+8 SS 
+8300 71076 MT
+(The memory object and request ports)
+140 W( cannot be used for this purpose, as access to those ports allows complete access to the data and)141 W
+7200 72000 MT
+(management functions.)SH
+ES
+%%Page: 7 8
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(7)SH
+46800 50 7200 7400 UL
+9 /Times-Bold AF
+7200 10100 MT
+(pager_data_provided\050pager_request_port, offset, data, data_count, lock_value\051)SH
+/Times-Italic SF
+10800 10905 MT
+(Supplies the kernel with the data contents of a region of a memory object.)SH
+/Times-Bold SF
+7200 12018 MT
+(pager_data_lock\050pager_request_port, offset, length, lock_value\051)SH
+/Times-Italic SF
+10800 12823 MT
+(Restricts cache access to the specified data.)SH
+/Times-Bold SF
+7200 13936 MT
+(pager_flush_request\050pager_request_port, offset, length\051)SH
+/Times-Italic SF
+10800 14741 MT
+(Forces cached data to be invalidated.)SH
+/Times-Bold SF
+7200 15854 MT
+(pager_clean_request\050pager_request_port, offset, length\051)SH
+/Times-Italic SF
+10800 16659 MT
+(Forces cached data to be written back to the memory object.)SH
+/Times-Bold SF
+7200 17772 MT
+(pager_cache\050pager_request_port, may_cache_object\051)SH
+/Times-Italic SF
+10800 18577 MT
+(Tells the kernel whether it may retain cached data from the)
+92 W( memory object even after all references to it have been)93 W
+10800 19378 MT
+(removed.)SH
+/Times-Bold SF
+7200 20491 MT
+(pager_data_unavailable\050pager_request_port, offset, size\051)SH
+/Times-Italic SF
+10800 21296 MT
+(Notifies kernel that no data exists for that region of a memory object.)SH
+46800 50 7200 23975 UL
+10 /Times-Bold AF
+21422 26690 MT
+(Table 3-6:)SH
+/Times-Roman SF
+26283 XM
+(Data Manager to Kernel Interface)SH
+45800 50 8200 28267 UL
+8200 30546 MT
+(In order to process)
+15 W( a cache miss \050)14 W
+/Times-Italic SF
+(i.e.)SH
+/Times-Roman SF
+(, page fault\051, the kernel issues a)14 W
+/Times-Italic SF
+35836 XM
+(pager_data_request)SH
+/Times-Roman SF
+44155 XM
+(call specifying the range)14 W
+7200 31923 MT
+(\050usually a single page\051 desired and the pager request port to which the data should be returned.)SH
+8200 34402 MT
+(To clean dirty pages, the kernel performs a)71 W
+/Times-Italic SF
+26180 XM
+(pager_data_write)SH
+/Times-Roman SF
+33668 XM
+(call specifying the location)
+71 W( in the memory object,)72 W
+7200 35779 MT
+(and including the data to be written.  When the data manager no longer needs the data \050)24 W
+/Times-Italic SF
+(e.g.)SH
+/Times-Roman SF
+(, it has been successfully)24 W
+7200 37156 MT
+(written to secondary storage\051, it is expected to use the)SH
+/Times-Italic SF
+28946 XM
+(vm_deallocate)SH
+/Times-Roman SF
+35028 XM
+(call to release the cache resources.)SH
+8200 39635 MT
+(These remote procedure)
+104 W( calls made by the Mach kernel are asynchronous; the calls do not have explicit return)105 W
+7200 41012 MT
+(arguments and the kernel does not wait for acknowledgement.)SH
+8200 43491 MT
+(A data)
+61 W( manager passes data for a memory object to the kernel by using the)60 W
+/Times-Italic SF
+39178 XM
+(pager_data_provided)SH
+/Times-Roman SF
+48154 XM
+(call. This)
+370 W( call)60 W
+7200 44868 MT
+(specifies the location of the data within the memory object, and includes the memory object)
+29 W( data. It is usually made)30 W
+7200 46245 MT
+(in response to a)SH
+/Times-Italic SF
+13699 XM
+(pager_data_request)SH
+/Times-Roman SF
+22004 XM
+(call made to the data manager by the kernel.)SH
+8200 48724 MT
+(Typical data managers will only provide data upon)
+313 W( demand \050when processing)312 W
+/Times-Italic SF
+42939 XM
+(pager_data_request)SH
+/Times-Roman SF
+51556 XM
+(calls\051;)SH
+7200 50101 MT
+(however, advanced data mangers)
+29 W( may provide more data than requested.  The Mach kernel can only handle integral)30 W
+7200 51478 MT
+(multiples of the system page size in any one call and partial pages are discarded.)SH
+8200 53957 MT
+(Since the data manager may have external constraints)
+9 W( on the consistency of its memory object, the Mach interface)8 W
+7200 55334 MT
+(provides some)
+303 W( functions to control caching; these calls are made using the pager request port provided at)304 W
+7200 56711 MT
+(initialization time.)SH
+8200 59190 MT
+(A)SH
+/Times-Italic SF
+9262 XM
+(pager_flush_request)SH
+/Times-Roman SF
+17824 XM
+(call causes the kernel to invalidate its cached copy of the data in question, writing)
+90 W( back)89 W
+7200 60567 MT
+(modifications if necessary.  A)57 W
+/Times-Italic SF
+19705 XM
+(pager_clean_request)SH
+/Times-Roman SF
+28455 XM
+(call asks the kernel to)
+57 W( write back modifications, but allows the)58 W
+7200 61944 MT
+(kernel to continue to use the cached data.  The kernel uses the)96 W
+/Times-Italic SF
+33442 XM
+(pager_data_write)SH
+/Times-Roman SF
+40955 XM
+(call in response, just as)
+96 W( when it)95 W
+7200 63321 MT
+(initiates a cache replacement.)SH
+8200 65800 MT
+(A data manager may restrict the use of cached data by issuing a)34 W
+/Times-Italic SF
+34330 XM
+(pager_data_lock)SH
+/Times-Roman SF
+41391 XM
+(request, specifying)
+34 W( the types of)35 W
+7200 67177 MT
+(access \050any combination of read, write, and)
+1 W( execute\051 that must be prevented.  For example, a data manager may wish)SH
+7200 68554 MT
+(to temporarily allow read-only)
+153 W( access to cached data.  The locking on a page may later be changed as deemed)154 W
+7200 69931 MT
+(necessary by the data manager.  [To avoid)
+4 W( race conditions, the)3 W
+/Times-Italic SF
+32428 XM
+(pager_data_provided)SH
+/Times-Roman SF
+41347 XM
+(call also includes an initial lock)3 W
+7200 71308 MT
+(value.])SH
+ES
+%%Page: 8 9
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(8)SH
+8200 7886 MT
+(When a user task requires greater access to cached data than the data manager has permitted \050)17 W
+/Times-Italic SF
+(e.g.)SH
+/Times-Roman SF
+(, a write)
+17 W( fault on)18 W
+7200 9263 MT
+(a page made read-only by a)21 W
+/Times-Italic SF
+18600 XM
+(pager_data_lock)SH
+/Times-Roman SF
+25647 XM
+(call\051, the kernel issues a)20 W
+/Times-Italic SF
+35578 XM
+(pager_data_unlock)SH
+/Times-Roman SF
+43625 XM
+(call. The)
+290 W( data manager is)20 W
+7200 10640 MT
+(expected to respond by changing the locking on that data when it is able to do so.)SH
+8200 13119 MT
+(When no references to a memory object remain,)
+132 W( and all modifications have been written back to the memory)133 W
+7200 14496 MT
+(object, the kernel deallocates its rights to the three ports associated with that memory object.  The data)
+119 W( manager)118 W
+7200 15873 MT
+(receives notification of the destruction of)
+158 W( the request and name ports, at which time it can perform appropriate)159 W
+7200 17250 MT
+(shutdown.)SH
+8200 19729 MT
+(In order to)
+18 W( attain better cache performance, a data manager may permit the data for a memory object to be cached)17 W
+7200 21106 MT
+(even after all)
+21 W( application address map references are gone by calling)22 W
+/Times-Italic SF
+35070 XM
+(pager_cache)SH
+/Times-Roman SF
+(. Permitting)
+294 W( such caching is in no)22 W
+7200 22483 MT
+(way binding; the kernel may)
+30 W( choose to relinquish its access to the memory object ports as it deems necessary for its)29 W
+7200 23860 MT
+(cache management.  A data manager may later rescind its permission to cache the memory object.)SH
+8200 26339 MT
+(The Mach)
+155 W( kernel itself creates memory objects to provide backing storage for zero-filled memory created by)156 W
+8 SS 
+12088 27371 MT
+(4)SH
+10 /Times-Italic AF
+7200 27716 MT
+(vm_allocate)SH
+/Times-Roman SF
+12488 XM
+(. The)
+300 W( kernel allocates a port to represent this memory)
+25 W( object, and passes it to a)24 W
+/Times-Italic SF
+44706 XM
+(default pager)24 W
+/Times-Roman SF
+50365 XM
+(task, that)24 W
+8 SS 
+29223 28748 MT
+(5)SH
+10 SS 
+7200 29093 MT
+(is known to the kernel at system initialization)
+225 W( time)226 W
+29623 XM
+(, in a)226 W
+/Times-Italic SF
+32523 XM
+(pager_create)SH
+/Times-Roman SF
+38331 XM
+(call. This)
+702 W( call is similar in form to)226 W
+/Times-Italic SF
+7200 30470 MT
+(pager_init)SH
+/Times-Roman SF
+(; however, it cannot be made on the memory object port itself, but on a port provided by the default pager.)SH
+8200 32949 MT
+(Since these kernel-created objects have no initial memory, the default pager may not have data to)
+149 W( provide in)148 W
+7200 34326 MT
+(response to a request.  In this case, it must perform a)4 W
+/Times-Italic SF
+28522 XM
+(pager_data_unavailable)SH
+/Times-Roman SF
+38609 XM
+(call to indicate that)
+4 W( the page should be)5 W
+8 SS 
+11365 35358 MT
+(6)SH
+10 SS 
+7200 35703 MT
+(zero-filled)SH
+11765 XM
+(.)SH
+12 /Times-Bold AF
+7200 39387 MT
+(4. Using Memory Objects)SH
+10 /Times-Roman AF
+8200 40764 MT
+(This section briefly describes two sample data managers)
+84 W( and their applications.  The first is a filesystem with a)83 W
+7200 42141 MT
+(read/copy-on-write interface, which uses the minimal subset of the memory management interface.  The second)
+78 W( is)79 W
+7200 43518 MT
+(an excerpt from the operation of a consistent network shared memory service.)SH
+11 /Times-Bold AF
+7200 47135 MT
+(4.1. A Minimal Filesystem)SH
+10 /Times-Roman AF
+8200 48512 MT
+(An example of a service which minimally uses the Mach external interface is a filesystem server which provides)46 W
+7200 49889 MT
+(read-whole-file/write-whole-file functionality.  Although it is simple, this style of interface has been used in)
+63 W( actual)64 W
+7200 51266 MT
+(servers [12, 19] and should be considered a serious example.)SH
+8200 53745 MT
+(An application might use this filesystem as follows:)SH
+10800 50 7200 66656 UL
+6 SS 
+8000 67995 MT
+(4)SH
+8 SS 
+8300 68304 MT
+(The same mechanism is used for)SH
+/Times-Italic SF
+18960 XM
+(shadow objects)SH
+/Times-Roman SF
+24070 XM
+(that contain changes to copy-on-write data.)SH
+6 SS 
+8000 69843 MT
+(5)SH
+8 SS 
+8300 70152 MT
+(The default pager will be described in more detail in a later section.)SH
+6 SS 
+8000 71691 MT
+(6)SH
+8 SS 
+8300 72000 MT
+(When shadowing, the data is instead copied from the original.)SH
+ES
+%%Page: 9 10
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(9)SH
+9 /Courier AF
+9360 7762 MT
+(char *file_data;)SH
+9360 8710 MT
+(int i, file_size;)SH
+9360 9658 MT
+(extern float rand\050\051;)
+SH( /*)
+1620 W( random in [0,1\051 */)SH
+9360 11554 MT
+(/* Read the file -- ignore errors */)SH
+9360 12502 MT
+(fs_read_file\050"filename", &file_data, file_size\051;)SH
+9360 14398 MT
+(/* Randomly change contents */)SH
+9360 15346 MT
+(for \050i = 0; i < file_size; i++\051)SH
+11520 16294 MT
+(file_data[\050int\051\050file_size*rand\050\051\051]++;)SH
+9360 18190 MT
+(/* Write back some results -- ignore errors */)SH
+9360 19138 MT
+(fs_write_file\050"filename", file_data, file_size/2\051;)SH
+9360 21034 MT
+(/* Throw away working copy */)SH
+9360 21982 MT
+(vm_deallocate\050task_self\050\051, file_data, file_size\051;)SH
+10 /Times-Roman AF
+7200 23392 MT
+(Note that the)213 W
+/Times-Italic SF
+13255 XM
+(fs_read_file)SH
+/Times-Roman SF
+18496 XM
+(call returns new virtual memory as a result.  This memory is copy-on-write in)
+213 W( the)212 W
+7200 24769 MT
+(application's address space; other applications will consistently see)
+188 W( the original file contents while the random)189 W
+7200 26146 MT
+(changes are being made.  The application must explicitly store back its changes.)SH
+8200 28625 MT
+(To process the)182 W
+/Times-Italic SF
+14828 XM
+(fs_read_file)SH
+/Times-Roman SF
+20038 XM
+(request, the filesystem server)
+182 W( creates a memory object and maps it into)181 W
+/Times-Bold SF
+50791 XM
+(its own)181 W
+/Times-Roman SF
+7200 30002 MT
+(address space.  It then returns that memory region)
+74 W( through the IPC mechanism so that it will be mapped copy-on-)75 W
+8 SS 
+20919 31034 MT
+(7)SH
+10 SS 
+7200 31379 MT
+(write in the client's address space.)SH
+9 /Courier AF
+9360 32665 MT
+(return_t fs_read_file\050name, data, size\051)SH
+11520 33613 MT
+(string_t name;)SH
+11520 34561 MT
+(char **data;)SH
+11520 35509 MT
+(int *size;)SH
+9360 36457 MT
+({)SH
+11520 37405 MT
+(port_t new_object;)2160 W
+11520 39301 MT
+(/* Allocate a memory object \050a port\051, */)SH
+11520 40249 MT
+(/* and accept request */)SH
+11520 41197 MT
+(port_allocate\050task_self\050\051, &new_object\051;)SH
+11520 42145 MT
+(port_enable\050task_self\050\051, new_object\051;)SH
+11520 44041 MT
+(/* Perform file lookup, find current file size,*/)SH
+11520 44989 MT
+(/* record association of file to new_object */)SH
+11520 45937 MT
+(...)SH
+11520 47833 MT
+(/* Map the memory object into our address space*/)SH
+11520 48781 MT
+(vm_allocate_with_pager\050task_self\050\051, data, *size,)SH
+26640 49729 MT
+(TRUE, new_object, 0\051;)SH
+11520 51625 MT
+(return\050success\051;)SH
+9360 52573 MT
+(})SH
+10 /Times-Roman AF
+7200 53983 MT
+(When the)95 W
+/Times-Italic SF
+11500 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+21789 XM
+(call is performed, the kernel will issue)
+95 W( a)96 W
+/Times-Italic SF
+38798 XM
+(pager_init)SH
+/Times-Roman SF
+43311 XM
+(call. The)
+442 W( filesystem must)96 W
+7200 55360 MT
+(receive this message at some time, and should record the pager request port contained therein.)SH
+8200 57839 MT
+(When the application)
+53 W( first uses a page of the data, it generates a page fault.  To fill that fault, the kernel issues a)52 W
+/Times-Italic SF
+7200 59216 MT
+(pager_data_request)SH
+/Times-Roman SF
+15601 XM
+(for that page.  To fulfill this request, the data)
+96 W( manager responds with a)97 W
+/Times-Italic SF
+45334 XM
+(pager_data_provided)SH
+/Times-Roman SF
+7200 60593 MT
+(call.)SH
+10800 50 7200 69428 UL
+6 SS 
+8000 70767 MT
+(7)SH
+8 SS 
+8300 71076 MT
+(If the client were)
+64 W( to map the memory object into its address space using)63 W
+/Times-Italic SF
+32325 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+(, the client would not see a copy-on-write)63 W
+7200 72000 MT
+(version of the data, but would have read/write access to the memory object.)SH
+ES
+%%Page: 10 11
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(10)SH
+9 /Courier AF
+9360 7762 MT
+(void pager_data_request\050memory_object, pager_request,)SH
+13680 8710 MT
+(offset, size, access\051)SH
+11520 9658 MT
+(port_t memory_object;)SH
+11520 10606 MT
+(port_t pager_request;)SH
+11520 11554 MT
+(vm_offset_t offset;)SH
+11520 12502 MT
+(vm_size_t size;)SH
+11520 13450 MT
+(vm_prot_t access;)SH
+9360 14398 MT
+({)SH
+11520 15346 MT
+(char *data;)SH
+11520 17242 MT
+(/* Allocate disk buffer */)SH
+11520 18190 MT
+(vm_allocate\050task_self\050\051, &data, size\051;)SH
+11520 20086 MT
+(/* Lookup memory_object; find actual disk data*/)SH
+11520 21034 MT
+(disk_read\050disk_address\050memory_object, offset\051,)SH
+26640 21982 MT
+(data, size\051;)SH
+11520 23878 MT
+(/* Return the data with no locking */)SH
+11520 24826 MT
+(pager_data_provided\050pager_request, offset, data,)SH
+26640 25774 MT
+(size, VM_PROT_NONE\051;)SH
+11520 27670 MT
+(/* Deallocate disk buffer */)SH
+11520 28618 MT
+(vm_deallocate\050task_self\050\051, data, size\051;)SH
+9360 29566 MT
+(})SH
+10 /Times-Roman AF
+8200 32045 MT
+(The filesystem will never receive any)131 W
+/Times-Italic SF
+24260 XM
+(pager_data_write)SH
+/Times-Roman SF
+31807 XM
+(or)SH
+/Times-Italic SF
+33020 XM
+(pager_data_unlock)SH
+/Times-Roman SF
+41177 XM
+(requests. After)
+510 W( the application)130 W
+7200 33422 MT
+(deallocates its memory copy)
+52 W( of the file, the filesystem will receive a port death message for the pager request port.)53 W
+7200 34799 MT
+(It can then release its data structures and resources for this file.)SH
+9 /Courier AF
+9360 36085 MT
+(void port_death\050request_port\051)SH
+11520 37033 MT
+(port_t request_port;)SH
+9360 37981 MT
+({)SH
+11520 38929 MT
+(port_t memory_object;)SH
+11520 39877 MT
+(char *data;)SH
+11520 40825 MT
+(int size;)SH
+11520 42721 MT
+(/* Find the associated memory object */)SH
+11520 43669 MT
+(lookup_by_request_port\050request_port,)SH
+19080 44617 MT
+(&memory_object, &data, &size\051;)SH
+11520 46513 MT
+(/* Release resources */)SH
+11520 47461 MT
+(port_deallocate\050task_self\050\051, memory_object\051;)SH
+11520 48409 MT
+(vm_deallocate\050task_self\050\051, data, size\051;)SH
+9360 49357 MT
+(})SH
+11 /Times-Bold AF
+7200 52974 MT
+(4.2. Consistent Network Shared Memory Excerpt)SH
+10 /Times-Roman AF
+8200 54351 MT
+(In this subsection)
+99 W( we describe how the memory management interface might be used to implement a region of)98 W
+7200 55728 MT
+(shared memory between two clients on different hosts.)SH
+8200 58207 MT
+(In order to use the shared memory region, a client must first contact a data manager which provides)
+173 W( shared)174 W
+7200 59584 MT
+(memory service.  In our example, the first client has made a request for a shared memory region not in use by any)57 W
+7200 60961 MT
+(other client.  The shared)
+87 W( memory server creates a memory object \050)88 W
+/Times-Italic SF
+(i.e.)SH
+/Times-Roman SF
+(, allocates a port\051 to refer to this region and)88 W
+7200 62338 MT
+(returns that memory object, X, to the first client.)SH
+8 SS 
+51135 64472 MT
+(8)SH
+10 SS 
+8200 64817 MT
+(The second)
+81 W( client, running on a different host, later makes a request for the same shared memory region)80 W
+51535 XM
+(. The)410 W
+7200 66194 MT
+(shared memory server finds the memory object, X, and returns it to the second client.)SH
+10800 50 7200 70352 UL
+6 SS 
+8000 71691 MT
+(8)SH
+8 SS 
+8300 72000 MT
+(How it specifies that region \050e.g., by name or by use of another capability\051 is not important to the example.)SH
+ES
+%%Page: 11 12
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(11)SH
+8200 7886 MT
+(Each client maps the memory object X into its address space, using)123 W
+/Times-Italic SF
+36868 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+(. As)
+498 W( each kernel)124 W
+7200 9263 MT
+(processes that call, it makes a)56 W
+/Times-Italic SF
+19617 XM
+(pager_init)SH
+/Times-Roman SF
+24090 XM
+(call to the memory object X. The shared memory)
+56 W( server records each use)55 W
+7200 10640 MT
+(of X, and the pager request and name ports for those uses.  Note that the Mach kernel does not await a reply from)63 W
+7200 12017 MT
+(the shared memory server, but does perform the)39 W
+/Times-Italic SF
+26924 XM
+(pager_init)SH
+/Times-Roman SF
+31380 XM
+(call before allowing the)39 W
+/Times-Italic SF
+41256 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+51489 XM
+(call to)39 W
+7200 13394 MT
+(complete. Also)
+346 W( note that while there)
+48 W( is only one memory object port \050X\051, there are distinct request and name ports)49 W
+7200 14771 MT
+(for each kernel.)
+39 W( In)
+326 W( this example, the shared memory server may be located on either of the clients' hosts, or on yet)38 W
+7200 16148 MT
+(another host.)SH
+8200 18627 MT
+(In the second frame, each)
+26 W( client takes a read fault on the same page of the shared memory region. The same page)27 W
+7200 20004 MT
+(may be mapped to different)
+21 W( addresses in the two clients.  Each kernel makes a)20 W
+/Times-Italic SF
+38997 XM
+(pager_data_request)SH
+/Times-Roman SF
+47322 XM
+(on X, specifying)20 W
+7200 21381 MT
+(its own pager request port for X.)
+158 W( The shared memory server replies using the)159 W
+/Times-Italic SF
+40441 XM
+(pager_data_provided)SH
+/Times-Roman SF
+49516 XM
+(call on the)159 W
+7200 22758 MT
+(appropriate request port.  Since the request only requires read access, the)
+27 W( shared memory server applies a write lock)26 W
+8 SS 
+18102 23790 MT
+(9)SH
+10 SS 
+7200 24135 MT
+(on the data as it is returned)21 W
+18502 XM
+(. The)
+290 W( shared memory server must also record all of the uses \050i.e. pager request ports\051 of)20 W
+7200 25512 MT
+(this page.)SH
+8200 27991 MT
+(In the final frame, one client attempts to write)
+63 W( on one of the pages which both clients have been reading.  Since)64 W
+7200 29368 MT
+(the writer's kernel already has)
+19 W( the data page to satisfy the fault, it makes a)18 W
+/Times-Italic SF
+37356 XM
+(pager_data_unlock)SH
+/Times-Roman SF
+45401 XM
+(call on X, asking that)18 W
+7200 30745 MT
+(write permission be granted.  Before allowing write permission, the shared memory server must)
+26 W( invalidate all of the)27 W
+7200 32122 MT
+(other uses of this page; it does so using the)82 W
+/Times-Italic SF
+25408 XM
+(pager_flush_request)SH
+/Times-Roman SF
+33962 XM
+(call. Once)
+414 W( all readers have been invalidated,)
+82 W( the)81 W
+7200 33499 MT
+(server grants write access to the first client using)SH
+/Times-Italic SF
+26946 XM
+(pager_data_lock)SH
+/Times-Roman SF
+33973 XM
+(with no lock.)SH
+12 /Times-Bold AF
+7200 37183 MT
+(5. Implementation Details)SH
+10 /Times-Roman AF
+8200 38560 MT
+(Four basic data structures are used within the Mach kernel to implement the external)
+200 W( memory management)201 W
+7200 39937 MT
+(interface:)SH
+/Times-Italic SF
+11476 XM
+(address maps)SH
+/Times-Roman SF
+(,)SH
+/Times-Italic SF
+17448 XM
+(memory object)SH
+/Times-Roman SF
+23613 XM
+(structures,)SH
+/Times-Italic SF
+28001 XM
+(resident page)SH
+/Times-Roman SF
+33667 XM
+(structures, and a set of)SH
+/Times-Italic SF
+42887 XM
+(pageout queues)SH
+/Times-Roman SF
+(.)SH
+11 /Times-Bold AF
+7200 43554 MT
+(5.1. Address Maps)SH
+10 /Times-Roman AF
+8200 44931 MT
+(As in Accent, a task)62 W
+/Times-Italic SF
+16786 XM
+(address map)61 W
+/Times-Roman SF
+22241 XM
+(is a directory mapping each of many valid address ranges to a memory object)61 W
+7200 46308 MT
+(and offset within that memory object.  Additional information stored for each range includes protection)
+250 W( and)251 W
+7200 47685 MT
+(inheritance information.)SH
+8200 50164 MT
+(To account for sharing)
+73 W( through inheritance, Mach address maps are two-level.  A task address space consists of)72 W
+7200 51541 MT
+(one top-level address map; instead of references to memory objects directly, address map entries refer to)
+101 W( second-)102 W
+7200 52918 MT
+(level)SH
+/Times-Italic SF
+9494 XM
+(sharing maps)100 W
+/Times-Roman SF
+(. Changes)
+450 W( in per-task attributes, such as protection and inheritance, are)
+100 W( stored in the top-level)99 W
+7200 54295 MT
+(map. Changes)
+419 W( to the virtual memory represented by a map entry are reflected in the sharing map; for example, a)85 W
+/Times-Italic SF
+7200 55672 MT
+(vm_write)SH
+/Times-Roman SF
+11180 XM
+(operation into a)
+8 W( region shared by more than one task would take place in the sharing map referenced by all)7 W
+7200 57049 MT
+(of their task maps.)SH
+8200 59528 MT
+(It is then the second-level)
+130 W( sharing maps that refer to memory object structures.  As an optimization, top-level)131 W
+7200 60905 MT
+(maps may contain direct references to memory object structures if no sharing has taken place.)SH
+8200 63384 MT
+(When a)182 W
+/Times-Italic SF
+11896 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+22272 XM
+(call is processed, the Mach kernel)
+182 W( looks up the given memory object port,)181 W
+7200 64761 MT
+(attempting to find an associated internal memory object structure; if none exists,)
+39 W( a new internal structure is created,)40 W
+7200 66138 MT
+(and the)68 W
+/Times-Italic SF
+10502 XM
+(pager_init)SH
+/Times-Roman SF
+14987 XM
+(call performed.  Once)
+68 W( a memory object structure is found, it is inserted into the \050top-level\051 task)67 W
+10800 50 7200 69428 UL
+6 SS 
+8000 70767 MT
+(9)SH
+8 SS 
+8300 71076 MT
+(The choice to prevent writing is made here to simplify the example.  It may be more practical to allow)
+12 W( the first client write access, and then to)13 W
+7200 72000 MT
+(revoke it later.)SH
+ES
+%%Page: 12 13
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(12)SH
+7200 7886 MT
+(address map.  Note that the sharing)
+105 W( semantics are different than in the inheritance case in that no sharing map is)106 W
+7200 9263 MT
+(involved; an attempt to)5 W
+/Times-Italic SF
+16720 XM
+(vm_write)SH
+/Times-Roman SF
+20697 XM
+(one mapping of the memory object would merely replace that mapping, rather)
+5 W( than)4 W
+7200 10640 MT
+(reflecting it in other tasks that have also mapped that memory object.)SH
+11 /Times-Bold AF
+7200 14257 MT
+(5.2. Virtual Memory Object Structures)SH
+10 /Times-Roman AF
+8200 15634 MT
+(An internal)12 W
+/Times-Italic SF
+13001 XM
+(memory object)12 W
+/Times-Roman SF
+19190 XM
+(structure is)
+12 W( kept for each memory object used in an address map \050or for which the data)13 W
+7200 17011 MT
+(manager has advised that)
+55 W( caching is permitted\051.  Components of this structure include the ports used to refer to the)54 W
+7200 18388 MT
+(memory object, its size, the number of address map references to the object,)
+51 W( and whether the kernel is permitted to)52 W
+7200 19765 MT
+(cache the memory object when no address map references remain.)SH
+8200 22244 MT
+(A list of resident page structures is attached to the object in order)
+21 W( to expediently release the pages associated with)20 W
+7200 23621 MT
+(an object when it is destroyed.)SH
+11 /Times-Bold AF
+7200 27238 MT
+(5.3. Resident Memory Structures)SH
+10 /Times-Roman AF
+8200 28615 MT
+(Each)SH
+/Times-Italic SF
+10632 XM
+(resident page)183 W
+/Times-Roman SF
+16664 XM
+(structure corresponds to a page of physical memory, and vice)
+183 W( versa.  The resident page)184 W
+7200 29992 MT
+(structure records the memory object and offset into the object, along with the access)
+75 W( permitted to that page by the)74 W
+7200 31369 MT
+(data manager.  Reference and)
+65 W( modification information provided by the hardware is also saved here.  An interface)66 W
+7200 32746 MT
+(providing fast resident page lookup by memory object and offset \050)11 W
+/Times-Italic SF
+(virtual to physical table)11 W
+/Times-Roman SF
+(\051 is)
+11 W( implemented as a hash)10 W
+7200 34123 MT
+(table chained through the resident page structures.)SH
+11 /Times-Bold AF
+7200 37740 MT
+(5.4. Page Replacement Queues)SH
+10 /Times-Roman AF
+8200 39117 MT
+(Page replacement uses several)176 W
+/Times-Italic SF
+21289 XM
+(pageout queues)176 W
+/Times-Roman SF
+28140 XM
+(linked through the resident page structures.)
+176 W( An)603 W
+/Times-Italic SF
+48797 XM
+(active)SH
+/Times-Roman SF
+51612 XM
+(queue)SH
+7200 40494 MT
+(contains all of)
+8 W( the pages currently in use, in least-recently-used order.  An)7 W
+/Times-Italic SF
+37092 XM
+(inactive)SH
+/Times-Roman SF
+40515 XM
+(queue is used to hold pages being)7 W
+7200 41871 MT
+(prepared for pageout.  Pages not caching any data are kept on a)SH
+/Times-Italic SF
+32748 XM
+(free)SH
+/Times-Roman SF
+34553 XM
+(queue.)SH
+11 /Times-Bold AF
+7200 45488 MT
+(5.5. Fault Handling)SH
+10 /Times-Roman AF
+8200 46865 MT
+(The Mach page fault handler is the)
+80 W( hub of the Mach virtual memory system.  The kernel fault handler is called)81 W
+7200 48242 MT
+(when the hardware tries to)
+122 W( reference a page for which there no valid mapping or for which there is a protection)121 W
+7200 49619 MT
+(violation. The)
+250 W( fault handler has several responsibilities:)SH
+/Symbol SF
+8990 51072 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(validity and protection)22 W
+/Times-Roman SF
+19127 XM
+(- The)
+22 W( kernel determines whether the faulting thread has the desired access to the)23 W
+9700 52177 MT
+(address, by performing a lookup)
+30 W( in its task's address map.  This lookup also results in a memory object)29 W
+9700 53282 MT
+(and offset.)SH
+/Symbol SF
+8990 55040 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(page lookup)122 W
+/Times-Roman SF
+15110 XM
+(- The kernel attempts to find an entry for a cached page in the)123 W
+/Times-Italic SF
+41770 XM
+(virtual to physical)123 W
+/Times-Roman SF
+49667 XM
+(hash)SH
+9700 56145 MT
+(table; if the page is not present, the kernel must request the data from the data manager.)SH
+/Symbol SF
+8990 57903 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(copy-on-write)SH
+/Times-Roman SF
+15644 XM
+(- Once the page has been located, the kernel determines)
+84 W( if a copy-on-write operation is)83 W
+9700 59008 MT
+(needed. If)
+392 W( the task desires write permission and the page has not yet been copied, then a new page is)71 W
+9700 60113 MT
+(created as a copy of the original.  If necessary, the kernel also creates a new shadow object.)SH
+/Symbol SF
+8990 61871 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(hardware validation)36 W
+/Times-Roman SF
+18217 XM
+(- Finally, the kernel informs the hardware physical map module of the new virtual)35 W
+9700 62976 MT
+(to physical mapping.)SH
+8200 65455 MT
+(With the exception of the hardware validation, all)
+183 W( of these steps are implemented in a machine-independent)184 W
+7200 66832 MT
+(fashion.)SH
+ES
+%%Page: 13 14
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(13)SH
+12 /Times-Bold AF
+7200 8004 MT
+(6. The Problems of External Memory Management)SH
+11 SS 
+7200 11621 MT
+(6.1. Types of Memory Failures)SH
+10 /Times-Roman AF
+8200 12998 MT
+(While the functionality of external)
+233 W( memory management can be a powerful tool in the hands of a careful)232 W
+7200 14375 MT
+(application, it can also raise several robustness and security problems if improperly used.  Some of the problems are:)SH
+/Symbol SF
+8990 15828 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Data manager doesn't return data)124 W
+/Times-Roman SF
+(. Threads)
+498 W( may now become blocked waiting for data supplied)
+124 W( by)125 W
+9700 16933 MT
+(another user task,)
+229 W( which does not respond promptly.  The tight interconnection between IPC and)228 W
+9700 18038 MT
+(memory management makes it difficult \050or merely)
+81 W( expensive\051 to determine whether the source of any)82 W
+9700 19143 MT
+(memory is hostile prior to attempting to access that memory.)SH
+/Symbol SF
+8990 20901 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Data manager fails to free flushed)
+10 W( data)9 W
+/Times-Roman SF
+(. A)
+268 W( data manager may wreak havok with the pageout process by)9 W
+9700 22006 MT
+(failing to promptly release memory following pageout of dirty pages.)SH
+/Symbol SF
+8990 23764 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Data manager floods the cache)83 W
+/Times-Roman SF
+(. This)
+416 W( is rather similar in nature)
+83 W( to a data manager which fails to free)84 W
+9700 24869 MT
+(data, but is easier to detect and prevent.)SH
+/Symbol SF
+8990 26627 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Data manager changes data)13 W
+/Times-Roman SF
+(. A)
+276 W( malicious data manager may change)
+13 W( the value of its data on each cache)12 W
+9700 27732 MT
+(refresh. While)
+802 W( this is an advantage for shared memory applications, it is a serious problem)
+276 W( to)277 W
+9700 28837 MT
+(applications which receive \050virtual copied\051 data in a message.)SH
+/Symbol SF
+8990 30595 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Data manager backs its own data)62 W
+/Times-Roman SF
+(. Deadlock)
+374 W( may occur if a data manager becomes blocked in)
+62 W( a page)61 W
+9700 31700 MT
+(fault waiting for data which it provides.)SH
+8200 34179 MT
+(Fortunately, there are several techniques that minimize these potential problems:)SH
+/Symbol SF
+8990 35632 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(A task may use the)15 W
+/Times-Italic SF
+17635 XM
+(vm_regions)SH
+/Times-Roman SF
+22566 XM
+(call to obtain information about)
+15 W( the makeup of its address space.  While)16 W
+9700 36737 MT
+(this enables a task to avoid deadlock on memory it provides, it does not prevent two or more tasks)
+19 W( from)18 W
+9700 37842 MT
+(deadlocking on memory provided by the others.)SH
+/Symbol SF
+8990 39600 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(The use of multiple threads to handle data)
+6 W( requests also aids in deadlock prevention; one thread within a)7 W
+9700 40705 MT
+(task may service a data request for another thread in that task.)SH
+/Symbol SF
+8990 42463 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Server tasks which cannot tolerate changing data, or which must ensure that all of)
+38 W( the necessary data is)37 W
+9700 43568 MT
+(available, may use a separate thread to copy that data to safe memory before proceeding.)SH
+11 /Times-Bold AF
+7200 47185 MT
+(6.2. Handling Memory Failures)SH
+10 SS 
+7200 50015 MT
+(6.2.1. Analogy to Communication Failure)SH
+/Times-Roman SF
+8200 51392 MT
+(The potential problems)
+57 W( associated with external data managers are strongly analogous to communication failure.)58 W
+7200 52769 MT
+(This is actually not surprising since external data managers)
+117 W( are implemented using communication.  Solutions to)116 W
+7200 54146 MT
+(communication failure problems are applicable to external data manager failure.)SH
+8200 56625 MT
+(A task's address space becomes populated with memory objects in two basic ways:)
+359 W( explicit allocation)360 W
+7200 58002 MT
+(\050)SH
+/Times-Italic SF
+(vm_allocate)SH
+/Times-Roman SF
+12736 XM
+(or)SH
+/Times-Italic SF
+13884 XM
+(vm_allocate_with_pager)SH
+/Times-Roman SF
+(\051 or receipt of data in an IPC message.)
+65 W( In)
+378 W( the first case, the source of the)64 W
+7200 59379 MT
+(data is considered trusted \050either the default pager, or a data manager known to the requestor\051.)
+132 W( Use)
+516 W( of the data)133 W
+7200 60756 MT
+(received in a message can be viewed as attempting to receive that data explicitly;)
+62 W( the only differences are the time)61 W
+7200 62133 MT
+(and the granularity of the failure.  The same options provided for communications failure)
+6 W( may be applied to memory)7 W
+7200 63510 MT
+(failures: a)278 W
+/Times-Italic SF
+11713 XM
+(timeout)SH
+/Times-Roman SF
+14977 XM
+(period may be)
+14 W( specified, after which a memory request is aborted; a)13 W
+/Times-Italic SF
+42545 XM
+(notification)SH
+/Times-Roman SF
+47420 XM
+(message may be)13 W
+7200 64887 MT
+(sent so that another thread can perform recovery;)33 W
+/Times-Italic SF
+27347 XM
+(wait)SH
+/Times-Roman SF
+29353 XM
+(until the)
+33 W( request is filled.  Aborting a memory request after a)34 W
+7200 66264 MT
+(timeout may involve providing)
+162 W( \050zero-filled\051 memory backed by the default pager, or termination of the waiting)161 W
+7200 67641 MT
+(thread.)SH
+8200 70120 MT
+(Destruction of a memory object by)
+1 W( the data manager \050i.e. deallocation of the memory object port\051 results in failure)2 W
+7200 71497 MT
+(modes similar to destruction of a)
+195 W( port:)194 W
+/Times-Italic SF
+24090 XM
+(notification)SH
+/Times-Roman SF
+29146 XM
+(of those tasks previously having access to that object, and)194 W
+ES
+%%Page: 14 15
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(14)SH
+/Times-Italic SF
+7200 7886 MT
+(abortion)SH
+/Times-Roman SF
+10895 XM
+(of those requests in progress.)SH
+/Times-Bold SF
+7200 10716 MT
+(6.2.2. The Default Pager)SH
+/Times-Roman SF
+8200 12093 MT
+(The default pager manages backing storage for memory objects created by the)
+134 W( kernel in any of several ways:)135 W
+7200 13470 MT
+(explicit allocation by user tasks \050)74 W
+/Times-Italic SF
+(vm_allocate)SH
+/Times-Roman SF
+(\051; shadow memory)
+74 W( objects; temporary memory objects for data being)73 W
+7200 14847 MT
+(paged out.  Unlike other data managers, it is a trusted system component.)SH
+8200 17326 MT
+(When cached data is written back to a data manager, those pages are temporarily moved to a new memory object)31 W
+7200 18703 MT
+(which is destroyed when the data manager relinquishes that memory.  If the data manager does)
+130 W( not process and)129 W
+7200 20080 MT
+(release the data within an adequate period of time, the data may then be paged out to the default pager.)
+23 W( In)
+297 W( this way,)24 W
+7200 21457 MT
+(the kernel is protected from starvation by errant data managers.)SH
+8200 23936 MT
+(Because the interface to the default pager is identical)
+81 W( to other external data managers, there are no fundamental)80 W
+7200 25313 MT
+(assumptions made about the nature of secondary storage.)
+194 W( For)
+640 W( example, the default pager may use local disk,)195 W
+7200 26690 MT
+(network services,)
+29 W( or some combination of the two.  Furthermore, a new default pager may be debugged as a regular)28 W
+7200 28067 MT
+(data manager.)SH
+/Times-Bold SF
+7200 30897 MT
+(6.2.3. Reserved Memory Pool)SH
+/Times-Roman SF
+8200 32274 MT
+(In order to perform pageout operations, the kernel must send a message; to send a message, the kernel may need)47 W
+7200 33651 MT
+(to allocate additional memory.)
+33 W( To)
+315 W( avoid deadlock, the kernel must reserve some amount of memory for itself to do)32 W
+7200 35028 MT
+(pageout. Furthermore,)
+288 W( data manager tasks may need to allocate memory in order to manage)
+19 W( a pageout request.  The)20 W
+7200 36405 MT
+(kernel must allow for at least enough memory for the default pager to process a pageout, and)
+164 W( for performance)163 W
+7200 37782 MT
+(reasons wants to be able to provide enough memory for reasonable data manager tasks.)SH
+8200 40261 MT
+(Many other)
+2 W( operating systems have met with this problem.  Often these systems solve the problem by using inside)3 W
+7200 41638 MT
+(knowledge of the algorithms used to manage)
+197 W( secondary storage.  Unfortunately, the Mach kernel has no such)196 W
+7200 43015 MT
+(knowledge; it must rely on a conservative estimate of)
+177 W( the amount of memory required by the default pager to)178 W
+7200 44392 MT
+(perform a pageout operation.)SH
+12 /Times-Bold AF
+7200 48076 MT
+(7. Multiprocessor Issues)SH
+10 /Times-Roman AF
+8200 49453 MT
+(As faster networks and)
+162 W( more loosely connected multiprocessors are built, the distinctions between the use of)161 W
+7200 50830 MT
+(shared memory and message passing as communication mechanisms)
+72 W( are becoming blurred.  There are three major)73 W
+7200 52207 MT
+(types of multiple instruction, multiple data stream \050MIMD\051 multiprocessors which)
+315 W( have gained commercial)314 W
+7200 53584 MT
+(acceptance:)SH
+9200 54923 MT
+(1.)SH
+10200 XM
+(uniform memory)
+282 W( access multiprocessors \050)283 W
+/Times-Italic SF
+(UMAs)SH
+/Times-Roman SF
+(\051 with fully shared memory and nearly uniform)283 W
+500 50 10200 55123 UL
+778 50 13954 55123 UL
+444 50 17820 55123 UL
+10200 56028 MT
+(memory access times for all data;)SH
+9200 57786 MT
+(2.)SH
+10200 XM
+(non-uniform memory access multiprocessors)
+132 W( \050)131 W
+/Times-Italic SF
+(NUMAs)SH
+/Times-Roman SF
+(\051 with shared memory in which an individual)131 W
+500 50 10200 57986 UL
+500 50 12033 57986 UL
+778 50 15637 57986 UL
+444 50 19352 57986 UL
+10200 58891 MT
+(CPU can access some memory rapidly and other memory more slowly; and)SH
+9200 60649 MT
+(3.)SH
+10200 XM
+(no remote memory access \050)150 W
+/Times-Italic SF
+(NORMAs)SH
+/Times-Roman SF
+(\051, message-based multiprocessors which)
+150 W( communicate over an)151 W
+1000 50 10200 60849 UL
+333 50 11600 60849 UL
+778 50 14777 60849 UL
+444 50 18510 60849 UL
+10200 61754 MT
+(internal or external network.)SH
+8200 64233 MT
+(UMA systems are the most prevalent in the commercial marketplace.  They are the)
+78 W( easiest of the three types to)77 W
+7200 65610 MT
+(use because they are)
+101 W( the most similar to traditional multiprogrammed uniprocessors.  Shared memory is typically)102 W
+7200 66987 MT
+(provided on some kind)
+55 W( of shared bus with individual CPUs accessing the bus through a cache.  Cache contents are)54 W
+7200 68364 MT
+(synchronized. Write)
+292 W( operations by one)
+21 W( CPU will either update or flush the appropriate cache blocks visible to other)22 W
+7200 69741 MT
+(CPUs. Access)
+442 W( times appear nearly uniform, although, depending on the architecture,)
+96 W( cache flushing can result in)95 W
+7200 71118 MT
+(non-uniform memory access times for some algorithms.  Examples of UMAs are)
+122 W( the Encore MultiMax, Sequent)123 W
+ES
+%%Page: 15 16
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(15)SH
+7200 7886 MT
+(Balance, VAX 8300 and VAX 8800.)SH
+8200 10365 MT
+(Some of the earliest multiprocessors were examples of)
+135 W( NUMAs, including CMUs C.mmp)
+134 W( [23])
+SH( and CM*)
+134 W( [11].)SH
+7200 11742 MT
+(One problem with UMAs is that they often rely on a shared global bus that limits the)
+219 W( maximum number of)220 W
+7200 13119 MT
+(processors and memory units which can be attached.  NUMAs typically avoid)
+19 W( this problem of scale by associating a)18 W
+7200 14496 MT
+(local memory with each CPU.  This memory can be accessed by other CPUs, but only)
+1 W( at a time cost greater than that)2 W
+7200 15873 MT
+(for local memory access.  The typical CPU-to-CPU interconnect is a communication switch with several levels)
+80 W( of)79 W
+7200 17250 MT
+(internal switching)
+164 W( nodes.  While such switches can be made to accommodate large numbers of communicating)165 W
+7200 18627 MT
+(processors, they add the characteristic NUMA remote memory)
+175 W( access delay.  The difficulties in keeping cache)174 W
+7200 20004 MT
+(contents consistent through such switches have led most NUMA designers to \0501\051 not provide cache)
+118 W( memory, \0502\051)119 W
+7200 21381 MT
+(only allow caching for non-shared memory)
+204 W( or \0503\051 provide instruction-level cache control to be used by smart)203 W
+7200 22758 MT
+(compilers. The)
+402 W( BBN Butterfly)
+76 W( [2])
+SH( is an example of a commercial NUMA.  Communication between CPUs in the)77 W
+7200 24135 MT
+(Butterfly is)
+55 W( by means of a)54 W
+/Times-Italic SF
+18135 XM
+(Butterfly Switch)54 W
+/Times-Roman SF
+(, the complexity of which increases only as the logarithm of the number)54 W
+7200 25512 MT
+(of processors.  The Butterfly makes no use of cache memory and remote)
+54 W( access times are roughly 10 times greater)55 W
+7200 26889 MT
+(than local access)
+4 W( times.  Because NUMA architectures allow greater numbers of CPUs to be put in a single machine,)3 W
+7200 28266 MT
+(many experimental very large multiprocessors are NUMAs; the 512-processor IBM RP3 is a recent example.)SH
+8200 30745 MT
+(NORMAs are the easiest of the multiprocessors to build and, in a sense, have existed)
+104 W( for as long as local area)105 W
+7200 32122 MT
+(networking has)
+35 W( been available.  The typical NORMA consists of a number of CPUs interconnected on a high speed)34 W
+7200 33499 MT
+(bus or network.  Interconnection topology depends on the network technology)
+156 W( used.  The Intel HyperCube, for)157 W
+7200 34876 MT
+(example, uses a multi-level cube structure)
+186 W( with 10MHz Ethernet as the connecting technology.  NORMAs are)185 W
+7200 36253 MT
+(distinguished from NUMAs in that they provide no)
+198 W( hardware supplied mechanism for remote memory access.)199 W
+7200 37630 MT
+(Typically NORMAs can be much larger but also much more loosely coupled than NUMAs.  For example, on the)88 W
+7200 39007 MT
+(HyperCube, remote communication times are measured in the)
+66 W( hundreds of microseconds versus five microseconds)67 W
+7200 40384 MT
+(for a Butterfly and considerably less than one microsecond \050on average\051 for a MultiMax.)SH
+8200 42863 MT
+(All three types of multiprocessors can be)
+84 W( made to support message passing or shared memory.  Although some)83 W
+7200 44240 MT
+(manufacturers [4, 9])
+SH( have provided hardware support for)
+336 W( message mechanisms, implementations of message)337 W
+7200 45617 MT
+(communication on uniprocessors and tightly coupled)
+151 W( multiprocessors typically use internal semaphores and data)150 W
+7200 46994 MT
+(copy operations.  It)
+70 W( is possible to implement copy-on-reference)
+71 W( [24])
+SH( and read/write sharing)
+71 W( [13, 14])
+SH( of information)71 W
+7200 48371 MT
+(in a network environment without explicit hardware support.)SH
+8200 50850 MT
+(Just as Accent demonstrated)
+68 W( that copy-on-write could be used for message passing in a uniprocessor, Li at Yale)67 W
+7200 52227 MT
+(showed that a modified Apollo Aegis kernel could support applications which required read/write sharing)
+37 W( of virtual)38 W
+7200 53604 MT
+(memory data structures on a 10MHz token ring)
+93 W( [14].)
+SH( Network)
+436 W( read/write sharing is)
+93 W( accomplished using software)92 W
+7200 54981 MT
+(techniques which parallel the hardware management of consistent caches in a multiprocessor.  Cache blocks \050in this)28 W
+7200 56358 MT
+(case physical memory pages mapped by the memory mapping hardware of the Apollo workstations\051)
+93 W( are retrieved)92 W
+7200 57735 MT
+(and cached as necessary)
+92 W( from global memory.  Multiple read accesses with no writers are permitted but only one)93 W
+7200 59112 MT
+(writer can be allowed to modify a)
+1 W( page of data at a time.  An attempt by a reader to write previously read data causes)SH
+7200 60489 MT
+(a memory fault which converts a reader into a writer and invalidates)
+22 W( all other page caches.  A subsequent attempt to)23 W
+7200 61866 MT
+(read by another workstation will cause the writer to revert to reader)
+9 W( status \050at least until the next write is performed\051.)8 W
+7200 63243 MT
+(The efficiency of algorithms that use this form of network shared)
+137 W( memory depends on the extent to which they)138 W
+7200 64620 MT
+(exhibit read/write locality)
+55 W( in their page references.  Kai Li showed that multiple processors which seldom read and)54 W
+7200 65997 MT
+(write the same data at the same time can conveniently use this approach.)SH
+8200 68476 MT
+(Mach provides a collection of operating system primitives defined)
+161 W( such that a programmer has the option of)162 W
+7200 69853 MT
+(choosing to use either shared memory or message-based communication as the basis for the implementation of)
+113 W( a)112 W
+7200 71230 MT
+(multithreaded application.  Depending on the desired style of the application and the kind)
+163 W( of multiprocessor or)164 W
+ES
+%%Page: 16 17
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(16)SH
+7200 7886 MT
+(network available,)
+124 W( message passing can be implemented in terms of memory management primitives or memory)123 W
+7200 9263 MT
+(management can be implemented in terms of communication primitives.)SH
+12 /Times-Bold AF
+7200 12947 MT
+(8. Applications)SH
+10 /Times-Roman AF
+8200 14324 MT
+(The implications of message/memory duality in Mach extend beyond the issue of)
+46 W( multiprocessor support.  There)47 W
+7200 15701 MT
+(is evidence that the efficient emulation of operating system environments such as UNIX can be achieved using the)59 W
+7200 17078 MT
+(Mach primitives.)
+42 W( Process)
+336 W( migration can be supported more effectively by relying on network copy-on-reference of)43 W
+7200 18455 MT
+(process data.  The interaction of message and memory primitives can also be an important tool in the design and)98 W
+7200 19832 MT
+(implementation of transaction)
+27 W( and database management facilities.  Work is also being done to allow AI knowledge)28 W
+7200 21209 MT
+(structures to be built, maintained and accessed using these techniques.)SH
+11 /Times-Bold AF
+7200 24826 MT
+(8.1. Emulating Operating System Environments)SH
+10 /Times-Roman AF
+8200 26203 MT
+(During the 1960's the notion of a virtual machine base for operating systems development)
+41 W( became commercially)40 W
+7200 27580 MT
+(popular. That)
+298 W( popularity faded)
+24 W( in the research community due to the complexities of truly virtualizing a wide range)25 W
+7200 28957 MT
+(of devices and hardware functions.)
+190 W( Alternative)
+628 W( systems such as UNIX)
+189 W( [18])
+SH( were developed which provided a)189 W
+7200 30334 MT
+(simple set of basic abstractions which could be implemented on a range of architectures.)SH
+8200 32813 MT
+(Today, the concept)
+27 W( of an extensible operating system is once again gaining acceptance -- this time as the solution)28 W
+7200 34190 MT
+(to the unconstrained growth of)
+143 W( UNIX.  During the last 20 years operating systems and their environments have)142 W
+7200 35567 MT
+(undergone dramatic expansion in size, scope and complexity.  The Alto operating)
+232 W( system)
+233 W( [22],)
+SH( a workstation)233 W
+7200 36944 MT
+(operating system of the early 70's, occupied approximately 19K bytes, including code and data.  A typical UNIX)90 W
+7200 38321 MT
+(implemention on a modern workstation such as)
+73 W( a MicroVAX or SUN can consume over 1.5 megabytes of storage)74 W
+7200 39698 MT
+(before a single user program is executed.)SH
+8200 42177 MT
+(This increase in complexity has been fueled by changing needs and technology which have resulted)
+134 W( in UNIX)133 W
+7200 43554 MT
+(being modified to provide)
+266 W( a staggering number of new and different mechanisms for managing objects and)267 W
+7200 44931 MT
+(resources. UNIX)
+326 W( has become a dumping ground for new features and facilities because key requirements for many)38 W
+7200 46308 MT
+(of these new facilities can be found only in kernel state:)SH
+/Symbol SF
+8990 47761 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(easy access to user process state,)SH
+/Symbol SF
+8990 49519 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(access to virtual and physical memory objects,)SH
+/Symbol SF
+8990 51277 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(device access,)SH
+/Symbol SF
+8990 53035 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(the ability to run several processes which communicate through shared memory, and)SH
+/Symbol SF
+8990 54793 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(efficient context switching and scheduling.)SH
+8200 57272 MT
+(One of the goals of Mach is)
+4 W( to provide an extensible kernel basis upon which operating system environments such)5 W
+7200 58649 MT
+(as UNIX can be built.)SH
+8200 61128 MT
+(Emulation of UNIX-like system environments can)
+36 W( be implemented using a variety of techniques.  Generic UNIX)35 W
+7200 62505 MT
+(system calls can be)
+149 W( implemented outside of the Mach kernel in libraries and server tasks.  For example, UNIX)150 W
+7200 63882 MT
+(filesystem I/O can be emulated by a library package that maps)
+47 W( open and close calls to a filesystem server task.  An)46 W
+7200 65259 MT
+(open call would result in the file being mapped into memory.  Subsequent read and write calls would)
+179 W( operate)180 W
+7200 66636 MT
+(directly on virtual memory.  The)
+112 W( filesystem server task would operate as an external pager, managing the virtual)111 W
+7200 68013 MT
+(memory corresponding to the file.  Shared process state information can be passed on to child)
+165 W( processes using)166 W
+7200 69390 MT
+(inherited shared memory.)SH
+ES
+%%Page: 17 18
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(17)SH
+11 /Times-Bold AF
+7200 7937 MT
+(8.2. Copy-On-Reference Task Migration)SH
+10 /Times-Roman AF
+8200 9314 MT
+(One of the thorniest problems of)
+78 W( task migration is the handling of large address spaces.  Edward Zayas showed)77 W
+7200 10691 MT
+(that migration could be)
+68 W( performed efficiently using copy-on-reference techniques)
+69 W( [24].)
+SH( The)
+388 W( task migration service)69 W
+7200 12068 MT
+(can create a memory object to represent a region of the original task's address space,)
+70 W( and map that region into the)69 W
+7200 13445 MT
+(new task's address space on the remote host.  The)
+197 W( kernel managing the remote host treats page faults on the)198 W
+7200 14822 MT
+(newly-migrated task by making paging requests on that memory object, just as it does for other tasks.)SH
+8200 17301 MT
+(The generality of the external memory management allows for a wide variety)
+48 W( of migration strategies.  To reduce)47 W
+7200 18678 MT
+(faulting overhead, the migration manager)
+194 W( may provide some data in advance for tasks with predictable access)195 W
+7200 20055 MT
+(patterns. This)
+466 W( pre-paging can proceed while the newly-migrated task begins to run.)
+108 W( Alternatively,)
+464 W( the migration)107 W
+7200 21432 MT
+(manager can respond to requests on demand for unpredictable or excessively large tasks.)SH
+11 /Times-Bold AF
+7200 25049 MT
+(8.3. Database Management: Camelot)SH
+10 /Times-Roman AF
+8200 26426 MT
+(Camelot is a transaction processing system being implemented)
+176 W( on Mach)
+177 W( [21].)
+SH( Camelot)
+604 W( provides support for)177 W
+7200 27803 MT
+(distributed transactions on user-defined objects.  In Camelot, servers maintain permanent)
+42 W( objects in virtual memory)41 W
+7200 29180 MT
+(backed by the)
+114 W( Camelot disk manager.  Camelot uses the write-ahead logging technique to implement permanent,)115 W
+7200 30557 MT
+(failure-atomic transactions.  When the disk manager)
+49 W( receives a)48 W
+/Times-Italic SF
+33020 XM
+(pager_flush_request)SH
+/Times-Roman SF
+41540 XM
+(from the kernel, it verifies that)48 W
+7200 31934 MT
+(the proper log records have been written before writing the specified pages to disk.)SH
+8200 34413 MT
+(Transaction systems reap many benefits from the ability to manage memory objects:)SH
+/Symbol SF
+8990 35866 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Camelot clients can access data easily and quickly by mapping memory objects into their virtual address)SH
+9700 36971 MT
+(spaces.)SH
+/Symbol SF
+8990 38729 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Camelot clients do not have to implement their own page replacement algorithms.)SH
+/Symbol SF
+8990 40487 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Clients need not reserve fixed sized physical memory buffers.  The)
+6 W( amount of physical memory devoted)5 W
+9700 41592 MT
+(to each client varies dynamically with overall system load.)SH
+/Symbol SF
+8990 43350 MT
+(\267)SH
+/Times-Roman SF
+9700 XM
+(Recoverable data can be written directly to permanent backing storage without first being written)
+133 W( to)134 W
+9700 44455 MT
+(temporary paging storage.)SH
+8200 46934 MT
+(By using)
+8 W( an external interface, Camelot can benefit from these advantages without having to modify the operating)7 W
+7200 48311 MT
+(system to provide specialized support)
+192 W( [5].)
+SH( Mach)
+635 W( manages the physical memory cache while the Camelot disk)193 W
+7200 49688 MT
+(manager guarantees that the write-ahead log protocol is followed.)SH
+11 /Times-Bold AF
+7200 53305 MT
+(8.4. AI Knowledge Bases: Agora)SH
+10 /Times-Roman AF
+8200 54682 MT
+(A parallel can be made between the potential uses of external pagers in)
+17 W( transaction and database management and)16 W
+7200 56059 MT
+(their use in the implementation of AI knowledge structures.  The)
+204 W( speech research group at CMU is currently)205 W
+7200 57436 MT
+(engaged in a project)
+58 W( to build a distributed speech understanding system called Agora)
+57 W( [3].)
+SH( This)
+364 W( work is being done)57 W
+7200 58813 MT
+(on Mach and currently makes use both of Mach memory sharing and message passing.)SH
+8200 61292 MT
+(Both communication and memory sharing)
+291 W( are used to implement a shared blackboard structure in which)292 W
+7200 62669 MT
+(hypotheses are placed and evaluated by multiple cooperating agents.)
+221 W( The)
+691 W( blackboard physically resides on a)220 W
+7200 64046 MT
+(multiprocessor host.  All accesses)
+135 W( to the blackboard are through a procedural interface that determines if shared)136 W
+7200 65423 MT
+(memory or communication must be used.  Agents use shared memory)
+56 W( to directly modify the blackboard.  Message)55 W
+7200 66800 MT
+(passing is used between loosely coupled components of the system)
+194 W( that collect data, perform low level signal)195 W
+7200 68177 MT
+(processing, and display)
+89 W( results.  The total system distributes itself among a collection of machines consisting of a)88 W
+7200 69554 MT
+(VAX 8200 with four CPUs and a number of MicroVAX IIs and IBM RT PCs interconnected via)
+54 W( several Ethernets)55 W
+7200 70931 MT
+(and IBM token rings.)SH
+ES
+%%Page: 18 19
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(18)SH
+12 /Times-Bold AF
+7200 8004 MT
+(9. Performance)SH
+10 /Times-Roman AF
+8200 9381 MT
+(One of the key benefits)
+95 W( to Mach's external memory management is that it allows user provided objects to take)94 W
+7200 10758 MT
+(advantage of the same kind of physical memory)
+168 W( caching which traditionally has only been available to kernel-)169 W
+7200 12135 MT
+(supplied secondary storage.  A user program can, for example, create a memory object which)
+43 W( is used to represent a)42 W
+7200 13512 MT
+(data array and provide access)
+42 W( to that array to many other programs through a server message interface.  The clients)43 W
+7200 14889 MT
+(of such a service would only have to exchange a single message with the server to)
+94 W( get access to the array and, if)93 W
+7200 16266 MT
+(other clients)
+39 W( had already referenced the data of the array, the physical memory cache of the array would be directly)40 W
+7200 17643 MT
+(accessible to the client with no further message traffic.)SH
+8200 20122 MT
+(A large, well-managed memory cache of this kind can be a powerful aid to improving the performance of an)133 W
+7200 21499 MT
+(operating system.  For example, traditional UNIX implementations manage a cache of recently accessed file data)104 W
+7200 22876 MT
+(blocks. This)
+106 W( cache, which is normally 10% of physical memory in a Berkeley UNIX system, is accessed by user)105 W
+7200 24253 MT
+(programs through read and write kernel-to-user and user-to-kernel copy operations.)
+26 W( In)
+303 W( contrast, Mach uses the bulk)27 W
+7200 25630 MT
+(of its physical memory as a)
+169 W( cache of secondary storage data pages.  The effect of this kind of caching on the)168 W
+7200 27007 MT
+(performance of UNIX and)
+27 W( its traditional suite of application programs is dramatic.  Compilation of a small program)28 W
+7200 28384 MT
+(cached in memory on a SUN 3/160 running Mach is twice as fast as when running the)
+3 W( more conventional SunOS 3.2)2 W
+7200 29761 MT
+(operating system)
+30 W( [17].)
+SH( In)
+311 W( a large system compilation, the total number of I/O operations can be reduced by a factor)31 W
+7200 31138 MT
+(of 10 [1].)SH
+12 /Times-Bold AF
+7200 34822 MT
+(10. Status)SH
+10 /Times-Roman AF
+8200 36199 MT
+(All of the Mach facilities)
+329 W( described in this paper have been implemented -- with the external memory)328 W
+7200 37576 MT
+(management facility the most recent and most)
+95 W( experimental addition.  A production version of Mach is in use on)96 W
+7200 38953 MT
+(over 200 workstations)
+58 W( and large timesharing systems within the CMU Department of Computer Science.  It is also)57 W
+7200 40330 MT
+(being used on dozens of machines outside)
+266 W( the Department, including systems at BBN, the IBM Hawthorne)267 W
+7200 41707 MT
+(Laboratory, the CMU Software Engineering Institute and the Los Alamos Research Laboratory.)SH
+8200 44186 MT
+(As of this writing,)
+7 W( Mach runs on more than a dozen computer systems including the VAX family of uniprocessors)6 W
+7200 45563 MT
+(and multiprocessors, the IBM RT PC, the SUN)
+22 W( 3, the 16-processor Encore MultiMax, and the 26-processor Sequent)23 W
+7200 46940 MT
+(Balance 21000.  Work is proceeding on implementations for several other computer systems.)SH
+8200 49419 MT
+(Versions of Mach for all machine types are built from the same source with machine specific)
+113 W( code isolated to)112 W
+8 SS 
+19445 50451 MT
+(10)SH
+10 SS 
+7200 50796 MT
+(machine dependent directories)13 W
+20245 XM
+(. All)
+276 W( VAXen run the same binary image of the kernel.  Mach currently)
+13 W( supports the)12 W
+7200 52173 MT
+(X window manager and is binary compatible with 4.3bsd UNIX on VAX architecture machines.)SH
+8200 54652 MT
+(The paging interface component is still under development:)SH
+/Symbol SF
+8990 56105 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Default Pager)121 W
+/Times-Roman SF
+(. The)
+492 W( default)
+121 W( pager is currently running as a separate kernel-state task which uses the)122 W
+9700 57210 MT
+(memory object interface.  To)
+53 W( manage secondary storage, it uses Unix inodes and the Unix buffer pool.)52 W
+9700 58315 MT
+(Future plans include eliminating use of the buffer pool, and instead allowing that memory to be)
+8 W( used for)9 W
+9700 59420 MT
+(the global virtual memory cache.)SH
+/Symbol SF
+8990 61178 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(User Pager Tasks)225 W
+/Times-Roman SF
+(. The)
+700 W( implementation already supports both pagein and pageout requests being)224 W
+9700 62283 MT
+(handled by user-state pager tasks; however, cache consistency primitives are not fully implemented.)SH
+/Symbol SF
+8990 64041 MT
+(\267)SH
+/Times-Italic SF
+9700 XM
+(Special Conditions)108 W
+/Times-Roman SF
+(. Currently,)
+466 W( initialization and termination)
+108 W( are implemented as described; however,)109 W
+9700 65146 MT
+(handling of pager failures is not yet done.)SH
+10800 50 7200 69428 UL
+6 SS 
+8000 70767 MT
+(10)SH
+8 SS 
+8600 71076 MT
+(Some support for manufacturer specific UNIX features has been kept in machine independent files to accomodate binary compatibility with)35 W
+7200 72000 MT
+(various manufacturers' non-4.3bsd UNIX environments.)SH
+ES
+%%Page: 19 20
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(19)SH
+8200 7886 MT
+(Mach is being released externally to interested researchers.  The second)
+7 W( release of Mach was made in April, 1987.)6 W
+7200 9263 MT
+(The next release is scheduled for the end of October, 1987.)SH
+11 /Times-Bold AF
+28036 12136 MT
+(References)SH
+8 /Times-Roman AF
+7200 14143 MT
+([1])SH
+9600 XM
+(Accetta, M.J., Baron, R.V., Bolosky, W., Golub, D.B., Rashid, R.F., Tevanian, A., and Young, M.W.)SH
+9600 15067 MT
+(Mach: A New Kernel Foundation for UNIX Development.)SH
+9600 15991 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proceedings of Summer Usenix)SH
+/Times-Roman SF
+(. July,)
+200 W( 1986.)SH
+7200 17464 MT
+([2])SH
+9600 XM
+(BBN Laboratories.)SH
+/Times-Italic SF
+9600 18388 MT
+(Butterfly Parallel Processor Overview)SH
+/Times-Roman SF
+(.)SH
+9600 19312 MT
+(Technical Report, BBN Computer Company, Cambridge, MA, June, 1985.)SH
+7200 20785 MT
+([3])SH
+9600 XM
+(Bisiani, R., Alleva, F., Forin, A. and Lerner, R.)SH
+9600 21709 MT
+(Agora: A Distributed System Architecture for Speech Recognition.)SH
+9600 22633 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(International Conference on Acoustics, Speech and Signal Processing)SH
+/Times-Roman SF
+(. IEEE,)
+200 W( April, 1986.)SH
+7200 24106 MT
+([4])SH
+9600 XM
+(ELXSI Computer, Inc.)SH
+/Times-Italic SF
+9600 25030 MT
+(System Programmer's Reference Manual)SH
+/Times-Roman SF
+9600 25954 MT
+(ELXSI Computer, Inc., 1983.)SH
+7200 27427 MT
+([5])SH
+9600 XM
+(Eppinger, J.L., and Spector, A.Z.)SH
+/Times-Italic SF
+9600 28351 MT
+(Virtual Memory Management for Recoverable Objects in the TABS Prototype)SH
+/Times-Roman SF
+(.)SH
+9600 29275 MT
+(Technical Report CMU-CS-85-163, Carnegie-Mellon University, December, 1985.)SH
+7200 30748 MT
+([6])SH
+9600 XM
+(French, R.E., R.W. Collins and L.W. Loen.)SH
+9600 31672 MT
+(System/38 Machine Storage Management.)SH
+/Times-Italic SF
+9600 32596 MT
+(IBM System/38 Technical Developments, IBM General Systems Division)SH
+/Times-Roman SF
+33033 XM
+(:63-66, 1978.)SH
+7200 34069 MT
+([7])SH
+9600 XM
+(Gupta, A.)SH
+/Times-Italic SF
+9600 34993 MT
+(Parallel Production Systems)SH
+/Times-Roman SF
+(.)SH
+9600 35917 MT
+(PhD thesis, Carnegie Mellon University, May, 1986.)SH
+7200 37390 MT
+([8])SH
+9600 XM
+(Hornig, D.A.)SH
+/Times-Italic SF
+9600 38314 MT
+(Automatic Partitioning and Scheduling on a Network of Personal Computers)SH
+/Times-Roman SF
+(.)SH
+9600 39238 MT
+(PhD thesis, Department of Computer Science, Carnegie-Mellon University, November, 1984.)SH
+7200 40711 MT
+([9])SH
+9600 XM
+(Kahn, K.C. et al.)SH
+9600 41635 MT
+(iMAX: A)
+200 W( Multiprocessor Operating System for an Object-Based Computer.)SH
+9600 42559 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proc. 8th Symposium on Operating Systems Principles)SH
+/Times-Roman SF
+(, pages 127-136.  ACM, December, 1981.)SH
+7200 44032 MT
+([10])SH
+9600 XM
+(Jones, A.K.)SH
+9600 44956 MT
+(The Object Model:  A Conceptual Tool for Structuring Systems.)SH
+/Times-Italic SF
+9600 45880 MT
+(Operating Systems:  An Advanced Course.)SH
+/Times-Roman SF
+9600 46804 MT
+(Springer-Verlag, 1978, pages 7-16.)SH
+7200 48277 MT
+([11])SH
+9600 XM
+(Jones, A.K., Chansler, R.J., Durham, I.E., Schwans, K., and Vegdahl, S.)SH
+9600 49201 MT
+(StarOS, a Multiprocessor Operating System for the Support of Task Forces.)SH
+9600 50125 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proceedings of the 7th Symposium on Operating System Principles)SH
+/Times-Roman SF
+(, pages 117-129.  ACM, December, 1979.)SH
+7200 51598 MT
+([12])SH
+9600 XM
+(Jones, M.B., Rashid, R.F., and Thompson, M.R.)SH
+/Times-Italic SF
+9600 52522 MT
+(Sesame: The)
+200 W( Spice File System)SH
+/Times-Roman SF
+(.)SH
+9600 53446 MT
+(Internal Document, Department of Computer Science, Carnegie-Mellon University, October, 1982.)SH
+7200 54919 MT
+([13])SH
+9600 XM
+(Leach, P.L., P.H. Levine, B.P. Douros, J.A.  Hamilton, D.L. Nelson and B.L. Stumpf.)SH
+9600 55843 MT
+(The Architecture of an Integrated Local Network.)SH
+/Times-Italic SF
+9600 56767 MT
+(IEEE Journal on Selected Areas in Communications)SH
+/Times-Roman SF
+26595 XM
+(SAC-1\0505\051:842-857, November, 1983.)SH
+7200 58240 MT
+([14])SH
+9600 XM
+(Li, K. and Hudak, P.)SH
+9600 59164 MT
+(Memory Coherence in Shared Virtual Memory Systems.)SH
+9600 60088 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(5th Symposium on Principles of Distributed Computing)SH
+/Times-Roman SF
+(. 1986.)200 W
+7200 61561 MT
+([15])SH
+9600 XM
+(Rashid, R.F. and Robertson, G.)SH
+9600 62485 MT
+(Accent: A Communication Oriented Network Operating System Kernel.)SH
+9600 63409 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proceedings of the 8th Symposium on Operating System Principles)SH
+/Times-Roman SF
+(, pages 64-75.  December, 1981.)SH
+7200 64882 MT
+([16])SH
+9600 XM
+(Rashid, R.F.)SH
+9600 65806 MT
+(From RIG to Accent to Mach: The Evolution of a Network Operating System.)SH
+9600 66730 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proceedings of the ACM/IEEE Computer Society 1986 Fall Joint Computer Conference)SH
+/Times-Roman SF
+(. ACM,)
+200 W( November, 1986.)SH
+7200 68203 MT
+([17])SH
+9600 XM
+(Rashid, R.F., Tevanian, A., Young, M.W., Golub, D.B., Baron, R.V., Black, D.L., Bolosky, W., and Chew, J.J.)SH
+9600 69127 MT
+(Machine-Independent Virtual Memory Management for Paged Uniprocessor and Multiprocessor Architectures.)SH
+9600 70051 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proceedings of the 2nd Symposium on Architectural Support for Programming Languages and Operating Systems)SH
+/Times-Roman SF
+(. ACM,)
+200 W( October,)SH
+10800 70975 MT
+(1987.)SH
+ES
+%%Page: 20 21
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(20)SH
+8 SS 
+7200 7749 MT
+([18])SH
+9600 XM
+(Ritchie, D.M. and Thompson, K.)SH
+9600 8673 MT
+(The Unix Time-Sharing System.)SH
+/Times-Italic SF
+9600 9597 MT
+(Communications of the ACM)SH
+/Times-Roman SF
+19110 XM
+(17\0507\051:365-375, July, 1974.)SH
+7200 11070 MT
+([19])SH
+9600 XM
+(Satyanarayanan, M., et.al.)SH
+9600 11994 MT
+(The ITC Distributed File System: Principles and Design.)SH
+9600 12918 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proc. 10th Symposium on Operating Systems Principles)SH
+/Times-Roman SF
+(, pages 35-50.  ACM, December, 1985.)SH
+7200 14391 MT
+([20])SH
+9600 XM
+(Spector, A.Z., Butcher, J., Daniels, D.S., Duchamp, D.J., Eppinger, J.L., Fineman, C.E., Heddaya, A., Schwarz, P.M.)SH
+9600 15315 MT
+(Support for Distributed Transactions in the TABS Prototype.)SH
+9600 16239 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Proceedings of the 4th Symposium on Reliability In Distributed Software and Database Systems)SH
+/Times-Roman SF
+(. October,)
+200 W( 1984.)SH
+9600 17163 MT
+(Also available as Carnegie-Mellon Report CMU-CS-84-132, July 1984.)SH
+7200 18636 MT
+([21])SH
+9600 XM
+(Spector, A.Z.)SH
+9600 19560 MT
+(Distributed Transaction Processing and the Camelot System.)SH
+9600 20484 MT
+(In Yakup Paker \050editor\051,)SH
+/Times-Italic SF
+17617 XM
+(NATO Advanced Study Institute - Computer and Systems Sciences)SH
+/Times-Roman SF
+(. Volume)
+200 W( :)SH
+/Times-Italic SF
+42764 XM
+(Distributed Operating Systems:)SH
+10800 21408 MT
+(Theory and Practice)SH
+/Times-Roman SF
+(. Springer-Verlag,)
+400 W( 1987.)SH
+9600 22332 MT
+(Also available as Carnegie-Mellon Report CMU-CS-87-100, January 1987.)SH
+7200 23805 MT
+([22])SH
+9600 XM
+(Thacker, C.P., et al.)SH
+9600 24729 MT
+(Alto: A)
+200 W( personal computer.)SH
+9600 25653 MT
+(In)SH
+/Times-Italic SF
+10466 XM
+(Computer Structures:  Readings and Examples)SH
+/Times-Roman SF
+(. McGraw-Hill, 1980.)SH
+9600 26577 MT
+(Edited by D. Siewiorek, C.G. Bell, and A. Newell, second edition.)SH
+7200 28050 MT
+([23])SH
+9600 XM
+(Wulf, W.A., Levin, R., and Harbison, S.P.)SH
+/Times-Italic SF
+9600 28974 MT
+(Hydra/C.mmp: An)
+200 W( Experimental Computer System.)SH
+/Times-Roman SF
+9600 29898 MT
+(McGraw-Hill, 1981.)SH
+7200 31371 MT
+([24])SH
+9600 XM
+(Zayas, E.R.)SH
+/Times-Italic SF
+9600 32295 MT
+(The Use of Copy-On-Reference in a Process Migration System)SH
+/Times-Roman SF
+(.)SH
+9600 33219 MT
+(PhD thesis, Department of Computer Science, Carnegie-Mellon University, January, 1987.)SH
+ES
+%%Page: i 22
+BS
+0 SI
+10 /Times-Roman AF
+30461 4286 MT
+(i)SH
+12 /Times-Bold AF
+26033 8004 MT
+(Table of Contents)SH
+11 SS 
+8850 9172 MT
+(1. Introduction)SH
+53450 XM
+(1)SH
+8850 10340 MT
+(2. Early Work in Virtual Memory/Message Integration)SH
+53450 XM
+(1)SH
+8850 11508 MT
+(3. The Mach Design)SH
+53450 XM
+(2)SH
+10 SS 
+10700 12588 MT
+(3.1. Execution Control Primitives)SH
+53500 XM
+(3)SH
+10700 13668 MT
+(3.2. Inter-Process Communication)SH
+53500 XM
+(3)SH
+10700 14748 MT
+(3.3. Virtual Memory Management)SH
+53500 XM
+(4)SH
+10700 15828 MT
+(3.4. External Memory Management)SH
+53500 XM
+(4)SH
+12700 16908 MT
+(3.4.1. Detailed Description)SH
+53500 XM
+(5)SH
+11 SS 
+8850 18076 MT
+(4. Using Memory Objects)SH
+53450 XM
+(8)SH
+10 SS 
+10700 19156 MT
+(4.1. A Minimal Filesystem)SH
+53500 XM
+(8)SH
+10700 20236 MT
+(4.2. Consistent Network Shared Memory Excerpt)SH
+53000 XM
+(10)SH
+11 SS 
+8850 21404 MT
+(5. Implementation Details)SH
+52900 XM
+(11)SH
+10 SS 
+10700 22484 MT
+(5.1. Address Maps)SH
+53000 XM
+(11)SH
+10700 23564 MT
+(5.2. Virtual Memory Object Structures)SH
+53000 XM
+(12)SH
+10700 24644 MT
+(5.3. Resident Memory Structures)SH
+53000 XM
+(12)SH
+10700 25724 MT
+(5.4. Page Replacement Queues)SH
+53000 XM
+(12)SH
+10700 26804 MT
+(5.5. Fault Handling)SH
+53000 XM
+(12)SH
+11 SS 
+8850 27972 MT
+(6. The Problems of External Memory Management)SH
+52900 XM
+(13)SH
+10 SS 
+10700 29052 MT
+(6.1. Types of Memory Failures)SH
+53000 XM
+(13)SH
+10700 30132 MT
+(6.2. Handling Memory Failures)SH
+53000 XM
+(13)SH
+12700 31212 MT
+(6.2.1. Analogy to Communication Failure)SH
+53000 XM
+(13)SH
+12700 32292 MT
+(6.2.2. The Default Pager)SH
+53000 XM
+(14)SH
+12700 33372 MT
+(6.2.3. Reserved Memory Pool)SH
+53000 XM
+(14)SH
+11 SS 
+8850 34540 MT
+(7. Multiprocessor Issues)SH
+52900 XM
+(14)SH
+8850 35708 MT
+(8. Applications)SH
+52900 XM
+(16)SH
+10 SS 
+10700 36788 MT
+(8.1. Emulating Operating System Environments)SH
+53000 XM
+(16)SH
+10700 37868 MT
+(8.2. Copy-On-Reference Task Migration)SH
+53000 XM
+(17)SH
+10700 38948 MT
+(8.3. Database Management: Camelot)SH
+53000 XM
+(17)SH
+10700 40028 MT
+(8.4. AI Knowledge Bases: Agora)SH
+53000 XM
+(17)SH
+11 SS 
+8850 41196 MT
+(9. Performance)SH
+52900 XM
+(18)SH
+8850 42364 MT
+(10. Status)SH
+52900 XM
+(18)SH
+ES
+%%Page: ii 23
+BS
+0 SI
+10 /Times-Roman AF
+30322 4286 MT
+(ii)SH
+12 /Times-Bold AF
+27099 8004 MT
+(List of Tables)SH
+11 SS 
+8850 9172 MT
+(Table 3-1:)
+SH( Primitive)
+550 W( Message Operations)SH
+53450 XM
+(3)SH
+8850 10340 MT
+(Table 3-2:)
+SH( Port)
+550 W( Operations)SH
+53450 XM
+(4)SH
+8850 11508 MT
+(Table 3-3:)
+SH( Virtual)
+550 W( Memory Operations)SH
+53450 XM
+(5)SH
+8850 12676 MT
+(Table 3-4:)
+SH( Application)
+550 W( to Kernel Interface)SH
+53450 XM
+(6)SH
+8850 13844 MT
+(Table 3-5:)
+SH( Kernel)
+550 W( to Data Manager Interface)SH
+53450 XM
+(6)SH
+8850 15012 MT
+(Table 3-6:)
+SH( Data)
+550 W( Manager to Kernel Interface)SH
+53450 XM
+(7)SH
+ES
+%%Trailer
+%%Pages: 23
+%%DocumentFonts: Times-Roman Times-Bold Symbol Times-Italic Courier

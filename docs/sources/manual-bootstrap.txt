@@ -1,0 +1,131 @@
+               Manually Bootstrapping a Translator
+	        Neal H Walfield <neal@cs.uml.edu>
+		         April 15, 2001
+
+The most common way to start a translator is to use the `settrans'
+command.  It provides a flag, `-P', which waits until the user presses
+a key before completing the handshake with the translator.  This causes
+the translator to pause and gives the user a chance to attach gdb to
+the process.  Sometimes, however, it is convenient to debug a translator
+before it calls fsys_start.  To do this properly, we need to manually
+connect the translator to the filesystem.  Happily, this is relatively
+easy and requires no modification to the source code.  We shall
+demonstrate how to do this using tmpfs, however, this applies equally
+well to any other translator.
+
+First, we startup gdb:
+
+	neal@hurd:~ (0)$ sudo gdb /hurd/tmpfs
+	Password:
+	GNU gdb 5.0
+	Copyright 2000 Free Software Foundation, Inc.
+
+Before launching tmpfs, we set a breakpoint at main:
+
+	(gdb) break main
+	Breakpoint 1 at 0x8049e89: file tmpfs/tmpfs.c, line 228.
+	(gdb) run 100M
+	Starting program: /hurd/tmpfs 100M
+
+	Breakpoint 1, main (argc=2, argv=0x124ff50)
+    	    at ../../src/hurd/tmpfs/tmpfs.c:228
+
+One of the first actions that tmpfs takes is to verify that it has a
+bootstrap port which it later uses to rendez-vous with the starter to
+pass a send right to its control port and receive a send right to its
+underlying node.  The task_get_bootstrap_port function returns the
+port and tmpfs compares this against MACH_PORT_NULL.  If they match,
+tmpfs knows that it has no one to rendez-vous with and exits.  Since
+we started tmpfs as a regular program, the bootstrap port will be
+MACH_PORT_NULL.  Therefore, we need to lie.  All that is necessary is
+to change the value of the `bootstrap' variable, however, we should not
+change it to any random value as later, tmpfs will deallocate this port.
+Thus, we set BOOTSTRAP to MACH_PORT_DEAD, i.e. ~0, which is guaranteed
+to not point to a valid port right.
+
+	228       assert_perror (err);
+	(gdb) next
+	230       task_get_bootstrap_port (mach_task_self (), &bootstrap);
+	(gdb) next
+	231       if (bootstrap == MACH_PORT_NULL)
+	(gdb) print bootstrap=~0
+	$1 = 4294967295
+
+We could continue to step through and examine what happens, however, our
+next step is to fake fsys_startup, the rendez-vous.  So, let us now
+setup a breakpoint and continue:
+
+	(gdb) break fsys_startup
+	Breakpoint 2 at 0x1228175
+	(gdb) continue
+	Continuing.
+
+	Breakpoint 2, 0x1228175 in fsys_startup () from
+	/lib/libhurduser.so.0.0
+
+As this call does nothing for us, we can just force it to return:
+
+	(gdb) return
+	Make selected stack frame return now? (y or n) y
+
+	#0  0x103e139 in diskfs_startup_diskfs (bootstrap=4294967295, flags=0)
+	    at ../../src/hurd/libdiskfs/init-startup.c:93
+	93                err = fsys_startup (bootstrap, flags, right,
+	(gdb) next
+	Single stepping until exit from function fsys_startup, 
+	which has no line number information.
+	95                mach_port_deallocate (mach_task_self (), right);
+
+We now have three tasks.  First, we need to obtain a send right to the
+underlying node and save that in the local variable `realnode'.  Second,
+we must install the filesystem control port, which currently lives in
+the local variable `right', into the underlying node.  And finally, we
+must make tmpfs think nothing happened.
+
+To obtain a send right to the underlying node, we use the function
+file_name_lookup.  Its definition can be found in <hurd.h>.  This
+function takes three arguments.  They are: the path to the node to open,
+how to open the node and how to create the node.  They are exactly the
+same types of arguments as passed to open(2) and, in fact,
+file_name_lookup uses the same constants.  Since tmpfs does no I/O
+operations on the underlying, we can safely specify zero as the open
+mode:
+
+	(gdb) p realnode=file_name_lookup ("/home/neal/tmp", 0, 0)
+	$2 = 65
+
+We see that we succeeded as zero, i.e.  MACH_PORT_NULL, was not
+returned.
+
+Next, we need to set the active translator on the node.  This is done
+using the file_set_translator RPC.  Its definition can be found in
+<hurd/fs.defs>.  The parameters are: the port to queue the message on,
+the passive flags, the active flags, the shutdown flags, an argz
+describing the passive translator, the length of the passive translator,
+a port right to the active translator's control port and, finally, how
+to produce a send right from the given right.  Since we are only
+interested in setting the active translator, we specify zero for the
+passive and shutdown flags.  To set the active translator, we need to
+set the FS_TRANS_SET bit.  This macro can be found in
+<hurd/hurd_types.h>.  By looking there, we learn that it is defined as
+four.  As we have already mentioned, the control port lives in the local
+variable `right', thus, we can supply that directly.  By looking at how
+diskfs_init_diskfs deallocates the right, we learn that `right' itself
+must be a send right.  Thus, we must specify MACH_MSG_TYPE_SEND_COPY as
+the last argument.  We also have to look up this constant; it is found
+in <mach/message.h> and is defined as nineteen.
+
+	(gdb) p err=file_set_translator (realnode, 0, 4, 0, "", 0, right, 19)
+	$3 = 0
+
+Since this call returned zero, we know we succeeded.   As a side effect,
+we also set err to zero, which tmpfs thinks means fsys_startup was
+successful.  We can confirm that /home/neal/tmp is now translated by
+testing if operations on the node block.  Here we attempt to stat the
+node:
+
+	neal@hurd:~ (0)$ ls -ld ~/tmp
+
+Success!  We can now set other breakpoints or just continue the program
+on its way.
+
